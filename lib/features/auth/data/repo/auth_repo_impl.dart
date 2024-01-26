@@ -21,7 +21,7 @@ class AuthRepoImpl extends AuthRepo {
   // Create Update and delete User
   //GetCurrentUser Uid and isLogin
   @override
-  Future<Either<String, Failure>> getCurrentUserUid() => dataSource.getCurrentUserUid();
+  Future<Either<String?, Failure>> getCurrentUserUid() => dataSource.getCurrentUserUid();
   @override
   Future<Either<bool, Failure>> isLogin() => dataSource.isLogin();
   //GetCurrentUser Uid and isLogin

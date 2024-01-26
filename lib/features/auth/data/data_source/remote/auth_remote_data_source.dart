@@ -56,39 +56,133 @@ class AuthRemoteDataSource extends AuthDataRepo {
   }
 
   @override
-  Future<Either<void, Failure>> deleteUser(UserEntity user) {
-    // TODO: implement deleteUser
-    throw UnimplementedError();
+  Future<Either<void, Failure>> deleteUser(UserEntity user) async {
+    try{
+      await firestore.collection(FirebaseConsts.users).doc(user.uid).delete();
+      return const Left(null);
+    }
+    catch(e){
+      throw  Failure(message: "Error Occurred while deleting user",error: e.toString());
+    }
   }
 
   @override
-  Future<Either<String, Failure>> getCurrentUserUid() {
-    // TODO: implement getCurrentUserUid
-    throw UnimplementedError();
+  Future<Either<String?, Failure>> getCurrentUserUid() async {
+    try{
+      return Left(auth.currentUser?.uid);
+    }
+    catch(e){
+      throw Failure(message: "No Uid found",error: e.toString());
+    }
   }
 
   @override
   Stream<Either<List<UserEntity>, Failure>> getSingleUser(UserEntity user) {
-    // TODO: implement getSingleUser
-    throw UnimplementedError();
+    try{
+      try {
+        return firestore
+            .collection(FirebaseConsts.users)
+            .where("uid", isEqualTo: user.uid)
+            .limit(1)
+            .snapshots()
+            .map((QuerySnapshot querySnapshot) {
+          final List<UserEntity> users = querySnapshot.docs
+              .map((DocumentSnapshot document) => UserModel.fromSnapshot(document))
+              .toList();
+          
+          if (users.isNotEmpty) {
+            return Left(users);
+          } else {
+            throw const Right(Failure(message: "No users found")); // Return an empty list if no users are found
+          }
+        });
+      } catch (e) {
+        throw const Right(Failure(message: "Error fetching user"));
+      }
+    }
+    catch(e){
+      throw Right(Failure(message:"Error getting using" ,error: e.toString()));
+    }
   }
 
   @override
-  Stream<Either<List<UserEntity>, Failure>> getUsers(UserEntity user) {
-    // TODO: implement getUsers
-    throw UnimplementedError();
+  Stream<Either<List<UserEntity>, Failure>> getUsers (UserEntity user) {
+    try{
+      final users = firestore.collection(FirebaseConsts.users).snapshots();
+      return users.map((event) {
+        final List<UserEntity> fetchedUsers = event.docs.map((e) =>
+            UserModel.fromSnapshot(e)).toList();
+        if(fetchedUsers.isEmpty)
+          {
+            throw const Right(Failure(message: "No Users found"));
+          }
+        else
+          {
+            return Left(fetchedUsers);
+          }
+      });
+    }
+    catch(e){
+      throw Right(Failure(message: "Error fetching users",error: e.toString()));
+    }
   }
 
   @override
-  Future<Either<bool, Failure>> isLogin() {
-    // TODO: implement isLogin
-    throw UnimplementedError();
+  Future<Either<bool, Failure>> isLogin() async {
+    try{
+      final  uid  = await getCurrentUserUid();
+       String? uid2;
+      uid.fold((l) {
+        uid2 = l;
+      }, (r) {});
+      if(uid2!.isEmpty || uid2 == null)
+        {
+          return const Left(false);
+        }
+      else
+        {
+          return const Left(true);
+        }
+    }
+    catch(e){
+      throw  Right(Failure(message: "Some error occurred during isLogin",error: e.toString()));
+    }
   }
 
   @override
-  Future<Either<void, Failure>> updateUser(UserEntity user) {
-    // TODO: implement updateUser
-    throw UnimplementedError();
+  Future<Either<void, Failure>> updateUser(UserEntity user) async {
+    try{
+       Map<String,dynamic> updatedUser = {};
+      if(user.about != null || user.about != "")
+        {
+          updatedUser["about"] = user.about;
+        }
+      if(user.name != null || user.name != "")
+        {
+          updatedUser["name"] = user.name;
+        }
+      if(user.phoneNumber != null || user.phoneNumber != "")
+        {
+          updatedUser["phoneNumber"] = user.phoneNumber;
+        }
+      if(user.presence != null)
+        {
+          updatedUser["presence"] = user.presence;
+        }
+       if(user.profilePic != null || user.profilePic != "")
+       {
+         updatedUser["profilePic"] = user.profilePic;
+       }
+       await firestore.collection(FirebaseConsts.users)
+       .doc(user.uid)
+       .update(
+         updatedUser,
+       );
+       return const Left(null);
+    }
+    catch(e){
+      throw  Right(Failure(message: "Some error occurred while updating user",error: e.toString()));
+    }
   }
 
 

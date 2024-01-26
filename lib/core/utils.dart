@@ -1,6 +1,8 @@
 
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // Media Query height and width extension
 
@@ -28,4 +30,22 @@ extension SizeHorizontal on double {
   Widget sizeW (BuildContext context) {
     return SizedBox(width: mediaW(context), );
   }
+}
+
+void toast ({
+  required String message,
+  Color backgroundColor = Colors.red,
+  Color textColor = Colors.white,
+  double fontSize = 16.0,
+  int duration = 2,
+}) {
+  Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: duration,
+      backgroundColor: backgroundColor,
+      textColor: textColor,
+      fontSize:fontSize,
+  );
 }

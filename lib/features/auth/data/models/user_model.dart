@@ -1,7 +1,7 @@
 import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 class UserModel extends UserEntity {
-
+//7
   final String? name;
   final String? uid;
   final String? about;

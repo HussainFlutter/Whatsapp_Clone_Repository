@@ -8,7 +8,7 @@ class GetCurrentUserUidUseCase {
 
   const GetCurrentUserUidUseCase({required this.repo});
 
-  Future<Either<String,Failure>> call ()
+  Future<Either<String?,Failure>> call ()
   => repo.getCurrentUserUid();
 
 }
