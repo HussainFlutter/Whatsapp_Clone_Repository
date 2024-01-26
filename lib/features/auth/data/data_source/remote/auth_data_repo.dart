@@ -8,7 +8,7 @@ abstract class AuthDataRepo {
   Future<Either<void,Failure>> createUser (UserEntity user);
   Future<Either<void,Failure>> updateUser (UserEntity user);
   Future<Either<void,Failure>> deleteUser (UserEntity user);
-  Future<Either<void,Failure>> signUpUsingPhoneNumber (UserEntity user,String smsCode);
+  Future<Either<void,Failure>> signUpUsingPhoneNumber (String verificationId,String smsCode);
   Future<Either<String,Failure>> getCurrentUserUid ();
   Future<Either<bool,Failure>> isLogin ();
   Stream<Either<List<UserEntity>,Failure>> getSingleUser (UserEntity user);

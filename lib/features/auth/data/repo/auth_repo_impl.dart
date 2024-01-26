@@ -32,6 +32,6 @@ class AuthRepoImpl extends AuthRepo {
   Stream<Either<List<UserEntity>, Failure>> getUsers(UserEntity user) => dataSource.getUsers(user);
 
   @override
-  Future<Either<void, Failure>> signUpUsingPhoneNumber(UserEntity user, String smsCode) => dataSource.signUpUsingPhoneNumber(user, smsCode);
+  Future<Either<void, Failure>> signUpUsingPhoneNumber( String verificationId,String smsCode) => dataSource.signUpUsingPhoneNumber(verificationId, smsCode);
   //Get Users and GetSingleUser
 }

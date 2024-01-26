@@ -11,6 +11,6 @@ class SignUpUsingPhoneNumberUseCase {
 
   SignUpUsingPhoneNumberUseCase({required this.repo});
 
-  Future<Either<void,Failure>> call (UserEntity user,String smsCode) => repo.signUpUsingPhoneNumber(user, smsCode);
+  Future<Either<void,Failure>> call (String verificationId,String smsCode) => repo.signUpUsingPhoneNumber(verificationId, smsCode);
 
 }

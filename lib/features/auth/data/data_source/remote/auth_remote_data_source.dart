@@ -21,11 +21,18 @@ class AuthRemoteDataSource extends AuthDataRepo {
 
 
   @override
-  Future<Either<void, Failure>> signUpUsingPhoneNumber(UserEntity user, String smsCode) {
-    // TODO: implement signUpUsingPhoneNumber
-    throw UnimplementedError();
-  }
+  Future<Either<void, Failure>> signUpUsingPhoneNumber(String verificationId, String smsCode) async {
+    try{
 
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
+
+      await auth.signInWithCredential(credential);
+      return const Left(null);
+    }catch(e)
+    {
+      throw Right(Failure(error: e.toString(), message: "Failed Signing up user", errorCode: "no error code"));
+    }
+  }
   @override
   Future<Either<void, Failure>> createUser (UserEntity user) async {
     try{
@@ -41,10 +48,10 @@ class AuthRemoteDataSource extends AuthDataRepo {
       await firestore.collection(FirebaseConsts.users).doc(user.uid).set(
           createUser.toMap(),
       );
-       return const Left(null);
+      return const Left(null);
     }catch(e)
     {
-      return Right(Failure(error: e.toString(), message: "Failed creating user", errorCode: "no error code"));
+      throw Right(Failure(error: e.toString(), message: "Failed creating user", errorCode: "no error code"));
     }
   }
 
