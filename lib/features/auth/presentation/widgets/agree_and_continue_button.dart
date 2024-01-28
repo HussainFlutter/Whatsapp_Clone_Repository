@@ -4,9 +4,11 @@ import 'package:whatsapp_clone_repository/core/utils.dart';
 
 class AgreeAndContinueButton extends StatelessWidget {
   final VoidCallback onTap;
+  final String title;
   const AgreeAndContinueButton({
     super.key,
     required this.onTap,
+    this.title = "AGREE AND CONTINUE",
   });
 
   @override
@@ -20,7 +22,7 @@ class AgreeAndContinueButton extends StatelessWidget {
           color: ColorsConsts.greenColor,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: const Center(child: Text("AGREE AND CONTINUE")),
+        child:  Center(child: Text(title,style: Theme.of(context).textTheme.displaySmall,)),
       ),
     );
   }

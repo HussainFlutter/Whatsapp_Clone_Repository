@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 
-import '../widgets/accept_terms_policy.dart';
-import '../widgets/agree_and_continue_button.dart';
+import '../../widgets/accept_terms_policy.dart';
+import '../../widgets/agree_and_continue_button.dart';
 
 class AgreeToTermsPage extends StatefulWidget {
   const AgreeToTermsPage({super.key});

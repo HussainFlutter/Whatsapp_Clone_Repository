@@ -10,6 +10,7 @@ TextTheme textTheme () {
     ),
     displayMedium: TextStyle(
       fontSize: 24,
+        color: Colors.white
     ),
     displaySmall: TextStyle(
         fontSize: 16,
