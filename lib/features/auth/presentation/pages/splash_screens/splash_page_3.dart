@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
+import 'package:whatsapp_clone_repository/features/auth/presentation/bloc/splash_screen_bloc.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/widgets/whatsapp_icon.dart';
 
 class SplashPage3 extends StatefulWidget {
@@ -12,6 +14,11 @@ class SplashPage3 extends StatefulWidget {
 }
 
 class _SplashPage3State extends State<SplashPage3> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<SplashScreenBloc>().add(CheckUserEvent(context: context));
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

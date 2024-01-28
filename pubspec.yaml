@@ -47,6 +47,8 @@ dependencies:
   equatable:
   intl_phone_field: ^3.2.0
   get_it: ^7.6.7
+  bloc:
+  flutter_bloc:
 
 dev_dependencies:
   flutter_test:

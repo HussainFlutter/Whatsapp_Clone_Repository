@@ -134,15 +134,19 @@ class AuthRemoteDataSource extends AuthDataRepo {
        String? uid2;
       uid.fold((l) {
         uid2 = l;
-      }, (r) {});
-      if(uid2!.isEmpty || uid2 == null)
-        {
-          return const Left(false);
-        }
+      }, (r) {
+        uid2 = null;
+      });
+
+      if(uid2 == null || uid2 == "")
+      {
+        return const Left(false);
+      }
       else
-        {
-          return const Left(true);
-        }
+      {
+        return const Left(true);
+      }
+
     }
     catch(e){
       throw  Right(Failure(message: "Some error occurred during isLogin",error: e.toString()));

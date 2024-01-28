@@ -33,7 +33,7 @@ class _AgreeToTermsPageState extends State<AgreeToTermsPage> {
             0.04.sizeH(context),
             AgreeAndContinueButton(
               onTap: (){
-
+                Navigator.pushReplacementNamed(context, RouteNames.loginPage);
               },
             ),
             Column(

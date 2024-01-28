@@ -13,6 +13,18 @@ class SplashPage2 extends StatefulWidget {
 
 class _SplashPage2State extends State<SplashPage2> {
   @override
+  void initState() {
+    super.initState();
+    goToNextScreen();
+  }
+  void goToNextScreen () async {
+    await Future.delayed(const Duration(seconds: 1), );
+    if(context.mounted)
+    {
+      Navigator.pushReplacementNamed(context, RouteNames.splashPage3);
+    }
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorsConsts.backgroundColor,
