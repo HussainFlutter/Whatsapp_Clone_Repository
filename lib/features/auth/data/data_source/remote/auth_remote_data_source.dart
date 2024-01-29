@@ -93,7 +93,7 @@ class AuthRemoteDataSource extends AuthDataRepo {
           if (users.isNotEmpty) {
             return Left(users);
           } else {
-            throw const Right(Failure(message: "No users found")); // Return an empty list if no users are found
+            return const Right(Failure(message: "No users found")); // Return an empty list if no users are found
           }
         });
       } catch (e) {

@@ -28,7 +28,10 @@ Future<void> init () async {
       getSingleUser: sl<GetSingleUserUseCase>(),
   ));
   sl.registerFactory(() => LoginBloc(
-
+      getSingleUser: sl<GetSingleUserUseCase>(),
+      signUp: sl<SignUpUsingPhoneNumberUseCase>(),
+      getUid: sl<GetCurrentUserUidUseCase>(),
+      createUser: sl<CreateUserUseCase>()
   ));
   //Use Cases
   sl.registerLazySingleton(() => CreateUserUseCase(repo: sl<AuthRepo>()));

@@ -4,10 +4,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/widgets/agree_and_continue_button.dart';
+
+import '../bloc/login_bloc.dart';
 
 class EnterPinPage extends StatefulWidget {
   final String phoneNumber;
@@ -104,8 +107,18 @@ class _EnterPinPageState extends State<EnterPinPage> {
               AgreeAndContinueButton(
                 title: "Verify",
                 onTap: (){
-                  //TODO: implement verify login
-                  print(pinCode);
+                  debugPrint(pinCode);
+                  debugPrint(pinCode.length.toString());
+                if(pinCode.length == 6)
+                  {
+                    context.read<LoginBloc>().add(
+                        Login(
+                          smsCode: pinCode,
+                          context: context,
+                          verificationId: widget.verificationId,
+                          phoneNumber: widget.phoneNumber,
+                        ));
+                  }
                 },
               ),
             ],

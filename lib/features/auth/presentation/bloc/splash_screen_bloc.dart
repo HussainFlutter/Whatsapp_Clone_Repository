@@ -40,8 +40,8 @@ class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
                     final stream = getSingleUser(UserEntity(uid: uid)).listen((event) {
                       event.fold((fetchedUser) {
                          currentUser = fetchedUser[0];
+                         completer.complete();
                       }, (r) {
-
                         toast(message: r.toString());
                       });
                     },
@@ -53,7 +53,7 @@ class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
                       {
                         stream.cancel();
                         Navigator.pushReplacementNamed(event.context, RouteNames.mainPage,
-                            arguments: {currentUser}
+                            arguments: currentUser
                         );
                       }
                   },

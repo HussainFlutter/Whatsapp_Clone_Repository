@@ -37,7 +37,7 @@ class UserModel extends UserEntity {
       phoneNumber: snap["phoneNumber"],
       profilePic: snap["profilePic"],
       presence: snap["presence"],
-      createAt: snap["createAt"],
+      createAt: snap["createAt"].toDate(),
     );
   }
 
