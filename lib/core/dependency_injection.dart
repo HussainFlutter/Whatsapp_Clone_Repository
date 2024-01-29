@@ -11,6 +11,7 @@ import 'package:whatsapp_clone_repository/features/auth/domain/usecase/get_users
 import 'package:whatsapp_clone_repository/features/auth/domain/usecase/is_login_usecase.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/usecase/sign_up_using_phone_number_usecase.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/usecase/update_user_usecase.dart';
+import 'package:whatsapp_clone_repository/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/bloc/splash_screen_bloc.dart';
 import '../features/auth/data/data_source/remote/auth_data_repo.dart';
 import '../features/auth/domain/usecase/delete_user_usecase.dart';
@@ -25,6 +26,9 @@ Future<void> init () async {
       isLogin: sl<IsLoginUseCase>(),
       getUid: sl<GetCurrentUserUidUseCase>(),
       getSingleUser: sl<GetSingleUserUseCase>(),
+  ));
+  sl.registerFactory(() => LoginBloc(
+
   ));
   //Use Cases
   sl.registerLazySingleton(() => CreateUserUseCase(repo: sl<AuthRepo>()));

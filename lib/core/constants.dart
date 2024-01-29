@@ -23,4 +23,5 @@ class RouteNames {
   static const agreeToTermsPage = "AgreeToTermsPage";
   static const mainPage = "mainPage";
   static const loginPage = "LoginPage";
+  static const pinPage = "pinPage";
 }

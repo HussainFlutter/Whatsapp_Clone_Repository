@@ -24,11 +24,9 @@ class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
       ) async {
     try{
       final result = await isLogin();
-      print(result);
       // check if user is logged in or not
       result.fold((l) async {
         final bool isLoggedIn = l;
-        print(isLoggedIn);
         if(isLoggedIn == true)
           {
             // Fetch user and navigate to Main Page
@@ -78,7 +76,6 @@ class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
         toast(message: r.toString());
       });
     }catch(e){
-      print("e");
       toast(message: "Caught some error");
       debugPrint(e.toString());
     }

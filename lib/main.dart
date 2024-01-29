@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
+import 'package:whatsapp_clone_repository/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/bloc/splash_screen_bloc.dart';
 import 'config/theme.dart';
 import 'core/dependency_injection.dart';
@@ -22,8 +23,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<SplashScreenBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => sl<SplashScreenBloc>(),
+        ),
+        BlocProvider(
+          create: (context) =>sl<LoginBloc>(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Whatsapp Clone',
         theme: ThemeData(

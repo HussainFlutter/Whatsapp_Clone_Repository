@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/custom_page_transition.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
+import 'package:whatsapp_clone_repository/features/auth/presentation/pages/enter_pin_page.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/pages/login_page.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/pages/splash_screens/agree_to_terms_page.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/pages/splash_screens/splash_page.dart';
@@ -22,6 +23,12 @@ Route onGenerateRoute (RouteSettings settings) {
       return CustomPageTransition(child: const AgreeToTermsPage());
     case RouteNames.loginPage:
       return CustomPageTransition(child: const LoginPage());
+    case RouteNames.pinPage:
+      print(settings.arguments);
+      final args =  settings.arguments  as Map<String ,dynamic>;
+      String phoneNumber = args["phoneNumber"];
+      String verificationId = args["verificationId"];
+      return CustomPageTransition(child: EnterPinPage(phoneNumber: phoneNumber, verificationId: verificationId));
     case RouteNames.mainPage:
       return CustomPageTransition(child: MainPage(currentUser: settings.arguments as UserEntity,));
     default:
