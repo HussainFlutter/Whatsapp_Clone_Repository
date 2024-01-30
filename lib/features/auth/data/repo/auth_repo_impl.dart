@@ -34,4 +34,6 @@ class AuthRepoImpl extends AuthRepo {
   @override
   Future<Either<void, Failure>> signUpUsingPhoneNumber( String verificationId,String smsCode) => dataSource.signUpUsingPhoneNumber(verificationId, smsCode);
   //Get Users and GetSingleUser
+  @override
+  Future<void> logOut() => dataSource.logOut();
 }

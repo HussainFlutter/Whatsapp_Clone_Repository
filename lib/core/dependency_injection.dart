@@ -16,6 +16,7 @@ import 'package:whatsapp_clone_repository/features/auth/presentation/bloc/splash
 import '../features/auth/data/data_source/remote/auth_data_repo.dart';
 import '../features/auth/domain/usecase/delete_user_usecase.dart';
 import '../features/auth/domain/usecase/get_current_user_uid_usecase.dart';
+import '../features/auth/domain/usecase/log_out_use_case.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -31,7 +32,8 @@ Future<void> init () async {
       getSingleUser: sl<GetSingleUserUseCase>(),
       signUp: sl<SignUpUsingPhoneNumberUseCase>(),
       getUid: sl<GetCurrentUserUidUseCase>(),
-      createUser: sl<CreateUserUseCase>()
+      createUser: sl<CreateUserUseCase>(),
+      logOut: sl<LogOutUseCase>(),
   ));
   //Use Cases
   sl.registerLazySingleton(() => CreateUserUseCase(repo: sl<AuthRepo>()));
@@ -40,6 +42,7 @@ Future<void> init () async {
   sl.registerLazySingleton(() => GetSingleUserUseCase(repo: sl<AuthRepo>()));
   sl.registerLazySingleton(() => GetUsersUseCase(repo: sl<AuthRepo>()));
   sl.registerLazySingleton(() => IsLoginUseCase(repo: sl<AuthRepo>()));
+  sl.registerLazySingleton(() => LogOutUseCase(repo: sl<AuthRepo>()));
   sl.registerLazySingleton(() => SignUpUsingPhoneNumberUseCase(repo: sl<AuthRepo>()));
   sl.registerLazySingleton(() => UpdateUserUseCase(repo: sl<AuthRepo>()));
   //Repositories

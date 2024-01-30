@@ -11,6 +11,7 @@ import '../../../../core/dependency_injection.dart';
 import '../../domain/usecase/create_user_usecase.dart';
 import '../../domain/usecase/get_current_user_uid_usecase.dart';
 import '../../domain/usecase/get_single_user_usecase.dart';
+import '../../domain/usecase/log_out_use_case.dart';
 import '../../domain/usecase/sign_up_using_phone_number_usecase.dart';
 
 part 'login_event.dart';
@@ -20,10 +21,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final GetSingleUserUseCase getSingleUser;
   final SignUpUsingPhoneNumberUseCase signUp;
   final GetCurrentUserUidUseCase getUid;
+  final LogOutUseCase logOut;
   final CreateUserUseCase createUser;
-  LoginBloc({required this.getSingleUser,required this.signUp,required this.getUid,required this.createUser}) : super(LoginInitial()) {
+  LoginBloc({required this.logOut,required this.getSingleUser,required this.signUp,required this.getUid,required this.createUser}) : super(LoginInitial()) {
     on<LoginUserEvent>((event, emit) => _sendCode(event));
     on<Login>((event, emit) => _login(event));
+    on<LogOutEvent>((event, emit) => _logOut(event));
   }
 
   _sendCode (
@@ -94,6 +97,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     }catch(e){
       debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  _logOut (
+      LogOutEvent event,
+      ) async{
+    try{
+      await logOut();
+      if(event.context.mounted)
+        {
+          Navigator.popUntil(event.context, (route) => route.isFirst);
+          Navigator.pushReplacementNamed(event.context, RouteNames.loginPage);
+        }
+    }catch(e)
+    {
       rethrow;
     }
   }

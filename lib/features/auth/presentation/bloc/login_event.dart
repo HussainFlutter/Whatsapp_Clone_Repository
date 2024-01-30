@@ -10,7 +10,7 @@ class LoginUserEvent extends LoginEvent {
 
   const LoginUserEvent({required this.phoneNumber, required this.context});
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [context,phoneNumber];
 
 }
 
@@ -27,6 +27,13 @@ class Login extends LoginEvent {
   });
   @override
   List<Object?> get props => [verificationId,smsCode,context,phoneNumber];
-
 }
 
+class LogOutEvent extends LoginEvent{
+  final BuildContext context;
+
+  const LogOutEvent({required this.context});
+  @override
+  List<Object?> get props => [context];
+
+}

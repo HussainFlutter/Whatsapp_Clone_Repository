@@ -189,5 +189,14 @@ class AuthRemoteDataSource extends AuthDataRepo {
     }
   }
 
+  @override
+  Future<void> logOut() async {
+    try{
+      await auth.signOut();
+    }catch(e){
+      rethrow;
+    }
+  }
+
 
 }
