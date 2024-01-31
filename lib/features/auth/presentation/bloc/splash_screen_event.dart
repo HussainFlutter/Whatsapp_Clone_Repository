@@ -14,3 +14,11 @@ class CheckUserEvent  extends SplashScreenEvent{
   List<Object?> get props => [context];
 
 }
+class ResendCodeEvent  extends SplashScreenEvent{
+  final String phoneNumber;
+
+  const ResendCodeEvent({required this.phoneNumber});
+  @override
+  List<Object?> get props => [phoneNumber];
+
+}

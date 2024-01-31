@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/usecase/is_login_usecase.dart';
+import '../../../../core/dependency_injection.dart';
 import '../../domain/usecase/get_current_user_uid_usecase.dart';
 import '../../domain/usecase/get_single_user_usecase.dart';
 
@@ -18,6 +20,7 @@ class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
   final GetSingleUserUseCase getSingleUser;
   SplashScreenBloc({required this.isLogin,required this.getUid,required this.getSingleUser}) : super(SplashScreenInitial()) {
     on<CheckUserEvent>((event, emit) => _checkUser(event));
+    on<ResendCodeEvent>((event, emit) => _resendCode(event));
   }
   _checkUser (
       CheckUserEvent event,
@@ -79,5 +82,19 @@ class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
       toast(message: "Caught some error");
       debugPrint(e.toString());
     }
+  }
+  _resendCode (
+      ResendCodeEvent event,
+      ) async {
+    await sl<FirebaseAuth>().verifyPhoneNumber(
+    phoneNumber: event.phoneNumber,
+    timeout: const Duration(seconds: 60),
+    verificationCompleted: (e){},
+    verificationFailed: (e){},
+    codeSent: (verificationId,token){
+      toast(message: "Code resent",backgroundColor: ColorsConsts.containerGreen);
+    },
+    codeAutoRetrievalTimeout: (e){},
+    );
   }
 }

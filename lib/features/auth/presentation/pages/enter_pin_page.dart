@@ -11,6 +11,7 @@ import 'package:whatsapp_clone_repository/core/utils.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/widgets/agree_and_continue_button.dart';
 
 import '../bloc/login_bloc.dart';
+import '../bloc/splash_screen_bloc.dart';
 
 class EnterPinPage extends StatefulWidget {
   final String phoneNumber;
@@ -96,7 +97,12 @@ class _EnterPinPageState extends State<EnterPinPage> {
                         SizedBox(
                           width: 0.3.mediaW(context),
                           child: AgreeAndContinueButton(
-                              onTap: (){},
+                              onTap: (){
+                                context.read<SplashScreenBloc>().add(ResendCodeEvent(phoneNumber: widget.phoneNumber));
+                                setState(() {
+                                  count = 60;
+                                });
+                              },
                             title: "Resend",
                           ),
                         )
