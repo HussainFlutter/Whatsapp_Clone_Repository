@@ -33,12 +33,13 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Whatsapp Clone',
         theme: ThemeData(
             textTheme: textTheme(),
             iconTheme: const IconThemeData(
               color: Colors.white,
-            )
+            ),
         ),
         onGenerateRoute: onGenerateRoute,
         initialRoute: RouteNames.splashPage,

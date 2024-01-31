@@ -14,6 +14,8 @@ class ColorsConsts {
   static const loadingColor = Color(0xff00F2AA);
   static const fieldGreenColor = Color(0xff05AA82);
   static const backgroundColor = Color(0xff000000);
+  static const appbarGreen = Color(0xff008069);
+
 }
 
 class RouteNames {
