@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
-import 'package:whatsapp_clone_repository/features/auth/presentation/widgets/agree_and_continue_button.dart';
+import 'package:whatsapp_clone_repository/features/z_global_widgets/round_button.dart';
 
 import '../bloc/login_bloc.dart';
 import '../bloc/splash_screen_bloc.dart';
@@ -96,7 +96,7 @@ class _EnterPinPageState extends State<EnterPinPage> {
                     count == 0 ?
                         SizedBox(
                           width: 0.3.mediaW(context),
-                          child: AgreeAndContinueButton(
+                          child: RoundButton(
                               onTap: (){
                                 context.read<SplashScreenBloc>().add(ResendCodeEvent(phoneNumber: widget.phoneNumber));
                                 setState(() {
@@ -110,7 +110,7 @@ class _EnterPinPageState extends State<EnterPinPage> {
                   ],
                 ),
               ),
-              AgreeAndContinueButton(
+              RoundButton(
                 title: "Verify",
                 onTap: (){
                   debugPrint(pinCode);

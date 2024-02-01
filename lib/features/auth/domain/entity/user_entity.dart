@@ -20,6 +20,18 @@ class UserEntity extends Equatable {
     this.createAt,
   });
 
+   factory UserEntity.empty () {
+     return UserEntity(
+       name:  "",
+       uid:  "",
+       about:  "",
+       phoneNumber:  "",
+       profilePic:  "",
+       presence:  false,
+       createAt:  DateTime.now(),
+     );
+   }
+
   @override
   List<Object?> get props => [
     name,

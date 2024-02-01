@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 
-import '../../../../core/constants.dart';
+import '../../core/constants.dart';
 
 class TabBarWidget extends StatelessWidget implements PreferredSize {
   const TabBarWidget({super.key});

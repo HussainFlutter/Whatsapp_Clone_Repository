@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
-import 'package:whatsapp_clone_repository/core/utils.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
-
 import 'auth/presentation/bloc/login_bloc.dart';
-import 'home/presentation/pages/home_page.dart';
-import 'home/presentation/widgets/tabBar_widget.dart';
+import 'chats/presentation/pages/chat_page.dart';
+import 'z_global_widgets/tabBar_widget.dart';
 
 class MainPage extends StatefulWidget {
   final UserEntity currentUser;
@@ -18,10 +16,10 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final List<Widget> _tabs = [
-    const HomePage(),
-    const HomePage(),
-    const HomePage(),
-    const HomePage(),
+    const ChatsPage(),
+    const ChatsPage(),
+    const ChatsPage(),
+    const ChatsPage(),
   ];
   @override
   Widget build(BuildContext context) {

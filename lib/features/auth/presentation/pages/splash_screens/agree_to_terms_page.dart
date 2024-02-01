@@ -6,7 +6,7 @@ import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 
 import '../../widgets/accept_terms_policy.dart';
-import '../../widgets/agree_and_continue_button.dart';
+import '../../../../z_global_widgets/round_button.dart';
 
 class AgreeToTermsPage extends StatefulWidget {
   const AgreeToTermsPage({super.key});
@@ -31,7 +31,7 @@ class _AgreeToTermsPageState extends State<AgreeToTermsPage> {
             0.05.sizeH(context),
             const AcceptTermsAndConditions(),
             0.04.sizeH(context),
-            AgreeAndContinueButton(
+            RoundButton(
               onTap: (){
                 Navigator.pushReplacementNamed(context, RouteNames.loginPage);
               },
