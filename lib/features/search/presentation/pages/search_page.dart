@@ -79,8 +79,8 @@ class _SearchPageState extends State<SearchPage> {
                     if(state is SearchLoaded)
                       {
                         List<UserEntity> users = state.foundUsers;
-                        print("users" + users.toString());
-                        print("usersLength: " + users.length.toString());
+                        debugPrint("users$users");
+                        debugPrint("usersLength: ${users.length}");
                         return ListView.builder(
                           shrinkWrap: true,
                             itemCount: users.length,
@@ -99,7 +99,7 @@ class _SearchPageState extends State<SearchPage> {
                     return const Text("here");
               }),
               Text("Invite to WhatsApp",style: Theme.of(context).textTheme.displaySmall!.copyWith(color: ColorsConsts.textGrey),),
-
+              // TODO: Implement List of users that are not in whatsApp clone and show something when no users a found else show the users and a invite button
             ],
           ),
         ),
