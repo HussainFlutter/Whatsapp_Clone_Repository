@@ -30,10 +30,13 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     try {
       final contactsPermission = await Permission.contacts.request();
       if (contactsPermission.isGranted) {
+        // when permission is granted we fetch users from firebase
         debugPrint("granted");
         late Either<List<UserEntity>, Failure> user;
+        // Getting contacts
         List<Contact> contacts = await ContactsService.getContacts();
         Completer<void> completer = Completer<void>();
+        // Getting all users from firebase
         getUsers(const UserEntity()).listen(
           (users) {
             user = users;
@@ -43,18 +46,19 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           onError: (e) => completer.complete(),
         );
         await completer.future;
+        // after the stream is done we now fold the user and check if
+        //any of the contacts phoneNumber match the phoneNumber in user aka firebase list
+        //Users that are have a account on whatsapp clone
         user.fold((user) {
           debugPrint(user.toString());
           // fetched users
           //user[0].phoneNumber;
           List<UserEntity> foundUsers = [];
+          List<UserEntity> notFoundUsers = [];
           for (int i = 0; i < contacts.length; i++) {
-            // Phone number and name of them.
-            // debugPrint(contacts[i].phones![0].value.toString());
-            //debugPrint(contacts[i].displayName.toString());
-            // debugPrint(contacts[i].phones![0].value.toString().replaceAll(" ", "").replaceAll("-", "").toString());
+            // adding users that are found in foundUsers
             foundUsers.addAll(user.where((element) =>
-                element.phoneNumber ==
+            element.phoneNumber ==
                 contacts[i]
                     .phones![0]
                     .value
@@ -62,16 +66,28 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
                     .replaceAll(" ", "")
                     .replaceAll("-", "")
                     .toString()));
-            debugPrint("Found users = " + foundUsers.toString());
-            if (foundUsers.isNotEmpty) {
-              print(foundUsers.length.toString());
-              emit(SearchLoaded(users: foundUsers));
-            }
+            debugPrint("Found users = $notFoundUsers");
+            debugPrint("Found users = $foundUsers");
           }
+          for (int i = 0; i < contacts.length; i++) {
+            // Adding users that are not found in notFoundUsers list
+            notFoundUsers.addAll(user.where((element) =>
+            element.phoneNumber !=
+                contacts[i]
+                    .phones![0]
+                    .value
+                    .toString()
+                    .replaceAll(" ", "")
+                    .replaceAll("-", "")
+                    .toString()));
+          }
+            if (foundUsers.isNotEmpty) {
+              debugPrint(notFoundUsers.length.toString());
+              emit(SearchLoaded(foundUsers: foundUsers,notFoundUsers:notFoundUsers));
+            }
         }, (r) {
           throw r;
         });
-        // print(contacts[1].phones![0].value.toString());
       } else if (contactsPermission.isPermanentlyDenied) {
         debugPrint("not granted");
         await showDialogBox(event.context);
@@ -84,16 +100,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     } catch (e) {
       rethrow;
     }
-    //testing
-    // if("+92 320 0840304".replaceAll(" ", "")== "+923200840304")
-    //   {
-    //     print("y2798esss");
-    //   }
-    // else
-    //   {
-    //     print("noo98o2o");
-    //   }
-  }
+ }
+
+}
 
   Future showDialogBox(BuildContext context) {
     return showDialog(
@@ -139,4 +148,4 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           );
         });
   }
-}
+

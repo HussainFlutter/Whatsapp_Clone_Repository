@@ -78,7 +78,7 @@ class _SearchPageState extends State<SearchPage> {
                   builder: (context,state){
                     if(state is SearchLoaded)
                       {
-                        List<UserEntity> users = state.users;
+                        List<UserEntity> users = state.foundUsers;
                         print("users" + users.toString());
                         print("usersLength: " + users.length.toString());
                         return ListView.builder(

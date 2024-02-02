@@ -9,10 +9,11 @@ abstract class SearchState extends Equatable {
 class SearchInitial extends SearchState {}
 class SearchLoading extends SearchState {}
 class SearchLoaded extends SearchState {
-  final List<UserEntity> users ;
+  final List<UserEntity> foundUsers;
+  final List<UserEntity> notFoundUsers;
 
-  const SearchLoaded({required this.users});
+  const SearchLoaded({required this.foundUsers,required this.notFoundUsers});
   @override
-  List<Object> get props => [users];
+  List<Object> get props => [foundUsers,notFoundUsers];
 }
 class SearchError extends SearchState {}
