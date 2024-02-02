@@ -1,6 +1,5 @@
 
 
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
@@ -33,10 +32,9 @@ class _ChatsPageState extends State<ChatsPage> {
               fontWeight: FontWeight.bold,
               height: 0.06.mediaH(context),
               width: 0.4.mediaW(context),
-              onTap: ()async{
-                List<Contact> contacts = await ContactsService.getContacts();
-                print(contacts[0].phones![0].value.toString());
+              onTap: () {
 
+                Navigator.pushNamed(context, RouteNames.searchPage);
               },
               title: "Start Chatting",
             ),

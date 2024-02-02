@@ -13,6 +13,7 @@ import 'package:whatsapp_clone_repository/features/auth/domain/usecase/sign_up_u
 import 'package:whatsapp_clone_repository/features/auth/domain/usecase/update_user_usecase.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/bloc/splash_screen_bloc.dart';
+import 'package:whatsapp_clone_repository/features/search/presentation/bloc/search_bloc.dart';
 import '../features/auth/data/data_source/remote/auth_data_repo.dart';
 import '../features/auth/domain/usecase/delete_user_usecase.dart';
 import '../features/auth/domain/usecase/get_current_user_uid_usecase.dart';
@@ -20,35 +21,42 @@ import '../features/auth/domain/usecase/log_out_use_case.dart';
 
 final GetIt sl = GetIt.instance;
 
-
-Future<void> init () async {
+Future<void> init() async {
   //Blocs
   sl.registerFactory(() => SplashScreenBloc(
-      isLogin: sl<IsLoginUseCase>(),
-      getUid: sl<GetCurrentUserUidUseCase>(),
-      getSingleUser: sl<GetSingleUserUseCase>(),
-  ));
+        isLogin: sl<IsLoginUseCase>(),
+        getUid: sl<GetCurrentUserUidUseCase>(),
+        getSingleUser: sl<GetSingleUserUseCase>(),
+      ));
   sl.registerFactory(() => LoginBloc(
-      getSingleUser: sl<GetSingleUserUseCase>(),
-      signUp: sl<SignUpUsingPhoneNumberUseCase>(),
-      getUid: sl<GetCurrentUserUidUseCase>(),
-      createUser: sl<CreateUserUseCase>(),
-      logOut: sl<LogOutUseCase>(),
-  ));
+        getSingleUser: sl<GetSingleUserUseCase>(),
+        signUp: sl<SignUpUsingPhoneNumberUseCase>(),
+        getUid: sl<GetCurrentUserUidUseCase>(),
+        createUser: sl<CreateUserUseCase>(),
+        logOut: sl<LogOutUseCase>(),
+      ));
+  sl.registerFactory(() => SearchBloc(
+        getUsers: sl<GetUsersUseCase>(),
+      ));
   //Use Cases
   sl.registerLazySingleton(() => CreateUserUseCase(repo: sl<AuthRepo>()));
   sl.registerLazySingleton(() => DeleteUserUseCase(repo: sl<AuthRepo>()));
-  sl.registerLazySingleton(() => GetCurrentUserUidUseCase(repo: sl<AuthRepo>()));
+  sl.registerLazySingleton(
+      () => GetCurrentUserUidUseCase(repo: sl<AuthRepo>()));
   sl.registerLazySingleton(() => GetSingleUserUseCase(repo: sl<AuthRepo>()));
   sl.registerLazySingleton(() => GetUsersUseCase(repo: sl<AuthRepo>()));
   sl.registerLazySingleton(() => IsLoginUseCase(repo: sl<AuthRepo>()));
   sl.registerLazySingleton(() => LogOutUseCase(repo: sl<AuthRepo>()));
-  sl.registerLazySingleton(() => SignUpUsingPhoneNumberUseCase(repo: sl<AuthRepo>()));
+  sl.registerLazySingleton(
+      () => SignUpUsingPhoneNumberUseCase(repo: sl<AuthRepo>()));
   sl.registerLazySingleton(() => UpdateUserUseCase(repo: sl<AuthRepo>()));
   //Repositories
-  sl.registerLazySingleton<AuthRepo>(() => AuthRepoImpl(dataSource: sl<AuthRemoteDataSource>()));
-  sl.registerLazySingleton<AuthDataRepo>(() => AuthRemoteDataSource(auth: sl(),firestore: sl(),storage: sl()));
-  sl.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSource(auth: sl(),firestore: sl(),storage: sl()));
+  sl.registerLazySingleton<AuthRepo>(
+      () => AuthRepoImpl(dataSource: sl<AuthRemoteDataSource>()));
+  sl.registerLazySingleton<AuthDataRepo>(
+      () => AuthRemoteDataSource(auth: sl(), firestore: sl(), storage: sl()));
+  sl.registerLazySingleton<AuthRemoteDataSource>(
+      () => AuthRemoteDataSource(auth: sl(), firestore: sl(), storage: sl()));
 
   //External Sources
   sl.registerLazySingleton(() => FirebaseAuth.instance);

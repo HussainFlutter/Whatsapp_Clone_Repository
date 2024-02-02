@@ -15,6 +15,7 @@ class ColorsConsts {
   static const fieldGreenColor = Color(0xff05AA82);
   static const backgroundColor = Color(0xff000000);
   static const appbarGreen = Color(0xff008069);
+  static const textGrey = Color(0xff1F2C34);
 
 }
 
@@ -26,4 +27,5 @@ class RouteNames {
   static const mainPage = "mainPage";
   static const loginPage = "LoginPage";
   static const pinPage = "pinPage";
+  static const searchPage = "SearchPage";
 }

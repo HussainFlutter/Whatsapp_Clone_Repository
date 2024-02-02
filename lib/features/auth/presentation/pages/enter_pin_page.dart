@@ -24,9 +24,10 @@ class EnterPinPage extends StatefulWidget {
 
 class _EnterPinPageState extends State<EnterPinPage> {
   int count = 60;
+  late Timer timer;
   String pinCode = "";
   void startTimer () {
-     Timer.periodic(const Duration(seconds: 1), (timer) {
+     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         count--;
       });
@@ -42,6 +43,11 @@ class _EnterPinPageState extends State<EnterPinPage> {
   void initState() {
     super.initState();
     startTimer();
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
   }
   @override
   Widget build(BuildContext context) {

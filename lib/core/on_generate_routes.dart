@@ -7,6 +7,7 @@ import 'package:whatsapp_clone_repository/features/auth/presentation/pages/login
 import 'package:whatsapp_clone_repository/features/auth/presentation/pages/splash_screens/agree_to_terms_page.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/pages/splash_screens/splash_page.dart';
 import 'package:whatsapp_clone_repository/features/main_page.dart';
+import 'package:whatsapp_clone_repository/features/search/presentation/pages/search_page.dart';
 import '../features/auth/presentation/pages/splash_screens/splash_page_2.dart';
 import '../features/auth/presentation/pages/splash_screens/splash_page_3.dart';
 
@@ -21,10 +22,11 @@ Route onGenerateRoute (RouteSettings settings) {
       return CustomPageTransition(child: const SplashPage3());
     case RouteNames.agreeToTermsPage:
       return CustomPageTransition(child: const AgreeToTermsPage());
+    case RouteNames.searchPage:
+      return CustomPageTransition(child: const SearchPage());
     case RouteNames.loginPage:
       return CustomPageTransition(child: const LoginPage());
     case RouteNames.pinPage:
-      print(settings.arguments);
       final args =  settings.arguments  as Map<String ,dynamic>;
       String phoneNumber = args["phoneNumber"];
       String verificationId = args["verificationId"];
