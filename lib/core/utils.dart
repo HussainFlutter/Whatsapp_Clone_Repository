@@ -49,3 +49,13 @@ void toast ({
       fontSize:fontSize,
   );
 }
+
+void customPrint ({required String message}) {
+  debugPrint("----------------- DEBUG PRINT START ----------------");
+  debugPrint("----------------------------------------------------");
+  debugPrint("----------------------------------------------------");
+  debugPrint(message);
+  debugPrint("----------------------------------------------------");
+  debugPrint("----------------------------------------------------");
+  debugPrint("----------------- DEBUG PRINT END ------------------");
+}

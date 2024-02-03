@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 class FirebaseConsts {
   static const users = "users";
+  static const chatRooms = "chatRooms";
 }
 
 class ColorsConsts {

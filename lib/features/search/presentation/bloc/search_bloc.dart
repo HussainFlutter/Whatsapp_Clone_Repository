@@ -12,14 +12,15 @@ import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entit
 import 'package:whatsapp_clone_repository/features/auth/domain/usecase/get_users_usecase.dart';
 
 import '../../../../core/failures.dart';
+import '../../domain/usecase/create_chat_room_usecase.dart';
 
 part 'search_event.dart';
 part 'search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final GetUsersUseCase getUsers;
-
-  SearchBloc({required this.getUsers}) : super(SearchInitial()) {
+  final CreateChatRoomUseCase createChatRoom;
+  SearchBloc({required this.getUsers,required this.createChatRoom}) : super(SearchInitial()) {
     on<FetchContactsEvent>((event, emit) => _fetchContacts(event, emit));
   }
 
@@ -54,36 +55,57 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           // fetched users
           //user[0].phoneNumber;
           List<UserEntity> foundUsers = [];
-          List<UserEntity> notFoundUsers = [];
+          List<Contact> notFoundUsers = [];
+          List<Contact> cloneList = [];
+          //found users loop
+          for (int i = 0; i < user.length; i++) {
+            // adding users that are found in foundUsers
+            for (int j = 0; j < contacts.length; j++) {
+              if (
+              user[i].phoneNumber!.contains(
+                  contacts[j]
+                      .phones![0]
+                      .value
+                      .toString()
+                      .replaceAll(" ", "")
+                      .replaceAll("-", "")
+                      .toString()
+              )) {
+                foundUsers.add(
+                  user[i],
+                );
+              }
+            }
+          }
+          // Not found users loop
           for (int i = 0; i < contacts.length; i++) {
             // adding users that are found in foundUsers
-            foundUsers.addAll(user.where((element) =>
-            element.phoneNumber ==
-                contacts[i]
-                    .phones![0]
-                    .value
-                    .toString()
-                    .replaceAll(" ", "")
-                    .replaceAll("-", "")
-                    .toString()));
-            debugPrint("Found users = $notFoundUsers");
-            debugPrint("Found users = $foundUsers");
+            cloneList = contacts;
+            for (int j = 0; j < foundUsers.length; j++) {
+              if (
+                    contacts[i]
+                      .phones![0]
+                      .value
+                      .toString()
+                      .replaceAll(" ", "")
+                      .replaceAll("-", "")
+                      .toString().contains(
+                    foundUsers[j].phoneNumber!,
+                  )
+              ) {
+                cloneList.removeAt(i);
+              }
+            }
+            print(cloneList.toString());
           }
-          for (int i = 0; i < contacts.length; i++) {
-            // Adding users that are not found in notFoundUsers list
-            notFoundUsers.addAll(user.where((element) =>
-            element.phoneNumber !=
-                contacts[i]
-                    .phones![0]
-                    .value
-                    .toString()
-                    .replaceAll(" ", "")
-                    .replaceAll("-", "")
-                    .toString()));
-          }
+          if(cloneList.isNotEmpty)
+            {
+              notFoundUsers = cloneList;
+            }
             if (foundUsers.isNotEmpty) {
               debugPrint(notFoundUsers.length.toString());
-              emit(SearchLoaded(foundUsers: foundUsers,notFoundUsers:notFoundUsers));
+              debugPrint(notFoundUsers.toString());
+              emit(SearchLoaded(foundUsers: foundUsers ,notFoundUsers: notFoundUsers));
             }
         }, (r) {
           throw r;
@@ -101,6 +123,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       rethrow;
     }
  }
+
+  _createChatRoom () {
+    // TODO: implement function
+  }
 
 }
 

@@ -10,7 +10,7 @@ class SearchInitial extends SearchState {}
 class SearchLoading extends SearchState {}
 class SearchLoaded extends SearchState {
   final List<UserEntity> foundUsers;
-  final List<UserEntity> notFoundUsers;
+  final List<Contact> notFoundUsers;
 
   const SearchLoaded({required this.foundUsers,required this.notFoundUsers});
   @override

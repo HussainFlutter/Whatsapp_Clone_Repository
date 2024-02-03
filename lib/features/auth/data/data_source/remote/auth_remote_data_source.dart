@@ -8,6 +8,8 @@ import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entit
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../../../../../core/utils.dart';
+
 class AuthRemoteDataSource extends AuthDataRepo {
   final FirebaseFirestore firestore;
   final FirebaseAuth auth;
@@ -30,6 +32,7 @@ class AuthRemoteDataSource extends AuthDataRepo {
       return const Left(null);
     }catch(e)
     {
+      customPrint(message: e.toString());
       throw Right(Failure(error: e.toString(), message: "Failed Signing up user", errorCode: "no error code"));
     }
   }
@@ -51,6 +54,7 @@ class AuthRemoteDataSource extends AuthDataRepo {
       return const Left(null);
     }catch(e)
     {
+      customPrint(message: e.toString());
       throw Right(Failure(error: e.toString(), message: "Failed creating user", errorCode: "no error code"));
     }
   }
@@ -62,6 +66,7 @@ class AuthRemoteDataSource extends AuthDataRepo {
       return const Left(null);
     }
     catch(e){
+      customPrint(message: e.toString());
       throw  Failure(message: "Error Occurred while deleting user",error: e.toString());
     }
   }
@@ -72,6 +77,7 @@ class AuthRemoteDataSource extends AuthDataRepo {
       return Left(auth.currentUser?.uid);
     }
     catch(e){
+      customPrint(message: e.toString());
       throw Failure(message: "No Uid found",error: e.toString());
     }
   }
@@ -101,6 +107,7 @@ class AuthRemoteDataSource extends AuthDataRepo {
       }
     }
     catch(e){
+      customPrint(message: e.toString());
       throw Right(Failure(message:"Error getting using" ,error: e.toString()));
     }
   }
@@ -123,6 +130,7 @@ class AuthRemoteDataSource extends AuthDataRepo {
       });
     }
     catch(e){
+      customPrint(message: e.toString());
       throw Right(Failure(message: "Error fetching users",error: e.toString()));
     }
   }
@@ -149,6 +157,7 @@ class AuthRemoteDataSource extends AuthDataRepo {
 
     }
     catch(e){
+      customPrint(message: e.toString());
       throw  Right(Failure(message: "Some error occurred during isLogin",error: e.toString()));
     }
   }
@@ -185,6 +194,7 @@ class AuthRemoteDataSource extends AuthDataRepo {
        return const Left(null);
     }
     catch(e){
+      customPrint(message: e.toString());
       throw  Right(Failure(message: "Some error occurred while updating user",error: e.toString()));
     }
   }
@@ -194,6 +204,7 @@ class AuthRemoteDataSource extends AuthDataRepo {
     try{
       await auth.signOut();
     }catch(e){
+      customPrint(message: e.toString());
       rethrow;
     }
   }

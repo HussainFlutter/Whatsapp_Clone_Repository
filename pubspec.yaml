@@ -47,6 +47,7 @@ dependencies:
   permission_handler: ^11.2.0
   fluttertoast: ^8.2.4
   dartz: ^0.10.1
+  uuid: ^4.3.3
   equatable:
   intl_phone_field: ^3.2.0
   get_it: ^7.6.7
