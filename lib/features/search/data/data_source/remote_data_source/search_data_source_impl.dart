@@ -12,17 +12,17 @@ import 'package:whatsapp_clone_repository/features/search/domain/entity/chat_roo
 import '../../../../../core/dependency_injection.dart';
 import '../../../../../core/utils.dart';
 
-class SearchDataSourceImpl extends SearchDataSource{
+class SearchDataSourceImpl extends SearchDataSource {
   final FirebaseFirestore firestore = sl<FirebaseFirestore>();
+
   @override
-  Future<Either<ChatRoomEntity, Failure>> createChatRoom(UserEntity currentUser,UserEntity targetUser,) async {
-    try{
+  Future<Either<ChatRoomEntity, Failure>> createChatRoom(UserEntity currentUser,
+      UserEntity targetUser,) async {
+    try {
       final result = await firestore.collection(FirebaseConsts.chatRooms)
-          .where("participants",arrayContains: currentUser.uid)
-          .where("participants",arrayContains: targetUser.uid)
+          .where("participants", arrayContains: [currentUser.uid , targetUser.uid])
           .get();
-      if(result.docs.isEmpty)
-      {
+      if (result.docs.isEmpty) {
         // create new chatroom
         ChatRoomModel newChatRoom = ChatRoomModel(
           participants: [
@@ -41,22 +41,30 @@ class SearchDataSourceImpl extends SearchDataSource{
         );
         return Left(newChatRoom);
       }
-      else
-      {
+      else {
         // fetch the chatRoom
-        return Left(ChatRoomModel.fromSnapshot(result.docs[0].data() as DocumentSnapshot));
+        return Left(ChatRoomModel.fromSnapshot(
+            result.docs[0].data() as DocumentSnapshot));
       }
     }
-    catch(e){
+    catch (e) {
       customPrint(message: e.toString());
-      return const Right(Failure(message:"Error occurred while making / fetching chatroom"));
+      return const Right(
+          Failure(message: "Error occurred while making / fetching chatroom"));
     }
   }
 
   @override
-  Future<Either<void, Failure>> deleteChatRoom(ChatRoomEntity chatRoomEntity) {
-    // TODO: implement deleteChatRoom
-    throw UnimplementedError();
+  Future<Either<void, Failure>> deleteChatRoom(
+      ChatRoomEntity chatRoomEntity) async {
+    try {
+      await firestore.collection(FirebaseConsts.chatRooms).doc(
+          chatRoomEntity.chatRoomId).delete();
+      return const Left(null);
+    } catch (e) {
+      customPrint(message: e.toString());
+      return const Right(
+          Failure(message: "Error occurred while making / fetching chatroom"));
+    }
   }
-  
 }

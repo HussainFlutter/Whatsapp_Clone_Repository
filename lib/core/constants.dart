@@ -29,4 +29,5 @@ class RouteNames {
   static const loginPage = "LoginPage";
   static const pinPage = "pinPage";
   static const searchPage = "SearchPage";
+  static const chatRoomPage = "ChatRoomPage";
 }

@@ -12,7 +12,8 @@ import 'package:whatsapp_clone_repository/features/z_global_widgets/round_button
 import '../bloc/search_bloc.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+  final UserEntity currentUser;
+  const SearchPage({super.key, required this.currentUser});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -96,13 +97,13 @@ class _SearchPageState extends State<SearchPage> {
                                 itemBuilder: (context,index){
                                   return ListTile(
                                     onTap: (){
-                                      // create chatRoom and navigate to it
+                                      context.read<SearchBloc>().add(CreateOrFetchChatRoomEvent(context, currentUser: widget.currentUser, targetUser: foundUsers[index]));
                                     },
                                     leading: foundUsers[index].profilePic == null
                                       || foundUsers[index].profilePic == ""
                                       ? const CircleAvatar(backgroundImage: AssetImage("assets/image_assets/default_profile_picture.jpg"),)
                                       : CircleAvatar(backgroundImage: NetworkImage(foundUsers[index].profilePic!)),
-                                    title: Text(foundUsers[index].name!,style: Theme.of(context).textTheme.displaySmall,),
+                                    title: widget.currentUser.uid! == foundUsers[index].uid ? Text("( You )",style: Theme.of(context).textTheme.displaySmall,) : Text(foundUsers[index].name!,style: Theme.of(context).textTheme.displaySmall,),
                                     subtitle: Text(foundUsers[index].about!,style: Theme.of(context).textTheme.displaySmall,),
                                   );
                                 }

@@ -73,6 +73,8 @@ Future<void> init() async {
       () => AuthRepoImpl(dataSource: sl<AuthRemoteDataSource>()));
   sl.registerLazySingleton<AuthDataRepo>(
       () => AuthRemoteDataSource(auth: sl(), firestore: sl(), storage: sl()));
+  sl.registerLazySingleton<AuthRemoteDataSource>(
+          () => AuthRemoteDataSource(auth: sl(), firestore: sl(), storage: sl()));
   //Repositories for user / auth
 
   //Repositories for search
@@ -80,7 +82,8 @@ Future<void> init() async {
           () => SearchRepoImpl(repo: sl<SearchDataSource>()));
   sl.registerLazySingleton<SearchDataSource>(
           () => SearchDataSourceImpl());
-
+  sl.registerLazySingleton<SearchDataSourceImpl>(
+          () => SearchDataSourceImpl());
   //Repositories for search
 
   //External Sources

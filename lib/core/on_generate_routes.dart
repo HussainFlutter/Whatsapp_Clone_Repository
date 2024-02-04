@@ -6,7 +6,9 @@ import 'package:whatsapp_clone_repository/features/auth/presentation/pages/enter
 import 'package:whatsapp_clone_repository/features/auth/presentation/pages/login_page.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/pages/splash_screens/agree_to_terms_page.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/pages/splash_screens/splash_page.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/presentation/pages/chat_room_page.dart';
 import 'package:whatsapp_clone_repository/features/main_page.dart';
+import 'package:whatsapp_clone_repository/features/search/domain/entity/chat_room_entity.dart';
 import 'package:whatsapp_clone_repository/features/search/presentation/pages/search_page.dart';
 import '../features/auth/presentation/pages/splash_screens/splash_page_2.dart';
 import '../features/auth/presentation/pages/splash_screens/splash_page_3.dart';
@@ -14,6 +16,12 @@ import '../features/auth/presentation/pages/splash_screens/splash_page_3.dart';
 Route onGenerateRoute (RouteSettings settings) {
   switch(settings.name)
   {
+    case RouteNames.chatRoomPage:
+      final args =  settings.arguments  as Map<String ,dynamic>;
+      UserEntity currentUser = args["currentUser"];
+      UserEntity  targetUser = args["targetUser"];
+      ChatRoomEntity chatRoomEntity = args["chatRoomEntity"];
+      return CustomPageTransition(child: ChatRoomPage(currentUser: currentUser,targetUser: targetUser,chatRoomEntity: chatRoomEntity,));
     case RouteNames.splashPage:
         return CustomPageTransition(child: const SplashPage());
     case RouteNames.splashPage2:
@@ -23,7 +31,7 @@ Route onGenerateRoute (RouteSettings settings) {
     case RouteNames.agreeToTermsPage:
       return CustomPageTransition(child: const AgreeToTermsPage());
     case RouteNames.searchPage:
-      return CustomPageTransition(child: const SearchPage());
+      return CustomPageTransition(child: SearchPage(currentUser: settings.arguments as UserEntity,));
     case RouteNames.loginPage:
       return CustomPageTransition(child: const LoginPage());
     case RouteNames.pinPage:

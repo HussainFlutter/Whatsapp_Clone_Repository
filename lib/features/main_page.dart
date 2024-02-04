@@ -15,43 +15,56 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final List<Widget> _tabs = [
-    const ChatsPage(),
-    const ChatsPage(),
-    const ChatsPage(),
-    const ChatsPage(),
-  ];
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _tabs = [
+      ChatsPage(
+        currentUser: widget.currentUser,
+      ),
+      ChatsPage(
+        currentUser: widget.currentUser,
+      ),
+      ChatsPage(
+        currentUser: widget.currentUser,
+      ),
+      ChatsPage(
+        currentUser: widget.currentUser,
+      ),
+    ];
     return DefaultTabController(
       length: _tabs.length,
       initialIndex: 1,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("WhatsApp",style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.bold),),
+          title: Text(
+            "WhatsApp",
+            style: Theme.of(context)
+                .textTheme
+                .displayMedium!
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
           backgroundColor: ColorsConsts.appbarGreen,
           actionsIconTheme: const IconThemeData(
-          color: ColorsConsts.whiteColor,
+            color: ColorsConsts.whiteColor,
           ),
           actions: [
             InkWell(
-                onTap: (){
-
-                },
+                onTap: () {},
                 child: Image.asset("assets/image_assets/Search.png")),
-                  PopupMenuButton(
-                    itemBuilder: (context){
-                      return [
-                        const PopupMenuItem(child: Text("Settings")),
-                         PopupMenuItem(
-                             onTap: (){
-                               context.read<LoginBloc>().add(LogOutEvent(context: context));
-                             }
-                             ,child: const Text("Log Out")),
-                      ];
-                    },
-                  ),
-
+            PopupMenuButton(
+              itemBuilder: (context) {
+                return [
+                  const PopupMenuItem(child: Text("Settings")),
+                  PopupMenuItem(
+                      onTap: () {
+                        context
+                            .read<LoginBloc>()
+                            .add(LogOutEvent(context: context));
+                      },
+                      child: const Text("Log Out")),
+                ];
+              },
+            ),
           ],
           bottom: const TabBarWidget(),
         ),

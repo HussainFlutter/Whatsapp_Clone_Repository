@@ -27,11 +27,23 @@ class ChatRoomModel extends ChatRoomEntity {
 
   factory ChatRoomModel.fromSnapshot (DocumentSnapshot snapshot) {
     final snap = snapshot.data() as Map<String,dynamic>;
+    final participantsDynamic = snap["participants"];
+    final List<String> participants = participantsDynamic.map<String>((e) {
+      if (e is String) {
+        return e;
+      } else {
+        throw const FormatException('Participant is not a string');
+      }
+    }).toList();
+    DateTime? lastMessageCreateAt;
+    if (snap["lastMessageCreateAt"] != null) {
+      lastMessageCreateAt = snap["lastMessageCreateAt"].toDate();
+    }
     return ChatRoomModel(
       chatRoomId: snap["chatRoomId"],
-      participants: snap["participants"],
+      participants: participants,
       lastMessage: snap["lastMessage"],
-      lastMessageCreateAt: snap["lastMessageCreateAt"].toDate(),
+      lastMessageCreateAt: lastMessageCreateAt,
       createAt: snap["createAt"].toDate(),
     );
   }
@@ -39,7 +51,7 @@ class ChatRoomModel extends ChatRoomEntity {
   Map<String,dynamic> toMap () {
     return {
       "chatRoomId" : chatRoomId,
-      "participants" : participants,
+      "participants" : participants as List<String>,
       "lastMessage" : lastMessage,
       "lastMessageCreateAt" : lastMessageCreateAt,
       "createAt" : createAt,

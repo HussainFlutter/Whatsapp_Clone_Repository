@@ -3,7 +3,6 @@ import 'package:bloc/bloc.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
@@ -22,6 +21,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final CreateChatRoomUseCase createChatRoom;
   SearchBloc({required this.getUsers,required this.createChatRoom}) : super(SearchInitial()) {
     on<FetchContactsEvent>((event, emit) => _fetchContacts(event, emit));
+    on<CreateOrFetchChatRoomEvent>((event, emit) => _createChatRoom(event));
   }
 
   _fetchContacts(
@@ -120,12 +120,36 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         }
       }
     } catch (e) {
+      customPrint(message: e.toString());
       rethrow;
     }
  }
 
-  _createChatRoom () {
-    // TODO: implement function
+  _createChatRoom (
+      CreateOrFetchChatRoomEvent event,
+      ) async {
+    try{
+    final result =  await createChatRoom(event.currentUser,event.targetUser);
+    result.fold((chatRoom) {
+      if(event.context.mounted)
+      {
+        Navigator.pushNamed(
+            event.context,
+            RouteNames.chatRoomPage,
+            arguments: {
+              "currentUser" : event.currentUser,
+              "targetUser" : event.targetUser,
+              "chatRoomEntity" : chatRoom,
+            }
+        );
+      }
+    }, (r) {
+      toast(message: r.message!);
+    });
+    }catch(e){
+      customPrint(message: e.toString());
+      rethrow;
+    }
   }
 
 }
