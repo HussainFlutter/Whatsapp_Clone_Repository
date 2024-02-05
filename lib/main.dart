@@ -45,6 +45,7 @@ class MyApp extends StatelessWidget {
               color: Colors.white,
             ),
         ),
+
         onGenerateRoute: onGenerateRoute,
         initialRoute: RouteNames.splashPage,
       ),

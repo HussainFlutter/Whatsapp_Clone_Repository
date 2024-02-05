@@ -17,7 +17,7 @@ class ColorsConsts {
   static const backgroundColor = Color(0xff000000);
   static const appbarGreen = Color(0xff008069);
   static const textGrey = Color(0xff1F2C34);
-
+  static const iconGrey = Color(0xff86979F);
 }
 
 class RouteNames {
