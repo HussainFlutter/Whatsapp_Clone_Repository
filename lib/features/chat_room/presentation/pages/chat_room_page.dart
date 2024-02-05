@@ -1,12 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
 import 'package:whatsapp_clone_repository/features/search/domain/entity/chat_room_entity.dart';
-
-import '../../../z_global_widgets/default_circle_avatar_or_profile_pic.dart';
 import '../widgets/chat_room_app_bar.dart';
 
 class ChatRoomPage extends StatefulWidget {
