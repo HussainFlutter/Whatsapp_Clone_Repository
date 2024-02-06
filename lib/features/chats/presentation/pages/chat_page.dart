@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
-import 'package:whatsapp_clone_repository/core/utils.dart';
-import 'package:whatsapp_clone_repository/features/auth/data/models/user_model.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/usecase/get_single_user_usecase.dart';
 import 'package:whatsapp_clone_repository/features/chats/presentation/widgets/no_chats_available_widget.dart';
@@ -44,9 +41,9 @@ class _ChatsPageState extends State<ChatsPage> {
                       fetchedUsersUid.add(chatRoomFetchedList[i].participants![1]);
                       fetchedUsersUid.remove(widget.currentUser.uid);
                     }
-                    debugPrint("UID: ${widget.currentUser.uid!}");
-                    debugPrint(fetchedUsersUid.length.toString());
-                    debugPrint(chatRoomFetchedList.length.toString());
+                 //   debugPrint("UID: ${widget.currentUser.uid!}");
+                 //   debugPrint(fetchedUsersUid.length.toString());
+                  //  debugPrint(chatRoomFetchedList.length.toString());
                     return Expanded(
                       child: ListView.builder(
                         shrinkWrap: true,
@@ -56,15 +53,15 @@ class _ChatsPageState extends State<ChatsPage> {
                               stream: sl<GetSingleUserUseCase>().call(
                                   UserEntity(uid: fetchedUsersUid[index])),
                               builder: (context, snapshot) {
-                                debugPrint("Active");
+                           //     debugPrint("Active");
                                 if (snapshot.connectionState ==
                                     ConnectionState.active) {
                                   if (snapshot.hasData) {
-                                    debugPrint("Have data");
+                               //     debugPrint("Have data");
                                     // Show list tiles of chatRooms
                                     return snapshot.data!.fold((data) {
                                       UserEntity targetUser = data[0];
-                                      customPrint(message: targetUser.toString());
+                                //      customPrint(message: targetUser.toString());
                                       return ChatRoomListTile(
                                         chatRoomFetchedList:chatRoomFetchedList[index],
                                         currentUser:widget.currentUser,

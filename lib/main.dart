@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/bloc/splash_screen_bloc.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/change_icon_cubit.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/chat_room_bloc.dart';
 import 'package:whatsapp_clone_repository/features/search/presentation/bloc/search_bloc.dart';
 import 'config/theme.dart';
 import 'core/dependency_injection.dart';
@@ -34,6 +36,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) =>sl<SearchBloc>(),
+        ),
+        BlocProvider(
+          create: (context) =>sl<ChangeIconCubit>(),
+        ),
+        BlocProvider(
+          create: (context) =>sl<ChatRoomBloc>(),
         ),
       ],
       child: MaterialApp(

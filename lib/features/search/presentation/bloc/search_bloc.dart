@@ -32,7 +32,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       final contactsPermission = await Permission.contacts.request();
       if (contactsPermission.isGranted) {
         // when permission is granted we fetch users from firebase
-        debugPrint("granted");
+      //  debugPrint("granted");
         late Either<List<UserEntity>, Failure> user;
         // Getting contacts
         List<Contact> contacts = await ContactsService.getContacts();
@@ -51,7 +51,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         //any of the contacts phoneNumber match the phoneNumber in user aka firebase list
         //Users that are have a account on whatsapp clone
         user.fold((user) {
-          debugPrint(user.toString());
+          //debugPrint(user.toString());
           // fetched users
           //user[0].phoneNumber;
           List<UserEntity> foundUsers = [];
@@ -96,25 +96,24 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
                 cloneList.removeAt(i);
               }
             }
-            print(cloneList.toString());
           }
           if(cloneList.isNotEmpty)
             {
               notFoundUsers = cloneList;
             }
             if (foundUsers.isNotEmpty) {
-              debugPrint(notFoundUsers.length.toString());
-              debugPrint(notFoundUsers.toString());
+           //   debugPrint(notFoundUsers.length.toString());
+           //   debugPrint(notFoundUsers.toString());
               emit(SearchLoaded(foundUsers: foundUsers ,notFoundUsers: notFoundUsers));
             }
         }, (r) {
           throw r;
         });
       } else if (contactsPermission.isPermanentlyDenied) {
-        debugPrint("not granted");
+ //       debugPrint("not granted");
         await showDialogBox(event.context);
       } else {
-        debugPrint("not granted2");
+      //  debugPrint("not granted2");
         if (event.context.mounted) {
           Navigator.pop(event.context);
         }

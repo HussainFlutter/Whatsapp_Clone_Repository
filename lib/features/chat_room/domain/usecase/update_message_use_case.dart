@@ -1,18 +1,21 @@
 
 
 
-import 'package:dartz/dartz.dart';
+
+
+
+import 'package:dartz/dartz.dart'show Either;
 import 'package:whatsapp_clone_repository/features/chat_room/domain/repo/chat_room_repo.dart';
+
 import '../../../../core/failures.dart';
-import '../../../search/domain/entity/chat_room_entity.dart';
 import '../entity/message_entity.dart';
 
-class GetMessagesUseCase {
+class UpdateMessageUseCase {
   final ChatRoomRepo repo;
 
-  GetMessagesUseCase({required this.repo});
+  UpdateMessageUseCase({required this.repo});
 
-  Stream<Either<List<MessageEntity>,Failure>> call(ChatRoomEntity chatRoomEntity)
-  => repo.getMessage(chatRoomEntity);
+  Future<Either<void,Failure>> call(MessageEntity messageEntity)
+  => repo.updateMessage(messageEntity);
 
 }

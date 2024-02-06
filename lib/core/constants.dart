@@ -14,10 +14,12 @@ class ColorsConsts {
   static const containerGreen = Color(0xff00A884);
   static const loadingColor = Color(0xff00F2AA);
   static const fieldGreenColor = Color(0xff05AA82);
+  static const messageContainerGreen = Color(0xff005D4B);
   static const backgroundColor = Color(0xff000000);
   static const appbarGreen = Color(0xff008069);
   static const textGrey = Color(0xff1F2C34);
   static const iconGrey = Color(0xff86979F);
+  static const timeGrey = Color(0xff84939A);
 }
 
 class RouteNames {

@@ -1,7 +1,7 @@
 
 
 
-import 'package:dartz/dartz.dart';
+import 'package:dartz/dartz.dart'show Either;
 import 'package:whatsapp_clone_repository/features/chat_room/domain/repo/chat_room_repo.dart';
 
 import '../../../../core/failures.dart';

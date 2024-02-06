@@ -83,8 +83,8 @@ class _SearchPageState extends State<SearchPage> {
                       {
                         List<UserEntity> foundUsers = state.foundUsers;
                         List<Contact> notFoundUsers = state.notFoundUsers;
-                        debugPrint("foundUsers$foundUsers");
-                        debugPrint("foundUsersLength: ${foundUsers.length}");
+                      //  debugPrint("foundUsers$foundUsers");
+                      //  debugPrint("foundUsersLength: ${foundUsers.length}");
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -136,8 +136,6 @@ class _SearchPageState extends State<SearchPage> {
                       }
                     return const Text("here");
               }),
-
-              // TODO: Implement List of users that are not in whatsApp clone and show something when no users a found else show the users and a invite button
             ],
           ),
         ),

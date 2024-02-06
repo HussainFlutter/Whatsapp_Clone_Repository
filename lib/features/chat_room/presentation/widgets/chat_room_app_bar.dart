@@ -31,7 +31,7 @@ class ChatRoomAppBar extends StatelessWidget implements PreferredSize {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(currentUser.name!,style: Theme.of(context).textTheme.displaySmall!.copyWith(fontWeight: FontWeight.bold),),
+              Text(targetUser.name!,style: Theme.of(context).textTheme.displaySmall!.copyWith(fontWeight: FontWeight.bold),),
               Text(currentUser.presence! == false ? "Offline" : "Online",style: Theme.of(context).textTheme.displaySmall),
             ],
           ),

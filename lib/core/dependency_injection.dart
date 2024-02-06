@@ -14,6 +14,10 @@ import 'package:whatsapp_clone_repository/features/auth/domain/usecase/sign_up_u
 import 'package:whatsapp_clone_repository/features/auth/domain/usecase/update_user_usecase.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/bloc/splash_screen_bloc.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/data/data_source/remote/chat_room_repo_data_source.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/domain/usecase/get_messages_use_case.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/change_icon_cubit.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/chat_room_bloc.dart';
 import 'package:whatsapp_clone_repository/features/search/data/data_source/remote_data_source/search_data_source.dart';
 import 'package:whatsapp_clone_repository/features/search/data/data_source/remote_data_source/search_data_source_impl.dart';
 import 'package:whatsapp_clone_repository/features/search/data/repo/search_repo_impl.dart';
@@ -24,6 +28,12 @@ import '../features/auth/data/data_source/remote/auth_data_repo.dart';
 import '../features/auth/domain/usecase/delete_user_usecase.dart';
 import '../features/auth/domain/usecase/get_current_user_uid_usecase.dart';
 import '../features/auth/domain/usecase/log_out_use_case.dart';
+import '../features/chat_room/data/data_source/remote/chat_room_repo_data_source_impl.dart';
+import '../features/chat_room/data/repo/chat_room_repo_impl.dart';
+import '../features/chat_room/domain/repo/chat_room_repo.dart';
+import '../features/chat_room/domain/usecase/delete_message_use_case.dart';
+import '../features/chat_room/domain/usecase/send_message_use_case.dart';
+import '../features/chat_room/domain/usecase/update_message_use_case.dart';
 import '../features/search/domain/usecase/delete_chat_room_usecase.dart';
 
 //Global variables
@@ -50,6 +60,13 @@ Future<void> init() async {
         getUsers: sl<GetUsersUseCase>(),
         createChatRoom: sl<CreateChatRoomUseCase>(),
       ));
+  sl.registerFactory(() => ChatRoomBloc(
+    getMessages: sl<GetMessagesUseCase>(),
+    sendMessage: sl<SendMessageUseCase>(),
+    deleteMessage: sl<DeleteMessageUseCase>(),
+    updateMessage: sl<UpdateMessageUseCase>(),
+  ));
+  sl.registerFactory(() => ChangeIconCubit());
   //Use Cases for user / auth
   sl.registerLazySingleton(() => CreateUserUseCase(repo: sl<AuthRepo>()));
   sl.registerLazySingleton(() => DeleteUserUseCase(repo: sl<AuthRepo>()));
@@ -67,7 +84,12 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CreateChatRoomUseCase(repo: sl<SearchRepo>()));
   sl.registerLazySingleton(() => DeleteChatRoomUseCase(repo: sl<SearchRepo>()));
   // Use cases for search
-
+  // Use cases for chat room
+  sl.registerLazySingleton(() => SendMessageUseCase(repo: sl<ChatRoomRepo>()));
+  sl.registerLazySingleton(() => DeleteMessageUseCase(repo: sl<ChatRoomRepo>()));
+  sl.registerLazySingleton(() => UpdateMessageUseCase(repo: sl<ChatRoomRepo>()));
+  sl.registerLazySingleton(() => GetMessagesUseCase(repo: sl<ChatRoomRepo>()));
+  // Use cases for chat room
   //Repositories for user / auth
   sl.registerLazySingleton<AuthRepo>(
       () => AuthRepoImpl(dataSource: sl<AuthRemoteDataSource>()));
@@ -85,6 +107,15 @@ Future<void> init() async {
   sl.registerLazySingleton<SearchDataSourceImpl>(
           () => SearchDataSourceImpl());
   //Repositories for search
+
+  //Repositories for chat room
+  sl.registerLazySingleton<ChatRoomRepo>(
+          () => ChatRoomRepoImpl(dataSource: sl<ChatRoomRepoDataSource>()));
+  sl.registerLazySingleton<ChatRoomRepoDataSource>(
+          () => ChatRoomRepoDataSourceImpl());
+  sl.registerLazySingleton<ChatRoomRepoDataSourceImpl>(
+          () => ChatRoomRepoDataSourceImpl());
+  //Repositories for chat room
 
   //External Sources
   sl.registerLazySingleton(() => FirebaseAuth.instance);

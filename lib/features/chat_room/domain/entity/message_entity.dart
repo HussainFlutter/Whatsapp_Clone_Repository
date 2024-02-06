@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 class MessageEntity extends Equatable {
   final String? message;
   final String? messageId;
+  final String? chatRoomId;
   final DateTime? createdAt;
   final String? creatorUid;
   final bool? isSeen;
@@ -11,6 +12,7 @@ class MessageEntity extends Equatable {
   const MessageEntity({
       this.message,
       this.messageId,
+      this.chatRoomId,
       this.createdAt,
       this.creatorUid,
       this.isSeen,
@@ -21,6 +23,7 @@ class MessageEntity extends Equatable {
     message,
     messageId,
     createdAt,
+    chatRoomId,
     creatorUid,
     isSeen,
     isSent,
