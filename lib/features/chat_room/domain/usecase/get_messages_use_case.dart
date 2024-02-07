@@ -10,7 +10,7 @@ class GetMessagesUseCase {
 
   GetMessagesUseCase({required this.repo});
 
-  Stream<Either<List<MessageEntity>,Failure>> call(ChatRoomEntity chatRoomEntity)
+  Stream<List<MessageEntity>> call(ChatRoomEntity chatRoomEntity)
   => repo.getMessage(chatRoomEntity);
 
 }

@@ -83,7 +83,7 @@ class ChatRoomRepoDataSourceImpl extends ChatRoomRepoDataSource{
   }
 
   @override
-  Stream<Either<List<MessageEntity>, Failure>> getMessage(ChatRoomEntity chatRoomEntity) {
+  Stream<List<MessageEntity>> getMessage(ChatRoomEntity chatRoomEntity) {
     List<MessageEntity> messages = [];
     try{
       return firestore.collection(FirebaseConsts.chatRooms)
@@ -94,11 +94,11 @@ class ChatRoomRepoDataSourceImpl extends ChatRoomRepoDataSource{
             messages =  event.docs.map((e) => MessageModel.fromSnapshot(e)).toList();
             if(messages.isEmpty)
               {
-                return const Left([]);
+                return [];
               }
             else
               {
-                return Left(messages);
+                return messages;
               }
 
         });

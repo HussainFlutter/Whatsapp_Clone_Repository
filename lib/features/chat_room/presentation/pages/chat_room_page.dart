@@ -1,13 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/domain/entity/message_entity.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/widgets/chat_room_text_field.dart';
 import 'package:whatsapp_clone_repository/features/search/domain/entity/chat_room_entity.dart';
+import 'package:whatsapp_clone_repository/features/z_global_widgets/show_text_message.dart';
+import '../../../../core/dependency_injection.dart';
+import '../../data/model/message_model.dart';
 import '../bloc/change_icon_cubit.dart';
 import '../bloc/chat_room_bloc.dart';
 import '../widgets/chat_room_app_bar.dart';
+import '../widgets/chat_room_hello_animation.dart';
+import '../widgets/chat_room_message_field.dart';
 import '../widgets/chat_room_messages.dart';
 
 class ChatRoomPage extends StatefulWidget {
@@ -29,13 +36,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   TextEditingController messageController = TextEditingController();
   bool isWriting = false;
   String? groupLabel;
-  @override
-  void initState() {
-    super.initState();
-    context
-        .read<ChatRoomBloc>()
-        .add(FetchMessagesEvent(chatRoomId: widget.chatRoomEntity.chatRoomId!));
-  }
 
   @override
   void dispose() {
@@ -55,103 +55,70 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // All of the screen
-              BlocBuilder<ChatRoomBloc, ChatRoomState>(
-                builder: (context, state) {
-                  if (state is ChatRoomLoading) {
-                    return const Center(
-                        child: CircularProgressIndicator(
-                      color: ColorsConsts.messageContainerGreen,
-                    ));
-                  }
-                  if (state is ChatRoomLoaded) {
-                    return state.messages.isEmpty
-                        ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            //TODO: Make animation here
-                            0.3.sizeH(context),
-                            Center(
-                                child: Text(
-                                  "Say hi to your new Friend",
-                                  style: Theme.of(context).textTheme.displaySmall,
-                                ),
-                              ),
-                            0.5.sizeH(context),
-                          ],
-                        )
-                        : ChatRoomMessages(messages: state.messages,);
-                  }
-                  return const SizedBox();
-                },
-              ),
-              // The Message TextFormField
-              Flexible(
-                flex: 0,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                          decoration: BoxDecoration(
-                              color: ColorsConsts.textGrey,
-                              borderRadius: BorderRadius.circular(30)),
-                          child: ChatRoomTextField(
-                            controller: messageController,
-                            onChanged: (e) {
-                              if (messageController.text.isEmpty ||
-                                  messageController.text == "") {
-                                context
-                                    .read<ChangeIconCubit>()
-                                    .changeIcon(false);
-                              } else {
-                                context
-                                    .read<ChangeIconCubit>()
-                                    .changeIcon(true);
-                              }
-                            },
-                          )),
-                    ),
-                    BlocBuilder<ChangeIconCubit, ChangeIconState>(
-                        builder: (context, state) {
-                      if (state is ChangedIcon) {
-                        return state.change == false
-                            ? FloatingActionButton.small(
-                                shape: const CircleBorder(),
-                                backgroundColor: ColorsConsts.containerGreen,
-                                onPressed: () {},
-                                child: const Icon(
-                                  Icons.mic,
-                                  color: ColorsConsts.whiteColor,
-                                ),
-                              )
-                            : FloatingActionButton.small(
-                                shape: const CircleBorder(),
-                                backgroundColor: ColorsConsts.containerGreen,
-                                onPressed: () {
-                                  context
-                                      .read<ChatRoomBloc>()
-                                      .add(SendMessageEvent(
-                                        chatRoomId:
-                                            widget.chatRoomEntity.chatRoomId!,
-                                        message: messageController.text,
-                                        creatorUid: widget.currentUser.uid!,
-                                      ));
-                                  messageController.clear();
-                                },
-                                child: Icon(
-                                  Icons.send,
-                                  size: 0.05.mediaW(context),
-                                  color: ColorsConsts.whiteColor,
-                                ),
-                              );
+              StreamBuilder(
+                  stream: sl<FirebaseFirestore>()
+                .collection(FirebaseConsts.chatRooms)
+                .doc(widget.chatRoomEntity.chatRoomId)
+                .collection(FirebaseConsts.messages)
+                .orderBy("createdAt",descending: true)
+                .snapshots(),
+                  builder: (context,snapshot){
+                    if(snapshot.connectionState == ConnectionState.active)
+                      {
+                        if(snapshot.hasData)
+                        {
+                          debugPrint("In Data");
+                          final data = snapshot.data;
+                         final List<MessageEntity> messages =  data!.docs.map((e) => MessageModel.fromSnapshot(e)).toList();
+                          return messages.isEmpty
+                                    ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        0.25.sizeH(context),
+                                         Center(
+                                            child: InkWell(
+                                                onTap: (){
+
+                                                },
+                                                child: const HelloAnimation()),
+                                          ),
+                                        0.5.sizeH(context),
+                                        MessageField(
+                                          chatRoomId: widget.chatRoomEntity.chatRoomId!,
+                                          currentUserUid: widget.currentUser.uid!,
+                                          messageController: messageController,
+                                        ),
+                                        0.007.sizeH(context),
+                                      ],
+                                    )
+                                    : Column(
+                                      children: [
+                                        ChatRoomMessages(messages: messages,),
+                                        MessageField(
+                                          chatRoomId: widget.chatRoomEntity.chatRoomId!,
+                                          currentUserUid: widget.currentUser.uid!,
+                                          messageController: messageController,
+                                        ),
+                                        0.007.sizeH(context),
+                                      ],
+                                    );
+                        }
+                        if(snapshot.hasError)
+                        {
+                          return const ShowTextMessage(message: "Some Error Occurred",textColor: ColorsConsts.redColor,);
+                        }
                       }
-                      return const SizedBox();
-                    }),
-                  ],
-                ),
+                    if(snapshot.connectionState == ConnectionState.none)
+                      {
+                        return const ShowTextMessage(message: "Check your internet connection",textColor: ColorsConsts.redColor,);
+                      }
+                    else
+                      {
+                        return const SizedBox();
+                      }
+                  },
               ),
-              0.007.sizeH(context),
             ],
           ),
         ));

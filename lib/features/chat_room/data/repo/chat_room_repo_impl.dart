@@ -25,6 +25,6 @@ class ChatRoomRepoImpl extends ChatRoomRepo {
   => dataSource.deleteMessage(messageEntity);
 
   @override
-  Stream<Either<List<MessageEntity>, Failure>> getMessage(ChatRoomEntity chatRoomEntity)
+  Stream<List<MessageEntity>> getMessage(ChatRoomEntity chatRoomEntity)
   => dataSource.getMessage(chatRoomEntity);
 }

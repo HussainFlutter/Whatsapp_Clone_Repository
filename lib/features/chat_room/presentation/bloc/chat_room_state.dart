@@ -7,12 +7,3 @@ abstract class ChatRoomState extends Equatable {
 }
 
 class ChatRoomInitial extends ChatRoomState {}
-class ChatRoomLoading extends ChatRoomState {}
-class ChatRoomLoaded extends ChatRoomState {
-  final List<MessageEntity> messages;
-
-  const ChatRoomLoaded({required this.messages});
-
-  @override
-  List<Object> get props => [messages];
-}

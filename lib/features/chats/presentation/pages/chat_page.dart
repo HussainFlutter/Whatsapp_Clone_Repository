@@ -27,6 +27,7 @@ class _ChatsPageState extends State<ChatsPage> {
             stream: sl<FirebaseFirestore>()
                 .collection(FirebaseConsts.chatRooms)
                 .where("participants", arrayContains: widget.currentUser.uid!)
+                .orderBy("createAt",descending: true)
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.active) {

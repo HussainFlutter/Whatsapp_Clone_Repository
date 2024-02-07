@@ -9,5 +9,5 @@ abstract class ChatRoomRepoDataSource {
   Future<Either<void,Failure>> sendMessage(MessageEntity messageEntity);
   Future<Either<void,Failure>> deleteMessage(MessageEntity messageEntity);
   Future<Either<void,Failure>> updateMessage(MessageEntity messageEntity);
-  Stream<Either<List<MessageEntity>,Failure>> getMessage(ChatRoomEntity chatRoomEntity);
+  Stream<List<MessageEntity>> getMessage(ChatRoomEntity chatRoomEntity);
 }

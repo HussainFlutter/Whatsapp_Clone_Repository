@@ -21,6 +21,14 @@ class ChatRoomMessages extends StatelessWidget {
         SizedBox(
           height: 0.84.mediaH(context),
           child: GroupedListView(
+            sort: false,
+            itemComparator: (item1, item2) => item1.createdAt!.compareTo(item2.createdAt!), //
+            groupBy: (element) => DateTime(
+              element.createdAt!.year,
+              element.createdAt!.month,
+              element.createdAt!.day,
+            ).toString(),
+            reverse: true,
             groupSeparatorBuilder: (String value) {
               DateTime now = DateTime.now();
               Duration duration = const Duration(hours: 24);
@@ -34,6 +42,8 @@ class ChatRoomMessages extends StatelessWidget {
                   messageDateTime.month == yesterday.month &&
                   messageDateTime.day == yesterday.day) {
                 groupLabel = "Yesterday";
+              } else {
+                groupLabel = value;
               }
               return Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -48,11 +58,9 @@ class ChatRoomMessages extends StatelessWidget {
                     color: ColorsConsts.textGrey,
                     borderRadius: BorderRadius.circular(10),
                   ),
-
                   child: Text(
-                    groupLabel == "Today" || groupLabel == "Yesterday" ? groupLabel!
-                        :  DateFormat("dd:mm yy").format(
-                        DateTime.parse(value)),
+                     groupLabel == "Today" || groupLabel == "Yesterday"? groupLabel! : DateFormat("MMMM dd,yyyy").format(
+                        DateTime.parse(groupLabel!)),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.displaySmall!.copyWith(color: ColorsConsts.timeGrey),
                   ),
@@ -61,12 +69,6 @@ class ChatRoomMessages extends StatelessWidget {
             },
             shrinkWrap: true,
             elements: messages,
-            itemComparator: (item1, item2) => item1.createdAt!.compareTo(item2.createdAt!), //
-            groupBy: (element) => DateTime(
-              element.createdAt!.year,
-              element.createdAt!.month,
-              element.createdAt!.day,
-            ).toString(),
             indexedItemBuilder:
                 (context, elements, index) {
               return Column(

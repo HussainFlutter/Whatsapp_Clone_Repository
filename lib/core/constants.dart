@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class FirebaseConsts {
   static const users = "users";
   static const chatRooms = "chatRooms";
+  static const messages = "messages";
 }
 
 class ColorsConsts {
@@ -20,6 +21,7 @@ class ColorsConsts {
   static const textGrey = Color(0xff1F2C34);
   static const iconGrey = Color(0xff86979F);
   static const timeGrey = Color(0xff84939A);
+  static const redColor = Colors.red;
 }
 
 class RouteNames {

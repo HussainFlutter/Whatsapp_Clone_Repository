@@ -6,13 +6,6 @@ abstract class ChatRoomEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class FetchMessagesEvent extends ChatRoomEvent {
-  final String chatRoomId;
-
-  const FetchMessagesEvent({required this.chatRoomId});
-  @override
-  List<Object?> get props => [chatRoomId];
-}
 class SendMessageEvent extends ChatRoomEvent {
   final String chatRoomId;
   final String message;
