@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 import '../../../../core/constants.dart';
 
-class ChatRoomTextField extends StatefulWidget {
+class ChatRoomTextField extends StatelessWidget {
   final TextEditingController controller;
   final void Function(String?) onChanged;
-  const ChatRoomTextField(
-      {super.key, required this.controller, required this.onChanged});
+  final VoidCallback onTapOfEmoji;
+  const ChatRoomTextField({
+    super.key,
+    required this.controller,
+    required this.onChanged,
+    required this.onTapOfEmoji,
+  });
 
-  @override
-  State<ChatRoomTextField> createState() => _ChatRoomTextFieldState();
-}
-
-class _ChatRoomTextFieldState extends State<ChatRoomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: widget.controller,
+      controller: controller,
       maxLines: null,
       style: Theme.of(context).textTheme.displaySmall,
       decoration: InputDecoration(
@@ -35,14 +35,14 @@ class _ChatRoomTextFieldState extends State<ChatRoomTextField> {
           suffixIconColor: ColorsConsts.iconGrey,
           prefixIconColor: ColorsConsts.iconGrey,
           prefixIcon: IconButton(
-            onPressed: () {},
+            onPressed: onTapOfEmoji,
             icon: const Icon(Icons.emoji_emotions),
           ),
           hintStyle: const TextStyle(
             color: ColorsConsts.iconGrey,
           ),
           hintText: "Message"),
-      onChanged: widget.onChanged,
+      onChanged: onChanged,
     );
   }
 }

@@ -18,6 +18,7 @@ import 'package:whatsapp_clone_repository/features/chat_room/data/data_source/re
 import 'package:whatsapp_clone_repository/features/chat_room/domain/usecase/get_messages_use_case.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/change_icon_cubit.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/chat_room_bloc.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/show_emoji_picker_cubit.dart';
 import 'package:whatsapp_clone_repository/features/search/data/data_source/remote_data_source/search_data_source.dart';
 import 'package:whatsapp_clone_repository/features/search/data/data_source/remote_data_source/search_data_source_impl.dart';
 import 'package:whatsapp_clone_repository/features/search/data/repo/search_repo_impl.dart';
@@ -67,6 +68,7 @@ Future<void> init() async {
     updateMessage: sl<UpdateMessageUseCase>(),
   ));
   sl.registerFactory(() => ChangeIconCubit());
+  sl.registerFactory(() => ShowEmojiPickerCubit());
   //Use Cases for user / auth
   sl.registerLazySingleton(() => CreateUserUseCase(repo: sl<AuthRepo>()));
   sl.registerLazySingleton(() => DeleteUserUseCase(repo: sl<AuthRepo>()));
