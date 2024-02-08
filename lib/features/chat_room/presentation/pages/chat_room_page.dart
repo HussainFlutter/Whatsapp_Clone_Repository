@@ -1,17 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/domain/entity/message_entity.dart';
-import 'package:whatsapp_clone_repository/features/chat_room/presentation/widgets/chat_room_text_field.dart';
 import 'package:whatsapp_clone_repository/features/search/domain/entity/chat_room_entity.dart';
 import 'package:whatsapp_clone_repository/features/z_global_widgets/show_text_message.dart';
 import '../../../../core/dependency_injection.dart';
 import '../../data/model/message_model.dart';
-import '../bloc/change_icon_cubit.dart';
-import '../bloc/chat_room_bloc.dart';
 import '../widgets/chat_room_app_bar.dart';
 import '../widgets/chat_room_hello_animation.dart';
 import '../widgets/chat_room_message_field.dart';
@@ -108,6 +104,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                         {
                           return const ShowTextMessage(message: "Some Error Occurred",textColor: ColorsConsts.redColor,);
                         }
+                      }
+                    if(snapshot.connectionState == ConnectionState.waiting)
+                      {
+                        return const Center(child: CircularProgressIndicator(color: ColorsConsts.containerGreen,),);
                       }
                     if(snapshot.connectionState == ConnectionState.none)
                       {

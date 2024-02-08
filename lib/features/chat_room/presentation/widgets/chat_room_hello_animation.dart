@@ -29,7 +29,7 @@ class _HelloAnimationState extends State<HelloAnimation> with SingleTickerProvid
       if(status == AnimationStatus.completed)
         {
           if (_isDisposed == false) {
-           final timer =  await Future.delayed(const Duration(seconds: 2));
+           await Future.delayed(const Duration(seconds: 2));
            if(mounted)
              {
                controller.reset();
@@ -45,7 +45,7 @@ class _HelloAnimationState extends State<HelloAnimation> with SingleTickerProvid
         }
     });
   }
-  Vector3 _shakee() {
+  Vector3 _shake() {
     double progress = controller.value;
     double offset = sin(progress * pi * 4);  // change 10 to make it vibrate faster
     return Vector3(offset * 5, 0.0, 0.0);  // change 25 to make it vibrate wider
@@ -73,7 +73,7 @@ class _HelloAnimationState extends State<HelloAnimation> with SingleTickerProvid
           animation: controller,
           builder: (context,s){
             return Transform(
-              transform: Matrix4.translation(_shakee()),
+              transform: Matrix4.translation(_shake()),
               child: ScaleTransition(
                 scale: scaleAnimation,
                 child: Transform.rotate(

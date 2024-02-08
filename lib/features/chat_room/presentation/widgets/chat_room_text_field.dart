@@ -1,19 +1,22 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
-
 import '../../../../core/constants.dart';
 
-class ChatRoomTextField extends StatelessWidget {
+class ChatRoomTextField extends StatefulWidget {
   final TextEditingController controller;
   final void Function(String?) onChanged;
-  const ChatRoomTextField({super.key,required this.controller,required this.onChanged});
+  const ChatRoomTextField(
+      {super.key, required this.controller, required this.onChanged});
 
+  @override
+  State<ChatRoomTextField> createState() => _ChatRoomTextFieldState();
+}
+
+class _ChatRoomTextFieldState extends State<ChatRoomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
+      controller: widget.controller,
       maxLines: null,
       style: Theme.of(context).textTheme.displaySmall,
       decoration: InputDecoration(
@@ -23,8 +26,7 @@ class ChatRoomTextField extends StatelessWidget {
             child: Row(
               children: [
                 Transform.rotate(
-                    angle: 4,
-                    child: const Icon(Icons.attachment)),
+                    angle: 4, child: const Icon(Icons.attachment)),
                 0.02.sizeW(context),
                 const Icon(Icons.camera_alt),
               ],
@@ -32,28 +34,15 @@ class ChatRoomTextField extends StatelessWidget {
           ),
           suffixIconColor: ColorsConsts.iconGrey,
           prefixIconColor: ColorsConsts.iconGrey,
-          prefixIcon: const Icon(Icons.emoji_emotions),
+          prefixIcon: IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.emoji_emotions),
+          ),
           hintStyle: const TextStyle(
             color: ColorsConsts.iconGrey,
           ),
-          hintText: "Message"
-      ),
-      onChanged: onChanged,
-      // onChanged: (e){
-      //   if(messageController.text.isEmpty || messageController.text == "")
-      //   {
-      //     setState(() {
-      //       isWriting = false;
-      //     });
-      //   }
-      //   else
-      //   {
-      //     setState(() {
-      //       isWriting = true;
-      //     });
-      //   }
-      // },
+          hintText: "Message"),
+      onChanged: widget.onChanged,
     );
-
   }
 }
