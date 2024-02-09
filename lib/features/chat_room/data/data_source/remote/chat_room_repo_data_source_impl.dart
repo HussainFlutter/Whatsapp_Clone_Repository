@@ -22,9 +22,9 @@ class ChatRoomRepoDataSourceImpl extends ChatRoomRepoDataSource{
         .doc(messageEntity.chatRoomId)
         .collection("messages");
     try{
-
       final messageModel = MessageModel(
         message: messageEntity.message,
+        targetUserUid: messageEntity.targetUserUid,
         messageId: randomId.v1(),
         chatRoomId: messageEntity.chatRoomId,
         creatorUid: messageEntity.creatorUid,
@@ -32,8 +32,8 @@ class ChatRoomRepoDataSourceImpl extends ChatRoomRepoDataSource{
         isSent: false,
         isSeen: false,
       );
-      ref.doc(messageModel.messageId).set(messageModel.toMap()).then((value) {
-        ref.doc(messageModel.messageId).update(
+       ref.doc(messageModel.messageId).set(messageModel.toMap()).then((value) async {
+        await ref.doc(messageModel.messageId).update(
          {
            "isSent" : true,
          }
@@ -105,6 +105,25 @@ class ChatRoomRepoDataSourceImpl extends ChatRoomRepoDataSource{
     }catch(e) {
       throw Right(Failure(error: e.toString(),message: "Error occurred while fetching messages"));
     }
+  }
+
+  @override
+  Future<Either<void,Failure>> changeMessageSeenStatus (MessageEntity message) async {
+    try{
+      await firestore.collection(FirebaseConsts.chatRooms)
+          .doc(message.chatRoomId)
+          .collection(FirebaseConsts.messages)
+          .doc(message.messageId)
+          .update({
+        "isSeen" : true,
+      });
+      return const Left(null);
+    }catch(e)
+    {
+      customPrint(message: e.toString());
+      throw const Right(Failure(message: "Something happened while updating isSeen "));
+    }
+
   }
 
 }

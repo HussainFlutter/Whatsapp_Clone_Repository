@@ -6,6 +6,7 @@ class MessageModel extends MessageEntity {
   final String? messageId;
   final DateTime? createdAt;
   final String? creatorUid;
+  final String? targetUserUid;
   final String? chatRoomId;
   final bool? isSeen;
   final bool? isSent;
@@ -15,6 +16,7 @@ class MessageModel extends MessageEntity {
     this.messageId,
     this.createdAt,
     this.creatorUid,
+    this.targetUserUid,
     this.isSeen,
     this.chatRoomId,
     this.isSent,
@@ -23,6 +25,7 @@ class MessageModel extends MessageEntity {
     messageId: messageId,
     createdAt: createdAt,
     creatorUid: creatorUid,
+    targetUserUid: targetUserUid,
     chatRoomId: chatRoomId,
     isSeen: isSeen,
     isSent: isSent,
@@ -35,6 +38,7 @@ class MessageModel extends MessageEntity {
       messageId: data["messageId"],
       createdAt: data["createdAt"].toDate(),
       creatorUid: data["creatorUid"],
+      targetUserUid: data["targetUserUid"],
       isSeen: data["isSeen"],
       isSent: data["isSent"],
       chatRoomId: data["chatRoomId"],
@@ -47,6 +51,7 @@ class MessageModel extends MessageEntity {
       "messageId":messageId,
       "createdAt":createdAt,
       "creatorUid":creatorUid,
+      "targetUserUid":targetUserUid,
       "isSeen":isSeen,
       "isSent":isSent,
       "chatRoomId":chatRoomId,

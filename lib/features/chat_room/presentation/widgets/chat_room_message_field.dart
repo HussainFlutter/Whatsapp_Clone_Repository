@@ -10,14 +10,18 @@ import 'chat_room_text_field.dart';
 class MessageField extends StatelessWidget {
   final TextEditingController messageController;
   final String currentUserUid;
+  final String targetUserUid;
   final String chatRoomId;
   final VoidCallback onTapOfEmoji;
+  final VoidCallback onTap;
   const MessageField({
       super.key,
       required this.messageController,
       required this.currentUserUid,
       required this.chatRoomId,
       required this.onTapOfEmoji,
+      required this.onTap,
+    required this.targetUserUid,
       });
 
   @override
@@ -34,11 +38,12 @@ class MessageField extends StatelessWidget {
                         color: ColorsConsts.textGrey,
                         borderRadius: BorderRadius.circular(30)),
                     child: ChatRoomTextField(
+                      onTap: onTap,
                       onTapOfEmoji: onTapOfEmoji,
                       controller: messageController,
                       onChanged: (e) {
-                        if (messageController.text.isEmpty ||
-                            messageController.text == "") {
+                        if (e!.isEmpty ||
+                            e == "") {
                           context.read<ChangeIconCubit>().changeIcon(false);
                         } else {
                           context.read<ChangeIconCubit>().changeIcon(true);
@@ -64,11 +69,13 @@ class MessageField extends StatelessWidget {
                           backgroundColor: ColorsConsts.containerGreen,
                           onPressed: () {
                             context.read<ChatRoomBloc>().add(SendMessageEvent(
+                              targetUserUid: targetUserUid,
                                   chatRoomId: chatRoomId,
-                                  message: messageController.text,
+                                  message: messageController.text.trim(),
                                   creatorUid: currentUserUid,
                                 ));
                             messageController.clear();
+                            context.read<ChangeIconCubit>().changeIcon(false);
                           },
                           child: Icon(
                             Icons.send,

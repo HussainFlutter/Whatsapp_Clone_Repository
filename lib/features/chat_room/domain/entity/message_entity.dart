@@ -6,6 +6,7 @@ class MessageEntity extends Equatable {
   final String? chatRoomId;
   final DateTime? createdAt;
   final String? creatorUid;
+  final String? targetUserUid;
   final bool? isSeen;
   final bool? isSent;
 
@@ -15,6 +16,7 @@ class MessageEntity extends Equatable {
       this.chatRoomId,
       this.createdAt,
       this.creatorUid,
+      this.targetUserUid,
       this.isSeen,
       this.isSent,
       });
@@ -22,6 +24,7 @@ class MessageEntity extends Equatable {
   List<Object?> get props => [
     message,
     messageId,
+    targetUserUid,
     createdAt,
     chatRoomId,
     creatorUid,

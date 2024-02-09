@@ -15,6 +15,7 @@ import 'package:whatsapp_clone_repository/features/auth/domain/usecase/update_us
 import 'package:whatsapp_clone_repository/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/bloc/splash_screen_bloc.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/data/data_source/remote/chat_room_repo_data_source.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/domain/usecase/change_message_seen_status_use_case.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/domain/usecase/get_messages_use_case.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/change_icon_cubit.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/chat_room_bloc.dart';
@@ -66,6 +67,7 @@ Future<void> init() async {
     sendMessage: sl<SendMessageUseCase>(),
     deleteMessage: sl<DeleteMessageUseCase>(),
     updateMessage: sl<UpdateMessageUseCase>(),
+    changeStatus: sl<ChangeMessageSeenStatusUseCase>(),
   ));
   sl.registerFactory(() => ChangeIconCubit());
   sl.registerFactory(() => ShowEmojiPickerCubit());
@@ -91,6 +93,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DeleteMessageUseCase(repo: sl<ChatRoomRepo>()));
   sl.registerLazySingleton(() => UpdateMessageUseCase(repo: sl<ChatRoomRepo>()));
   sl.registerLazySingleton(() => GetMessagesUseCase(repo: sl<ChatRoomRepo>()));
+  sl.registerLazySingleton(() => ChangeMessageSeenStatusUseCase(repo: sl<ChatRoomRepo>()));
   // Use cases for chat room
   //Repositories for user / auth
   sl.registerLazySingleton<AuthRepo>(

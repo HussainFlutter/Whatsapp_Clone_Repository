@@ -5,7 +5,7 @@ part 'show_emoji_picker_state.dart';
 
 class ShowEmojiPickerCubit extends Cubit<ShowEmojiPickerState> {
   ShowEmojiPickerCubit() : super(const ShowEmojiPickerState(emojiToggle: false));
-  void toggleEmojiPicker () {
-    emit(ShowEmojiPickerState(emojiToggle: !state.emojiToggle));
+  void toggleEmojiPicker ({bool? changeEmoji}) {
+    emit(ShowEmojiPickerState(emojiToggle: changeEmoji ?? !state.emojiToggle));
   }
 }
