@@ -4,6 +4,7 @@ class ChatRoomEntity extends Equatable {
   // 5
   final String? chatRoomId;
   final List<String>? participants;
+  final Map<String,dynamic>? chatUsers;
   final DateTime? createAt;
   final String? lastMessage;
   final DateTime? lastMessageCreateAt;
@@ -11,6 +12,7 @@ class ChatRoomEntity extends Equatable {
   const ChatRoomEntity({
      this.chatRoomId,
      this.participants,
+     this.chatUsers,
      this.createAt,
      this.lastMessage,
      this.lastMessageCreateAt,
@@ -20,6 +22,7 @@ class ChatRoomEntity extends Equatable {
     chatRoomId,
     participants,
     createAt,
+    chatUsers,
     lastMessage,
     lastMessageCreateAt,
   ];

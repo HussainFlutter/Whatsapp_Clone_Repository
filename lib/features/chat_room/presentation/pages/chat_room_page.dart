@@ -61,166 +61,171 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         currentUser: widget.currentUser,
         targetUser: widget.targetUser,
       ),
-      body: StreamBuilder(
-        stream: sl<FirebaseFirestore>()
-            .collection(FirebaseConsts.chatRooms)
-            .doc(widget.chatRoomEntity.chatRoomId)
-            .collection(FirebaseConsts.messages)
-            .orderBy("createdAt", descending: true)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.active) {
-            if (snapshot.hasData) {
-              debugPrint("In Data");
-              final data = snapshot.data;
-              final List<MessageEntity> messages =
-                  data!.docs.map((e) => MessageModel.fromSnapshot(e)).toList();
-              return messages.isEmpty
-                  //Hello animation
-                  ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        child: Center(
-                          child: InkWell(
-                              onTap: () => context.read<ChatRoomBloc>().add(SendMessageEvent(
-                                targetUserUid: widget.targetUser.uid!,
-                                chatRoomId: widget.chatRoomEntity.chatRoomId!,
-                                message: "🤚",
-                                creatorUid: widget.currentUser.uid!,
-                              )),
-                              child: const HelloAnimation()),
+      body: PopScope(
+        onPopInvoked: (e){
+          context.read<ShowEmojiPickerCubit>().toggleEmojiPicker(changeEmoji: false);
+        },
+        child: StreamBuilder(
+          stream: sl<FirebaseFirestore>()
+              .collection(FirebaseConsts.chatRooms)
+              .doc(widget.chatRoomEntity.chatRoomId)
+              .collection(FirebaseConsts.messages)
+              .orderBy("createdAt", descending: true)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.hasData) {
+                debugPrint("In Data");
+                final data = snapshot.data;
+                final List<MessageEntity> messages =
+                    data!.docs.map((e) => MessageModel.fromSnapshot(e)).toList();
+                return messages.isEmpty
+                    //Hello animation
+                    ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: Center(
+                            child: InkWell(
+                                onTap: () => context.read<ChatRoomBloc>().add(SendMessageEvent(
+                                  targetUserUid: widget.targetUser.uid!,
+                                  chatRoomId: widget.chatRoomEntity.chatRoomId!,
+                                  message: "🤚",
+                                  creatorUid: widget.currentUser.uid!,
+                                )),
+                                child: const HelloAnimation()),
+                          ),
                         ),
-                      ),
-                      MessageField(
-                        targetUserUid: widget.targetUser.uid!,
+                        MessageField(
+                          targetUserUid: widget.targetUser.uid!,
+                          onTap: () => FocusScope.of(context).unfocus(),
+                          chatRoomId: widget.chatRoomEntity.chatRoomId!,
+                          currentUserUid: widget.currentUser.uid!,
+                          messageController: messageController,
+                          onTapOfEmoji: () => context
+                              .read<ShowEmojiPickerCubit>()
+                              .toggleEmojiPicker(),
+                        ),
+                        BlocBuilder<ShowEmojiPickerCubit, ShowEmojiPickerState>(
+                          builder: (context, state) {
+                            return state.emojiToggle == true
+                                ? SizedBox(
+                              height: 0.3.mediaH(context),
+                              child: EmojiPicker(
+                                textEditingController: messageController,
+                                config: const Config(
+                                  height: 256,
+                                  checkPlatformCompatibility: true,
+                                  swapCategoryAndBottomBar: false,
+                                  skinToneConfig: SkinToneConfig(),
+                                  categoryViewConfig:
+                                  CategoryViewConfig(),
+                                  bottomActionBarConfig:
+                                  BottomActionBarConfig(),
+                                  searchViewConfig: SearchViewConfig(),
+                                ),
+                              ),
+                            )
+                                : const SizedBox();
+                          },
+                        ),
+                      ],
+                    ):
+                    //Chat Room
+                    GestureDetector(
                         onTap: () => FocusScope.of(context).unfocus(),
-                        chatRoomId: widget.chatRoomEntity.chatRoomId!,
-                        currentUserUid: widget.currentUser.uid!,
-                        messageController: messageController,
-                        onTapOfEmoji: () => context
-                            .read<ShowEmojiPickerCubit>()
-                            .toggleEmojiPicker(),
-                      ),
-                      BlocBuilder<ShowEmojiPickerCubit, ShowEmojiPickerState>(
-                        builder: (context, state) {
-                          return state.emojiToggle == true
-                              ? SizedBox(
-                            height: 0.3.mediaH(context),
-                            child: EmojiPicker(
-                              textEditingController: messageController,
-                              config: const Config(
-                                height: 256,
-                                checkPlatformCompatibility: true,
-                                swapCategoryAndBottomBar: false,
-                                skinToneConfig: SkinToneConfig(),
-                                categoryViewConfig:
-                                CategoryViewConfig(),
-                                bottomActionBarConfig:
-                                BottomActionBarConfig(),
-                                searchViewConfig: SearchViewConfig(),
+                        child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Chat Room
+                              Flexible(
+                                child: ListView(
+                                  reverse: true,
+                                  //shrinkWrap: true,
+                                  children: [
+                                    ChatRoomMessages(
+                                      currentUserUid: widget.currentUser.uid!,
+                                      targetUserUid: widget.targetUser.uid!,
+                                      messages: messages,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          )
-                              : const SizedBox();
-                        },
-                      ),
-                    ],
-                  ):
-                  //Chat Room
-                  GestureDetector(
-                      onTap: () => FocusScope.of(context).unfocus(),
-                      child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            // Chat Room
-                            Flexible(
-                              child: ListView(
-                                reverse: true,
-                                //shrinkWrap: true,
-                                children: [
-                                  ChatRoomMessages(
-                                    currentUserUid: widget.currentUser.uid!,
-                                    targetUserUid: widget.targetUser.uid!,
-                                    messages: messages,
-                                  ),
-                                ],
+                              // Message field
+                              MessageField(
+                                targetUserUid: widget.targetUser.uid!,
+                                onTap: () => context.read<ShowEmojiPickerCubit>().toggleEmojiPicker(changeEmoji: false),
+                                onTapOfEmoji: () {
+                                  if(FocusScope.of(context).hasFocus)
+                                    {
+                                      FocusScope.of(context).unfocus();
+                                      context.read<ShowEmojiPickerCubit>().toggleEmojiPicker();
+                                    }
+                                  else
+                                    {
+                                      context
+                                          .read<ShowEmojiPickerCubit>()
+                                          .toggleEmojiPicker();
+                                    }
+                                } ,
+                                chatRoomId: widget.chatRoomEntity.chatRoomId!,
+                                currentUserUid: widget.currentUser.uid!,
+                                messageController: messageController,
                               ),
-                            ),
-                            // Message field
-                            MessageField(
-                              targetUserUid: widget.targetUser.uid!,
-                              onTap: () => context.read<ShowEmojiPickerCubit>().toggleEmojiPicker(changeEmoji: false),
-                              onTapOfEmoji: () {
-                                if(FocusScope.of(context).hasFocus)
-                                  {
-                                    FocusScope.of(context).unfocus();
-                                    context.read<ShowEmojiPickerCubit>().toggleEmojiPicker();
-                                  }
-                                else
-                                  {
-                                    context
-                                        .read<ShowEmojiPickerCubit>()
-                                        .toggleEmojiPicker();
-                                  }
-                              } ,
-                              chatRoomId: widget.chatRoomEntity.chatRoomId!,
-                              currentUserUid: widget.currentUser.uid!,
-                              messageController: messageController,
-                            ),
-                            // 0.007.sizeH(context),
-                            // Emoji picker
-                            BlocBuilder<ShowEmojiPickerCubit, ShowEmojiPickerState>(
-                              builder: (context, state) {
-                                return state.emojiToggle == true
-                                    ? SizedBox(
-                                        height: 0.3.mediaH(context),
-                                        child: EmojiPicker(
-                                          textEditingController: messageController,
-                                          config: const Config(
-                                            height: 256,
-                                            checkPlatformCompatibility: true,
-                                            swapCategoryAndBottomBar: false,
-                                            skinToneConfig: SkinToneConfig(),
-                                            categoryViewConfig:
-                                                CategoryViewConfig(),
-                                            bottomActionBarConfig:
-                                                BottomActionBarConfig(),
-                                            searchViewConfig: SearchViewConfig(),
+                              // 0.007.sizeH(context),
+                              // Emoji picker
+                              BlocBuilder<ShowEmojiPickerCubit, ShowEmojiPickerState>(
+                                builder: (context, state) {
+                                  return state.emojiToggle == true
+                                      ? SizedBox(
+                                          height: 0.3.mediaH(context),
+                                          child: EmojiPicker(
+                                            textEditingController: messageController,
+                                            config: const Config(
+                                              height: 256,
+                                              checkPlatformCompatibility: true,
+                                              swapCategoryAndBottomBar: false,
+                                              skinToneConfig: SkinToneConfig(),
+                                              categoryViewConfig:
+                                                  CategoryViewConfig(),
+                                              bottomActionBarConfig:
+                                                  BottomActionBarConfig(),
+                                              searchViewConfig: SearchViewConfig(),
+                                            ),
                                           ),
-                                        ),
-                                      )
-                                    : const SizedBox();
-                              },
-                            ),
-                          ],
-                        ),
-                  );
+                                        )
+                                      : const SizedBox();
+                                },
+                              ),
+                            ],
+                          ),
+                    );
+              }
+              if (snapshot.hasError) {
+                return const ShowTextMessage(
+                  message: "Some Error Occurred",
+                  textColor: ColorsConsts.redColor,
+                );
+              }
             }
-            if (snapshot.hasError) {
-              return const ShowTextMessage(
-                message: "Some Error Occurred",
-                textColor: ColorsConsts.redColor,
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: ColorsConsts.containerGreen,
+                ),
               );
             }
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: ColorsConsts.containerGreen,
-              ),
-            );
-          }
-          if (snapshot.connectionState == ConnectionState.none) {
-            return const ShowTextMessage(
-              message: "Check your internet connection",
-              textColor: ColorsConsts.redColor,
-            );
-          } else {
-            return const SizedBox();
-          }
-        },
+            if (snapshot.connectionState == ConnectionState.none) {
+              return const ShowTextMessage(
+                message: "Check your internet connection",
+                textColor: ColorsConsts.redColor,
+              );
+            } else {
+              return const SizedBox();
+            }
+          },
+        ),
       ),
     );
   }

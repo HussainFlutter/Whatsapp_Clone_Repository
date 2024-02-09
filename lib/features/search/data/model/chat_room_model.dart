@@ -9,10 +9,12 @@ class ChatRoomModel extends ChatRoomEntity {
   final List<String>? participants;
   final DateTime? createAt;
   final String? lastMessage;
+  final Map<String,dynamic>? chatUsers;
   final DateTime? lastMessageCreateAt;
 
   const ChatRoomModel({
     this.chatRoomId,
+    this.chatUsers,
     this.participants,
     this.createAt,
     this.lastMessage,
@@ -21,6 +23,7 @@ class ChatRoomModel extends ChatRoomEntity {
     chatRoomId: chatRoomId,
     participants: participants,
     lastMessage: lastMessage,
+    chatUsers: chatUsers,
     lastMessageCreateAt: lastMessageCreateAt,
     createAt: createAt,
   );
@@ -39,9 +42,11 @@ class ChatRoomModel extends ChatRoomEntity {
     if (snap["lastMessageCreateAt"] != null) {
       lastMessageCreateAt = snap["lastMessageCreateAt"].toDate();
     }
+   // print(snap["chatUsers"] );
     return ChatRoomModel(
       chatRoomId: snap["chatRoomId"],
       participants: participants,
+      chatUsers:  snap["chatUsers"] as Map<String,dynamic>,
       lastMessage: snap["lastMessage"],
       lastMessageCreateAt: lastMessageCreateAt,
       createAt: snap["createAt"].toDate(),
@@ -51,6 +56,7 @@ class ChatRoomModel extends ChatRoomEntity {
   Map<String,dynamic> toMap () {
     return {
       "chatRoomId" : chatRoomId,
+      "chatUsers" : chatUsers,
       "participants" : participants as List<String>,
       "lastMessage" : lastMessage,
       "lastMessageCreateAt" : lastMessageCreateAt,

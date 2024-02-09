@@ -19,33 +19,77 @@ class SearchDataSourceImpl extends SearchDataSource {
   Future<Either<ChatRoomEntity, Failure>> createChatRoom(UserEntity currentUser,
       UserEntity targetUser,) async {
     try {
-      final result = await firestore.collection(FirebaseConsts.chatRooms)
-          .where("participants", arrayContains: [currentUser.uid , targetUser.uid])
-          .get();
-      if (result.docs.isEmpty) {
-        // create new chatroom
-        ChatRoomModel newChatRoom = ChatRoomModel(
-          participants: [
-            currentUser.uid!,
-            targetUser.uid!,
-          ],
-          createAt: DateTime.now(),
-          chatRoomId: randomId.v1(),
-          lastMessage: null,
-          lastMessageCreateAt: null,
-        );
-        await firestore.collection(FirebaseConsts.chatRooms)
-            .doc(newChatRoom.chatRoomId)
-            .set(
-          newChatRoom.toMap(),
-        );
-        return Left(newChatRoom);
-      }
-      else {
-        // fetch the chatRoom
-        return Left(ChatRoomModel.fromSnapshot(
-            result.docs[0].data() as DocumentSnapshot));
-      }
+      final result;
+      if(currentUser.uid! == targetUser.uid!)
+        {
+           result = await firestore.collection(FirebaseConsts.chatRooms)
+              .where("chatUsers.${targetUser.uid}", isEqualTo : false)
+              .get();
+           if (result.docs.isEmpty) {
+             Map<String,dynamic> ss = {
+               currentUser.uid! : false,
+             };
+             // create new chatroom
+             ChatRoomModel newChatRoom = ChatRoomModel(
+               participants: [
+                 currentUser.uid!,
+                 targetUser.uid!,
+               ],
+               createAt: DateTime.now(),
+               chatRoomId: randomId.v1(),
+               lastMessage: null,
+               lastMessageCreateAt: null,
+               chatUsers: ss,
+             );
+             await firestore.collection(FirebaseConsts.chatRooms)
+                 .doc(newChatRoom.chatRoomId)
+                 .set(
+               newChatRoom.toMap(),
+             );
+             return Left(newChatRoom);
+           }
+           else {
+             // fetch the chatRoom
+             return Left(ChatRoomModel.fromSnapshot(
+                 result.docs[0]));
+           }
+        }
+      else
+        {
+           result = await firestore.collection(FirebaseConsts.chatRooms)
+              .where("chatUsers.${currentUser.uid}", isEqualTo : true)
+              .where("chatUsers.${targetUser.uid}", isEqualTo: true)
+              .get();
+           if (result.docs.isEmpty) {
+             Map<String,dynamic> ss = {
+               targetUser.uid! : true ,
+               currentUser.uid! : true,
+             };
+             // create new chatroom
+             ChatRoomModel newChatRoom = ChatRoomModel(
+               participants: [
+                 currentUser.uid!,
+                 targetUser.uid!,
+               ],
+               createAt: DateTime.now(),
+               chatRoomId: randomId.v1(),
+               lastMessage: null,
+               lastMessageCreateAt: null,
+               chatUsers: ss,
+             );
+             await firestore.collection(FirebaseConsts.chatRooms)
+                 .doc(newChatRoom.chatRoomId)
+                 .set(
+               newChatRoom.toMap(),
+             );
+             return Left(newChatRoom);
+           }
+           else {
+             // fetch the chatRoom
+             return Left(ChatRoomModel.fromSnapshot(
+                 result.docs[0]));
+           }
+        }
     }
     catch (e) {
       customPrint(message: e.toString());
