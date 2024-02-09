@@ -127,63 +127,76 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                         },
                       ),
                     ],
-                  )
+                  ):
                   //Chat Room
-                  : Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Chat Room
-                        Flexible(
-                          child: ListView(
-                            reverse: true,
-                            //shrinkWrap: true,
-                            children: [
-                              ChatRoomMessages(
-                                currentUserUid: widget.currentUser.uid!,
-                                targetUserUid: widget.targetUser.uid!,
-                                messages: messages,
+                  GestureDetector(
+                      onTap: () => FocusScope.of(context).unfocus(),
+                      child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // Chat Room
+                            Flexible(
+                              child: ListView(
+                                reverse: true,
+                                //shrinkWrap: true,
+                                children: [
+                                  ChatRoomMessages(
+                                    currentUserUid: widget.currentUser.uid!,
+                                    targetUserUid: widget.targetUser.uid!,
+                                    messages: messages,
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                            // Message field
+                            MessageField(
+                              targetUserUid: widget.targetUser.uid!,
+                              onTap: () => context.read<ShowEmojiPickerCubit>().toggleEmojiPicker(changeEmoji: false),
+                              onTapOfEmoji: () {
+                                if(FocusScope.of(context).hasFocus)
+                                  {
+                                    FocusScope.of(context).unfocus();
+                                    context.read<ShowEmojiPickerCubit>().toggleEmojiPicker();
+                                  }
+                                else
+                                  {
+                                    context
+                                        .read<ShowEmojiPickerCubit>()
+                                        .toggleEmojiPicker();
+                                  }
+                              } ,
+                              chatRoomId: widget.chatRoomEntity.chatRoomId!,
+                              currentUserUid: widget.currentUser.uid!,
+                              messageController: messageController,
+                            ),
+                            // 0.007.sizeH(context),
+                            // Emoji picker
+                            BlocBuilder<ShowEmojiPickerCubit, ShowEmojiPickerState>(
+                              builder: (context, state) {
+                                return state.emojiToggle == true
+                                    ? SizedBox(
+                                        height: 0.3.mediaH(context),
+                                        child: EmojiPicker(
+                                          textEditingController: messageController,
+                                          config: const Config(
+                                            height: 256,
+                                            checkPlatformCompatibility: true,
+                                            swapCategoryAndBottomBar: false,
+                                            skinToneConfig: SkinToneConfig(),
+                                            categoryViewConfig:
+                                                CategoryViewConfig(),
+                                            bottomActionBarConfig:
+                                                BottomActionBarConfig(),
+                                            searchViewConfig: SearchViewConfig(),
+                                          ),
+                                        ),
+                                      )
+                                    : const SizedBox();
+                              },
+                            ),
+                          ],
                         ),
-                        // Message field
-                        MessageField(
-                          targetUserUid: widget.targetUser.uid!,
-                          onTap: () => context.read<ShowEmojiPickerCubit>().toggleEmojiPicker(changeEmoji: false),
-                          onTapOfEmoji: () => context
-                              .read<ShowEmojiPickerCubit>()
-                              .toggleEmojiPicker(),
-                          chatRoomId: widget.chatRoomEntity.chatRoomId!,
-                          currentUserUid: widget.currentUser.uid!,
-                          messageController: messageController,
-                        ),
-                        // 0.007.sizeH(context),
-                        // Emoji picker
-                        BlocBuilder<ShowEmojiPickerCubit, ShowEmojiPickerState>(
-                          builder: (context, state) {
-                            return state.emojiToggle == true
-                                ? SizedBox(
-                                    height: 0.3.mediaH(context),
-                                    child: EmojiPicker(
-                                      textEditingController: messageController,
-                                      config: const Config(
-                                        height: 256,
-                                        checkPlatformCompatibility: true,
-                                        swapCategoryAndBottomBar: false,
-                                        skinToneConfig: SkinToneConfig(),
-                                        categoryViewConfig:
-                                            CategoryViewConfig(),
-                                        bottomActionBarConfig:
-                                            BottomActionBarConfig(),
-                                        searchViewConfig: SearchViewConfig(),
-                                      ),
-                                    ),
-                                  )
-                                : const SizedBox();
-                          },
-                        ),
-                      ],
-                    );
+                  );
             }
             if (snapshot.hasError) {
               return const ShowTextMessage(
