@@ -36,4 +36,8 @@ class AuthRepoImpl extends AuthRepo {
   //Get Users and GetSingleUser
   @override
   Future<void> logOut() => dataSource.logOut();
+
+  @override
+  Future<Either<void, Failure>> changePresence(UserEntity user, bool presence)
+  => dataSource.changePresence(user, presence);
 }

@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
+import 'package:whatsapp_clone_repository/features/auth/domain/usecase/change_presence_use_case.dart';
 
 import '../../../../core/dependency_injection.dart';
 import '../../domain/usecase/create_user_usecase.dart';
@@ -22,11 +23,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final SignUpUsingPhoneNumberUseCase signUp;
   final GetCurrentUserUidUseCase getUid;
   final LogOutUseCase logOut;
+  final ChangePresenceUseCase changePresence;
   final CreateUserUseCase createUser;
-  LoginBloc({required this.logOut,required this.getSingleUser,required this.signUp,required this.getUid,required this.createUser}) : super(LoginInitial()) {
+  LoginBloc({
+    required this.logOut,
+    required this.getSingleUser,
+    required this.signUp,
+    required this.getUid,
+    required this.createUser,
+    required this.changePresence,
+  }) : super(LoginInitial()) {
     on<LoginUserEvent>((event, emit) => _sendCode(event));
     on<Login>((event, emit) => _login(event));
     on<LogOutEvent>((event, emit) => _logOut(event));
+    on<ChangePresenceEvent>((event, emit) => _changePresence(event));
   }
 
   _sendCode (
@@ -115,6 +125,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     {
       rethrow;
     }
+  }
+
+  _changePresence (
+      ChangePresenceEvent event,
+      ) async {
+    await changePresence(UserEntity(uid: event.uid),event.presence);
   }
 
 }

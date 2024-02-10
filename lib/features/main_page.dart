@@ -16,8 +16,37 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   @override
+  void initState() {
+    super.initState();
+    // Changing presence according to our users presence
+    context.read<LoginBloc>().add(
+        ChangePresenceEvent(uid: widget.currentUser.uid!, presence: true));
+    AppLifecycleListener(
+      onResume: (){
+        debugPrint("resumed");
+        context.read<LoginBloc>().add(
+            ChangePresenceEvent(uid: widget.currentUser.uid!, presence: true));
+      },
+      onPause: (){
+      debugPrint("paused");
+      context.read<LoginBloc>().add(
+          ChangePresenceEvent(uid: widget.currentUser.uid!, presence: false));
+    },
+      onInactive: (){
+        debugPrint("inactive");
+        context.read<LoginBloc>().add(
+            ChangePresenceEvent(uid: widget.currentUser.uid!, presence: false));
+      },
+      onDetach: (){
+      debugPrint("detached");
+      context.read<LoginBloc>().add(
+          ChangePresenceEvent(uid: widget.currentUser.uid!, presence: false));
+    }
+    );
+  }
+  @override
   Widget build(BuildContext context) {
-    final List<Widget> _tabs = [
+    final List<Widget> tabs = [
       ChatsPage(
         currentUser: widget.currentUser,
       ),
@@ -32,7 +61,7 @@ class _MainPageState extends State<MainPage> {
       ),
     ];
     return DefaultTabController(
-      length: _tabs.length,
+      length: tabs.length,
       initialIndex: 1,
       child: Scaffold(
         appBar: AppBar(
@@ -69,7 +98,7 @@ class _MainPageState extends State<MainPage> {
           bottom: const TabBarWidget(),
         ),
         body: TabBarView(
-          children: _tabs,
+          children: tabs,
         ),
       ),
     );

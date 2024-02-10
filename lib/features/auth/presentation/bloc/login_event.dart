@@ -37,3 +37,13 @@ class LogOutEvent extends LoginEvent{
   List<Object?> get props => [context];
 
 }
+
+class ChangePresenceEvent extends LoginEvent {
+  final String uid;
+  final bool presence;
+
+  const ChangePresenceEvent({required this.uid, required this.presence});
+
+  @override
+  List<Object?> get props => [uid,presence];
+}

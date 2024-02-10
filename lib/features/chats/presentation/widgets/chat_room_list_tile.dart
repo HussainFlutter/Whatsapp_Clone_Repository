@@ -50,7 +50,7 @@ class ChatRoomListTile extends StatelessWidget {
             .textTheme
             .displaySmall!
             .copyWith(
-            color: ColorsConsts.textGrey),
+            color: ColorsConsts.iconGrey),
       ),
       trailing: Text(
         chatRoomFetchedList

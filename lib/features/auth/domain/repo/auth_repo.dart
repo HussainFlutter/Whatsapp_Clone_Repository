@@ -14,4 +14,5 @@ abstract class AuthRepo {
   Future<Either<bool,Failure>> isLogin ();
   Stream<Either<List<UserEntity>,Failure>> getSingleUser (UserEntity user);
   Stream<Either<List<UserEntity>,Failure>> getUsers (UserEntity user);
+  Future<Either<void,Failure>> changePresence (UserEntity user,bool presence);
 }

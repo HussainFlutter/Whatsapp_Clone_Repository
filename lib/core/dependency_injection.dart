@@ -6,6 +6,7 @@ import 'package:uuid/uuid.dart';
 import 'package:whatsapp_clone_repository/features/auth/data/data_source/remote/auth_remote_data_source.dart';
 import 'package:whatsapp_clone_repository/features/auth/data/repo/auth_repo_impl.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/repo/auth_repo.dart';
+import 'package:whatsapp_clone_repository/features/auth/domain/usecase/change_presence_use_case.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/usecase/create_user_usecase.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/usecase/get_single_user_usecase.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/usecase/get_users_usecase.dart';
@@ -57,6 +58,7 @@ Future<void> init() async {
         getUid: sl<GetCurrentUserUidUseCase>(),
         createUser: sl<CreateUserUseCase>(),
         logOut: sl<LogOutUseCase>(),
+        changePresence: sl<ChangePresenceUseCase>(),
       ));
   sl.registerFactory(() => SearchBloc(
         getUsers: sl<GetUsersUseCase>(),
@@ -83,6 +85,7 @@ Future<void> init() async {
   sl.registerLazySingleton(
       () => SignUpUsingPhoneNumberUseCase(repo: sl<AuthRepo>()));
   sl.registerLazySingleton(() => UpdateUserUseCase(repo: sl<AuthRepo>()));
+  sl.registerLazySingleton(() => ChangePresenceUseCase(repo: sl<AuthRepo>()));
 
   // Use cases for search
   sl.registerLazySingleton(() => CreateChatRoomUseCase(repo: sl<SearchRepo>()));

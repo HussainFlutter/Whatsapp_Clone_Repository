@@ -209,5 +209,21 @@ class AuthRemoteDataSource extends AuthDataRepo {
     }
   }
 
+  @override
+  Future<Either<void, Failure>> changePresence(UserEntity user, bool presence) async {
+    try {
+      await firestore
+          .collection(FirebaseConsts.users)
+          .doc(user.uid!)
+          .update({
+        "presence":presence,
+      });
+      return const Left(null);
+    }catch(e){
+      customPrint(message: e.toString());
+      throw const Right(Failure(message: "Error occurred while changing presence"));
+    }
+  }
+
 
 }

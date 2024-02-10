@@ -32,7 +32,7 @@ class MessageField extends StatelessWidget {
           flex: 0,
           child: Row(
             children: [
-              Expanded(
+              Flexible(
                 child: Container(
                     decoration: BoxDecoration(
                         color: ColorsConsts.textGrey,
@@ -89,6 +89,7 @@ class MessageField extends StatelessWidget {
             ],
           ),
         ),
+        0.01.sizeH(context),
       ],
     );
   }
