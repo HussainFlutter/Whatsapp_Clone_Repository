@@ -28,7 +28,7 @@ class ChatRoomRepoDataSourceImpl extends ChatRoomRepoDataSource{
         messageId: randomId.v1(),
         chatRoomId: messageEntity.chatRoomId,
         creatorUid: messageEntity.creatorUid,
-        createdAt: DateTime.now(),
+        createdAt: DateTime.fromMicrosecondsSinceEpoch(DateTime.now().microsecondsSinceEpoch),
         isSent: false,
         isSeen: false,
       );
@@ -37,7 +37,14 @@ class ChatRoomRepoDataSourceImpl extends ChatRoomRepoDataSource{
          {
            "isSent" : true,
          }
-        );
+        ).then((value) {
+           firestore.collection(FirebaseConsts.chatRooms)
+              .doc(messageEntity.chatRoomId)
+              .update({
+              "lastMessage":messageModel.message,
+              "lastMessageCreateAt":messageModel.createdAt,
+          });
+        });
       });
       return const Left(null);
     }catch(e){

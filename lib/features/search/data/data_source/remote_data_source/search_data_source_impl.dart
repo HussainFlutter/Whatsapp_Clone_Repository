@@ -111,4 +111,19 @@ class SearchDataSourceImpl extends SearchDataSource {
           Failure(message: "Error occurred while making / fetching chatroom"));
     }
   }
+  @override
+  Stream<int> unreadMessages (ChatRoomEntity chatRoomEntity,String currentUserUid){
+    try{
+      final ref = firestore.collection(FirebaseConsts.chatRooms)
+          .doc(chatRoomEntity.chatRoomId)
+          .collection(FirebaseConsts.messages)
+          .where("targetUserUid",isEqualTo: currentUserUid)
+          .where("isSeen",isEqualTo: false)
+          .snapshots();
+      return ref.map((event) => event.docs.length);
+    }catch(e){
+      customPrint(message: e.toString());
+      rethrow;
+    }
+  }
 }

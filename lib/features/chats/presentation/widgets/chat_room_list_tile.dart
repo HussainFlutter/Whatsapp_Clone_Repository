@@ -2,10 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:whatsapp_clone_repository/core/utils.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
 import 'package:whatsapp_clone_repository/features/search/domain/entity/chat_room_entity.dart';
+import 'package:whatsapp_clone_repository/features/search/domain/usecase/unread_messages_use_case.dart';
 
 import '../../../../core/constants.dart';
+import '../../../../core/dependency_injection.dart';
 
 class ChatRoomListTile extends StatelessWidget {
   final UserEntity currentUser;
@@ -51,20 +54,46 @@ class ChatRoomListTile extends StatelessWidget {
             .displaySmall!
             .copyWith(
             color: ColorsConsts.iconGrey),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
-      trailing: Text(
-        chatRoomFetchedList
-            .lastMessageCreateAt ==
-            null
-            ? ""
-            : DateFormat("mm-dd").format(
+      trailing: Column(
+        children: [
+          Text(
             chatRoomFetchedList
-                .lastMessageCreateAt!),
-        style: Theme.of(context)
-            .textTheme
-            .displaySmall!
-            .copyWith(
-            color: ColorsConsts.textGrey),
+                .lastMessageCreateAt == null
+                ? ""
+                : DateFormat("hh:mm a").format(
+                chatRoomFetchedList
+                    .lastMessageCreateAt!),
+            style: Theme.of(context)
+                .textTheme
+                .displaySmall!
+                .copyWith(
+                color: ColorsConsts.iconGrey),
+          ),
+          StreamBuilder(
+              stream: sl<UnreadMessagesUseCase>().call(ChatRoomEntity(chatRoomId: chatRoomFetchedList.chatRoomId),currentUser.uid!),
+              builder: (context,snapshot){
+                if(snapshot.data == 0 || snapshot.data == null)
+                  {
+                    return const SizedBox();
+                  }
+                else
+                  {
+                    return Container(
+                      padding: EdgeInsets.all(0.01.mediaW(context)),
+                      decoration: const BoxDecoration(
+                          color: ColorsConsts.containerGreen,
+                          shape: BoxShape.circle
+                      ),
+                      child: Text(snapshot.data! > 99 ? "99+":snapshot.data.toString(),style: Theme.of(context).textTheme.displaySmall,),
+                    );
+                  }
+              },
+          )
+
+        ],
       ),
     );
   }

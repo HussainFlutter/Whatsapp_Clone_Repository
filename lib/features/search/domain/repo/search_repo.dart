@@ -10,4 +10,5 @@ import '../../../auth/domain/entity/user_entity.dart';
 abstract class SearchRepo {
   Future<Either<ChatRoomEntity,Failure>> createChatRoom(UserEntity currentUser,UserEntity targetUser,);
   Future<Either<void,Failure>> deleteChatRoom(ChatRoomEntity chatRoomEntity);
+  Stream<int> unreadMessages (ChatRoomEntity chatRoomEntity,String currentUserUid);
 }

@@ -26,6 +26,7 @@ import 'package:whatsapp_clone_repository/features/search/data/data_source/remot
 import 'package:whatsapp_clone_repository/features/search/data/repo/search_repo_impl.dart';
 import 'package:whatsapp_clone_repository/features/search/domain/repo/search_repo.dart';
 import 'package:whatsapp_clone_repository/features/search/domain/usecase/create_chat_room_usecase.dart';
+import 'package:whatsapp_clone_repository/features/search/domain/usecase/unread_messages_use_case.dart';
 import 'package:whatsapp_clone_repository/features/search/presentation/bloc/search_bloc.dart';
 import '../features/auth/data/data_source/remote/auth_data_repo.dart';
 import '../features/auth/domain/usecase/delete_user_usecase.dart';
@@ -90,6 +91,7 @@ Future<void> init() async {
   // Use cases for search
   sl.registerLazySingleton(() => CreateChatRoomUseCase(repo: sl<SearchRepo>()));
   sl.registerLazySingleton(() => DeleteChatRoomUseCase(repo: sl<SearchRepo>()));
+  sl.registerLazySingleton(() => UnreadMessagesUseCase(repo: sl<SearchRepo>()));
   // Use cases for search
   // Use cases for chat room
   sl.registerLazySingleton(() => SendMessageUseCase(repo: sl<ChatRoomRepo>()));

@@ -20,5 +20,9 @@ class SearchRepoImpl extends SearchRepo {
   Future<Either<void, Failure>> deleteChatRoom(ChatRoomEntity chatRoomEntity)
   async => deleteChatRoom(chatRoomEntity);
 
+  @override
+  Stream<int> unreadMessages(ChatRoomEntity chatRoomEntity, String currentUserUid)
+  => repo.unreadMessages(chatRoomEntity, currentUserUid);
+
 
 }
