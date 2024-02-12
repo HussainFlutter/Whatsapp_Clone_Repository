@@ -65,6 +65,7 @@ class _MainPageState extends State<MainPage> {
       initialIndex: 1,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
             "WhatsApp",
             style: Theme.of(context)

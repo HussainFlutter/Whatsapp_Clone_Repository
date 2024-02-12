@@ -23,3 +23,11 @@ class ChangeIsSeenEvent extends ChatRoomEvent {
   @override
   List<Object?> get props => [messageEntity];
 }
+class DeleteMessageEvent extends ChatRoomEvent {
+  final String messageId;
+  final String chatroomId;
+
+  const DeleteMessageEvent({required this.messageId,required this.chatroomId});
+  @override
+  List<Object?> get props => [messageId,chatroomId];
+}

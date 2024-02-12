@@ -11,6 +11,7 @@ import 'package:whatsapp_clone_repository/features/search/presentation/bloc/sear
 import 'config/theme.dart';
 import 'core/dependency_injection.dart';
 import 'core/on_generate_routes.dart';
+import 'features/chat_room/presentation/bloc/delete_appbar/delete_app_bar_cubit.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -46,6 +47,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) =>sl<ShowEmojiPickerCubit>(),
+        ),
+        BlocProvider(
+          create: (context) =>sl<DeleteAppBarCubit>(),
         ),
       ],
       child: MaterialApp(

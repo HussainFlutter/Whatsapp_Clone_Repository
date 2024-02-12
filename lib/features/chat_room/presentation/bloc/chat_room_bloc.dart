@@ -29,6 +29,7 @@ class ChatRoomBloc extends Bloc<ChatRoomEvent, ChatRoomState> {
       : super(ChatRoomInitial()) {
     on<SendMessageEvent>((event, emit) => _sendMessage(event));
     on<ChangeIsSeenEvent>((event, emit) => _changeSeenStatus (event));
+    on<DeleteMessageEvent>((event, emit) => _deleteMessage(event));
   }
   _sendMessage(
     SendMessageEvent event,
@@ -48,5 +49,10 @@ class ChatRoomBloc extends Bloc<ChatRoomEvent, ChatRoomState> {
       ChangeIsSeenEvent event,
       ) async{
     await changeStatus(event.messageEntity);
+  }
+  _deleteMessage(
+      DeleteMessageEvent event,
+      ) async {
+    await deleteMessage(MessageEntity(chatRoomId: event.chatroomId,messageId:event.messageId ));
   }
 }

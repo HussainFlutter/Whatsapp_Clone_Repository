@@ -7,7 +7,9 @@ import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/domain/entity/message_entity.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/delete_appbar/delete_app_bar_cubit.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/show_emoji_picker_cubit.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/presentation/widgets/chat_room_delete_appbar.dart';
 import 'package:whatsapp_clone_repository/features/search/domain/entity/chat_room_entity.dart';
 import 'package:whatsapp_clone_repository/features/z_global_widgets/show_text_message.dart';
 import '../../../../core/dependency_injection.dart';
@@ -45,22 +47,39 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     super.dispose();
     messageController.dispose();
   }
-
-  @override
-  void initState() {
-    super.initState();
-    //TODO: set target users messages isSeen messages true
-
-  }
-
+//TODO: FIX cannot delete targetUser message
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorsConsts.backgroundColor,
-      appBar: ChatRoomAppBar(
-        currentUser: widget.currentUser,
-        targetUser: widget.targetUser,
+      appBar: PreferredSize(
+        preferredSize: const Size(kToolbarHeight, kToolbarHeight),
+        child: BlocBuilder<DeleteAppBarCubit,DeleteAppBarState>(
+          builder: (context,state){
+            if (state.selected == true)
+              {
+                return  ChatRoomDeleteAppBar(
+                  chatRoomId: widget.chatRoomEntity.chatRoomId!,
+                  numberOfMessages: state.messagesSelected,
+                );
+              }
+            else
+              {
+                return ChatRoomAppBar(
+                  currentUser: widget.currentUser,
+                  targetUser: widget.targetUser,
+                );
+              }
+          },
+        ),
       ),
+
+      // 1==1 ? ChatRoomDeleteAppBar(
+      //   messageEntity: MessageEntity(),
+      // ) : ChatRoomAppBar(
+      //   currentUser: widget.currentUser,
+      //   targetUser: widget.targetUser,
+      // ),
       body: PopScope(
         onPopInvoked: (e){
           context.read<ShowEmojiPickerCubit>().toggleEmojiPicker(changeEmoji: false);

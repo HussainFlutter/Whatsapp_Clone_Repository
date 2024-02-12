@@ -78,10 +78,14 @@ class ChatRoomRepoDataSourceImpl extends ChatRoomRepoDataSource{
         .doc(messageEntity.chatRoomId)
         .collection("messages");
     try{
-      if(messageEntity.message != null || messageEntity.message != "")
-      {
-        await ref.doc(messageEntity.messageId).delete();
-      }
+         ref.doc(messageEntity.messageId).delete();
+         //ref.where("createAt")
+         //TODO: implement this logic here
+         firestore.collection(FirebaseConsts.chatRooms)
+             .doc(messageEntity.chatRoomId).update({
+           "lastMessage": "You deleted this message",
+           "lastMessageCreateAt" : DateTime.fromMicrosecondsSinceEpoch(DateTime.now().microsecondsSinceEpoch),
+         });
       return const Left(null);
     }catch(e) {
       customPrint(message: e.toString());
