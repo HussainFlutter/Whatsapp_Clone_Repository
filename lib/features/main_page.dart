@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
+import 'package:whatsapp_clone_repository/features/status/presentation/pages/status_page.dart';
 import 'auth/presentation/bloc/login_bloc.dart';
 import 'chats/presentation/pages/chat_page.dart';
 import 'z_global_widgets/tabBar_widget.dart';
@@ -53,9 +54,7 @@ class _MainPageState extends State<MainPage> {
       ChatsPage(
         currentUser: widget.currentUser,
       ),
-      ChatsPage(
-        currentUser: widget.currentUser,
-      ),
+      const StatusPage(),
       ChatsPage(
         currentUser: widget.currentUser,
       ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/domain/usecase/get_last_message_use_case.dart';
 import 'package:whatsapp_clone_repository/features/search/domain/entity/chat_room_entity.dart';
 import 'package:whatsapp_clone_repository/features/search/domain/usecase/unread_messages_use_case.dart';
 
@@ -46,54 +47,80 @@ class ChatRoomListTile extends StatelessWidget {
             .textTheme
             .displaySmall,
       ),
-      subtitle: Text(
-        chatRoomFetchedList.lastMessage ??
-            "Say hi to your new friend",
-        style: Theme.of(context)
-            .textTheme
-            .displaySmall!
-            .copyWith(
-            color: ColorsConsts.iconGrey),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      trailing: Column(
-        children: [
-          Text(
-            chatRoomFetchedList
-                .lastMessageCreateAt == null
-                ? ""
-                : DateFormat("hh:mm a").format(
-                chatRoomFetchedList
-                    .lastMessageCreateAt!),
+      subtitle: StreamBuilder(
+        stream: sl<GetLastMessageUseCase>().call(ChatRoomEntity(chatRoomId: chatRoomFetchedList.chatRoomId)),
+        builder: (context, snapshot) {
+          String lastMessage;
+          if(snapshot.hasData)
+            {
+              lastMessage = snapshot.data!.message!;
+            }
+          else
+            {
+              lastMessage = "Say hi to your friend";
+            }
+          return Text(
+            lastMessage,
             style: Theme.of(context)
                 .textTheme
                 .displaySmall!
                 .copyWith(
                 color: ColorsConsts.iconGrey),
-          ),
-          StreamBuilder(
-              stream: sl<UnreadMessagesUseCase>().call(ChatRoomEntity(chatRoomId: chatRoomFetchedList.chatRoomId),currentUser.uid!),
-              builder: (context,snapshot){
-                if(snapshot.data == 0 || snapshot.data == null)
-                  {
-                    return const SizedBox();
-                  }
-                else
-                  {
-                    return Container(
-                      padding: EdgeInsets.all(0.01.mediaW(context)),
-                      decoration: const BoxDecoration(
-                          color: ColorsConsts.containerGreen,
-                          shape: BoxShape.circle
-                      ),
-                      child: Text(snapshot.data! > 99 ? "99+":snapshot.data.toString(),style: Theme.of(context).textTheme.displaySmall,),
-                    );
-                  }
-              },
-          )
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          );
+        }
+      ),
+      trailing: StreamBuilder(
+        stream: sl<GetLastMessageUseCase>().call(ChatRoomEntity(chatRoomId: chatRoomFetchedList.chatRoomId)),
+        builder: (context, snapshot) {
+          print(snapshot.data);
+          DateTime? lastMessageCreateAt;
+          if(snapshot.hasData)
+          {
+            lastMessageCreateAt = snapshot.data!.createdAt!;
+          }
+          else
+          {
+            lastMessageCreateAt = null;
+          }
+          return Column(
+            children: [
+              Text(
+                lastMessageCreateAt == null
+                    ? ""
+                    : DateFormat("hh:mm a").format(
+                    lastMessageCreateAt),
+                style: Theme.of(context)
+                    .textTheme
+                    .displaySmall!
+                    .copyWith(
+                    color: ColorsConsts.iconGrey),
+              ),
+              StreamBuilder(
+                  stream: sl<UnreadMessagesUseCase>().call(ChatRoomEntity(chatRoomId: chatRoomFetchedList.chatRoomId),currentUser.uid!),
+                  builder: (context,snapshot){
+                    if(snapshot.data == 0 || snapshot.data == null)
+                      {
+                        return const SizedBox();
+                      }
+                    else
+                      {
+                        return Container(
+                          padding: EdgeInsets.all(0.01.mediaW(context)),
+                          decoration: const BoxDecoration(
+                              color: ColorsConsts.containerGreen,
+                              shape: BoxShape.circle
+                          ),
+                          child: Text(snapshot.data! > 99 ? "99+":snapshot.data.toString(),style: Theme.of(context).textTheme.displaySmall,),
+                        );
+                      }
+                  },
+              )
 
-        ],
+            ],
+          );
+        }
       ),
     );
   }

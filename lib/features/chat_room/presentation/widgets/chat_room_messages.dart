@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/domain/entity/message_entity.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/delete_appbar/delete_app_bar_cubit.dart';
-
 import '../../../../core/constants.dart';
 import '../bloc/chat_room_bloc.dart';
 
@@ -14,11 +13,12 @@ class ChatRoomMessages extends StatefulWidget {
   final List<MessageEntity> messages;
   final String currentUserUid;
   final String targetUserUid;
-  const ChatRoomMessages(
-      {super.key,
+  const ChatRoomMessages({
+      super.key,
       required this.messages,
       required this.currentUserUid,
-      required this.targetUserUid});
+      required this.targetUserUid,
+  });
 
   @override
   State<ChatRoomMessages> createState() => _ChatRoomMessagesState();
@@ -34,12 +34,7 @@ class _ChatRoomMessagesState extends State<ChatRoomMessages> {
           ? false
           : true,
       onPopInvoked: (e) {
-        // setState(() {
-        //   selectedIndex.clear();
         context.read<DeleteAppBarCubit>().changeSelected(selected: false,clear:true);
-          // context.read<DeleteAppBarCubit>().state.selectedIndex.clear();
-          // context.read<DeleteAppBarCubit>().changeSelected(false);
-       // });
       },
       child: GroupedListView(
         sort: false,
@@ -105,33 +100,32 @@ class _ChatRoomMessagesState extends State<ChatRoomMessages> {
           }
           return InkWell(
             onLongPress: () {
-              //context.read<DeleteAppBarCubit>().changeSelected(selected: true);
-              print("onlongress${context.read<DeleteAppBarCubit>().state.selected}");
-              context.read<DeleteAppBarCubit>().changeSelected(selected: true,index: index,messageId: widget.messages[index].messageId);
-             // context.read<DeleteAppBarCubit>().changeSelected(true);
-              //selectedIndex.add(index);
+              if(widget.messages[index].creatorUid == widget.currentUserUid)
+                {
+                  debugPrint("on long press${context.read<DeleteAppBarCubit>().state.selected}");
+                  context.read<DeleteAppBarCubit>().changeSelected(selected: true,index: index,messageId: widget.messages[index].messageId);
+                }
             },
             onTap: () {
-             // context.read<DeleteAppBarCubit>().changeSelected(selected: true,index: index);
-              print("on tap start ${context.read<DeleteAppBarCubit>().state.selected}");
+              if(widget.messages[index].creatorUid == widget.currentUserUid)
+                {
+                debugPrint("on tap start ${context.read<DeleteAppBarCubit>().state.selected}");
              if (context.read<DeleteAppBarCubit>().state.selected == true) {
                 if (context.read<DeleteAppBarCubit>().state.selectedIndex.contains(index)) {
-                //  selectedIndex.remove(index);
                   context.read<DeleteAppBarCubit>().changeSelected(selected: true,index: index,remove: true,messageId: widget.messages[index].messageId);
                   if (context.read<DeleteAppBarCubit>().state.selectedIndex.isEmpty) {
-                    print("empty");
-                    //  print("if list is empty ${context.read<DeleteAppBarCubit>().state.selected}");
+                    debugPrint("empty");
                     context.read<DeleteAppBarCubit>().changeSelected(selected: false);
                   }
-                  print("removed from list ${context.read<DeleteAppBarCubit>().state.selected}");
+                  debugPrint("removed from list ${context.read<DeleteAppBarCubit>().state.selected}");
                 } else {
-                  print("added to list ${context.read<DeleteAppBarCubit>().state.selected}");
+                  debugPrint("added to list ${context.read<DeleteAppBarCubit>().state.selected}");
                   context.read<DeleteAppBarCubit>().changeSelected(selected: true,index: index,messageId: widget.messages[index].messageId);
-              //    selectedIndex.add(index);
                 }
               }
-              print(context.read<DeleteAppBarCubit>().state.selectedIndex);
-              print("on tap end "+context.read<DeleteAppBarCubit>().state.selected.toString());
+              debugPrint(context.read<DeleteAppBarCubit>().state.selectedIndex.toString());
+              debugPrint("on tap end ${context.read<DeleteAppBarCubit>().state.selected}");
+                }
             },
             child: BlocBuilder<DeleteAppBarCubit, DeleteAppBarState>(
               builder: (context, state) {

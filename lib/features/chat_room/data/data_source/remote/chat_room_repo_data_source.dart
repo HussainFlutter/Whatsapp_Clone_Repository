@@ -11,4 +11,5 @@ abstract class ChatRoomRepoDataSource {
   Future<Either<void,Failure>> updateMessage(MessageEntity messageEntity);
   Stream<List<MessageEntity>> getMessage(ChatRoomEntity chatRoomEntity);
   Future<Either<void,Failure>> changeMessageSeenStatus (MessageEntity message);
+  Stream<MessageEntity> getLastMessage(ChatRoomEntity chatRoomEntity);
 }

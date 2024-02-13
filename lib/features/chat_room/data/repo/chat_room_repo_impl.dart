@@ -31,4 +31,8 @@ class ChatRoomRepoImpl extends ChatRoomRepo {
   @override
   Future<Either<void, Failure>> changeMessageSeenStatus(MessageEntity message)
   => dataSource.changeMessageSeenStatus(message);
+
+  @override
+  Stream<MessageEntity> getLastMessage(ChatRoomEntity chatRoomEntity)
+    => dataSource.getLastMessage(chatRoomEntity);
 }
