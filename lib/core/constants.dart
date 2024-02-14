@@ -7,6 +7,7 @@ class FirebaseConsts {
   static const users = "users";
   static const chatRooms = "chatRooms";
   static const messages = "messages";
+  static const status = "status";
 }
 
 class ColorsConsts {
