@@ -6,7 +6,6 @@ import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/usecase/change_presence_use_case.dart';
-
 import '../../../../core/dependency_injection.dart';
 import '../../domain/usecase/create_user_usecase.dart';
 import '../../domain/usecase/get_current_user_uid_usecase.dart';
