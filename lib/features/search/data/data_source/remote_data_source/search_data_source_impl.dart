@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/failures.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
+import 'package:whatsapp_clone_repository/features/auth/domain/usecase/update_user_usecase.dart';
 import 'package:whatsapp_clone_repository/features/search/data/data_source/remote_data_source/search_data_source.dart';
 import 'package:whatsapp_clone_repository/features/search/data/model/chat_room_model.dart';
 import 'package:whatsapp_clone_repository/features/search/domain/entity/chat_room_entity.dart';
@@ -19,7 +20,7 @@ class SearchDataSourceImpl extends SearchDataSource {
   Future<Either<ChatRoomEntity, Failure>> createChatRoom(UserEntity currentUser,
       UserEntity targetUser,) async {
     try {
-      final result;
+      final QuerySnapshot<Map<String, dynamic>> result;
       if(currentUser.uid! == targetUser.uid!)
         {
            result = await firestore.collection(FirebaseConsts.chatRooms)
@@ -65,7 +66,7 @@ class SearchDataSourceImpl extends SearchDataSource {
                targetUser.uid! : true ,
                currentUser.uid! : true,
              };
-             // create new chatroom
+             // Create new chatroom
              ChatRoomModel newChatRoom = ChatRoomModel(
                participants: [
                  currentUser.uid!,
@@ -82,6 +83,18 @@ class SearchDataSourceImpl extends SearchDataSource {
                  .set(
                newChatRoom.toMap(),
              );
+             //Update target user and currentUser list of chat rooms with
+             await sl<UpdateUserUseCase>().call(
+                 UserEntity(
+               uid: targetUser.uid,
+               chatRoomsWith: [currentUser.uid!],
+             ));
+             await sl<UpdateUserUseCase>().call(
+                 UserEntity(
+                   uid: currentUser.uid,
+                   chatRoomsWith: [targetUser.uid!],
+                 ));
+             //Update target user and currentUser list of chat rooms with
              return Left(newChatRoom);
            }
            else {

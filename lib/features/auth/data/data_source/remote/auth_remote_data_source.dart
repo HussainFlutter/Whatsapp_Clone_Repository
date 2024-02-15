@@ -47,6 +47,7 @@ class AuthRemoteDataSource extends AuthDataRepo {
         about: user.about,
         presence: user.presence,
         createAt: user.createAt,
+        chatRoomsWith: user.chatRoomsWith,
       );
       await firestore.collection(FirebaseConsts.users).doc(user.uid).set(
           createUser.toMap(),
@@ -84,7 +85,6 @@ class AuthRemoteDataSource extends AuthDataRepo {
 
   @override
   Stream<Either<List<UserEntity>, Failure>> getSingleUser(UserEntity user) {
-    try{
       try {
         return firestore
             .collection(FirebaseConsts.users)
@@ -95,7 +95,7 @@ class AuthRemoteDataSource extends AuthDataRepo {
           final List<UserEntity> users = querySnapshot.docs
               .map((DocumentSnapshot document) => UserModel.fromSnapshot(document))
               .toList();
-          
+          customPrint(message: users.toString());
           if (users.isNotEmpty) {
             return Left(users);
           } else {
@@ -103,13 +103,9 @@ class AuthRemoteDataSource extends AuthDataRepo {
           }
         });
       } catch (e) {
+        customPrint(message: e.toString());
         throw const Right(Failure(message: "Error fetching user"));
       }
-    }
-    catch(e){
-      customPrint(message: e.toString());
-      throw Right(Failure(message:"Error getting using" ,error: e.toString()));
-    }
   }
 
   @override
@@ -165,16 +161,21 @@ class AuthRemoteDataSource extends AuthDataRepo {
   @override
   Future<Either<void, Failure>> updateUser(UserEntity user) async {
     try{
+    //  print(user);
        Map<String,dynamic> updatedUser = {};
-      if(user.about != null || user.about != "")
+      if(user.about != null && user.about != "")
         {
           updatedUser["about"] = user.about;
         }
-      if(user.name != null || user.name != "")
+       if(user.chatRoomsWith!.isNotEmpty)
+       {
+         updatedUser["chatRoomsWith"] = FieldValue.arrayUnion([user.chatRoomsWith![0]]);
+       }
+      if(user.name != null && user.name != "")
         {
           updatedUser["name"] = user.name;
         }
-      if(user.phoneNumber != null || user.phoneNumber != "")
+      if(user.phoneNumber != null && user.phoneNumber != "")
         {
           updatedUser["phoneNumber"] = user.phoneNumber;
         }
@@ -182,7 +183,7 @@ class AuthRemoteDataSource extends AuthDataRepo {
         {
           updatedUser["presence"] = user.presence;
         }
-       if(user.profilePic != null || user.profilePic != "")
+       if(user.profilePic != null && user.profilePic != "")
        {
          updatedUser["profilePic"] = user.profilePic;
        }

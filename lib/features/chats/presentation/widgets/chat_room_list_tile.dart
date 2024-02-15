@@ -74,7 +74,7 @@ class ChatRoomListTile extends StatelessWidget {
       trailing: StreamBuilder(
         stream: sl<GetLastMessageUseCase>().call(ChatRoomEntity(chatRoomId: chatRoomFetchedList.chatRoomId)),
         builder: (context, snapshot) {
-          print(snapshot.data);
+       //   print(snapshot.data);
           DateTime? lastMessageCreateAt;
           if(snapshot.hasData)
           {

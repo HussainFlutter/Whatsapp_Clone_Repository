@@ -37,11 +37,13 @@ class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
             final result2 =  await getUid();
             result2.fold(
                   (l) async{
+                    debugPrint("login bloc currentUser:$l");
                     final String uid = l!;
                     UserEntity currentUser = const UserEntity();
                     //fetching user
                     final stream = getSingleUser(UserEntity(uid: uid)).listen((event) {
                       event.fold((fetchedUser) {
+                        debugPrint("login bloc currentUser:$fetchedUser");
                          currentUser = fetchedUser[0];
                          completer.complete();
                       }, (r) {
@@ -55,6 +57,7 @@ class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
                     if(event.context.mounted)
                       {
                         stream.cancel();
+                       // print(currentUser);
                         Navigator.pushReplacementNamed(event.context, RouteNames.mainPage,
                             arguments: currentUser
                         );

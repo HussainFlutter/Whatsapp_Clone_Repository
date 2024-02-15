@@ -8,6 +8,8 @@ import 'package:whatsapp_clone_repository/features/status/data/data_source/remot
 import 'package:whatsapp_clone_repository/features/status/domain/entity/status_entity.dart';
 import 'package:whatsapp_clone_repository/features/status/domain/repo/status_repo.dart';
 
+import '../../../auth/domain/entity/user_entity.dart';
+
 class StatusRepoImpl extends StatusRepo {
   final StatusRepoRemoteDataSource dataSource;
 
@@ -24,8 +26,8 @@ class StatusRepoImpl extends StatusRepo {
   => dataSource.getMyStatus(statusEntity);
 
   @override
-  Stream<List<StatusEntity>> getStatus(StatusEntity statusEntity)
-  => dataSource.getStatus(statusEntity);
+  Stream<List<StatusEntity>> getStatus(StatusEntity statusEntity,UserEntity currentUser)
+  => dataSource.getStatus(statusEntity, currentUser);
 
   @override
   Future<Either<void, Failure>> updateStatus(StatusEntity statusEntity)

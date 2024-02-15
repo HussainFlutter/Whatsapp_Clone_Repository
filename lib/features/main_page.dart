@@ -19,7 +19,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    // Changing presence according to our users presence
+   // Changing presence according to our users presence
     context.read<LoginBloc>().add(
         ChangePresenceEvent(uid: widget.currentUser.uid!, presence: true));
     AppLifecycleListener(
@@ -47,6 +47,7 @@ class _MainPageState extends State<MainPage> {
   }
   @override
   Widget build(BuildContext context) {
+    //debugPrint("Main Page currentUser:${widget.currentUser}");
     final List<Widget> tabs = [
       ChatsPage(
         currentUser: widget.currentUser,
@@ -54,7 +55,7 @@ class _MainPageState extends State<MainPage> {
       ChatsPage(
         currentUser: widget.currentUser,
       ),
-      const StatusPage(),
+       StatusPage(currentUser: widget.currentUser,),
       ChatsPage(
         currentUser: widget.currentUser,
       ),

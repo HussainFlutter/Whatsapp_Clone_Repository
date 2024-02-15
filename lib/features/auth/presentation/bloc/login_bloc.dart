@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -78,6 +77,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                   getSingleUser(UserEntity(uid: uid)).listen((user) {
                     user.fold((l) {
                       // fetched user
+
                       Navigator.pushReplacementNamed(
                         event.context,
                         RouteNames.mainPage,
@@ -92,7 +92,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                             about: "Hey, I'm Using WhatsApp Clone!",
                             phoneNumber: event.phoneNumber,
                             presence: false,
-                            createAt: DateTime.now()
+                            createAt: DateTime.now(),
+                            chatRoomsWith: const [],
                         ),
                       );
                     });

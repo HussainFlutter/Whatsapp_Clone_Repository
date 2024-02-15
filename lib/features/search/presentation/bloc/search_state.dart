@@ -16,4 +16,8 @@ class SearchLoaded extends SearchState {
   @override
   List<Object> get props => [foundUsers,notFoundUsers];
 }
-class SearchError extends SearchState {}
+class SearchNoContactsFound extends SearchState {
+  final String noContacts =  "No contacts found";
+  @override
+  List<Object> get props => [noContacts];
+}

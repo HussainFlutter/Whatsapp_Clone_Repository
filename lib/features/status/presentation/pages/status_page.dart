@@ -3,15 +3,22 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
+import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
 
 class StatusPage extends StatefulWidget {
-  const StatusPage({super.key});
+  final UserEntity currentUser;
+  const StatusPage({super.key, required this.currentUser});
 
   @override
   State<StatusPage> createState() => _StatusPageState();
 }
 
 class _StatusPageState extends State<StatusPage> {
+  @override
+  void initState() {
+    super.initState();
+    print("chatRooms"+widget.currentUser.chatRoomsWith.toString());
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

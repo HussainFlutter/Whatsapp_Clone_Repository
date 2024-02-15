@@ -9,9 +9,11 @@ class UserModel extends UserEntity {
   final String? profilePic;
   final bool? presence;
   final DateTime? createAt;
+  final List<String?>? chatRoomsWith;
 
   const UserModel({
     this.name,
+    this.chatRoomsWith,
     this.uid,
     this.about,
     this.phoneNumber,
@@ -26,10 +28,12 @@ class UserModel extends UserEntity {
     profilePic: profilePic,
     presence: presence,
     createAt: createAt,
+    chatRoomsWith: chatRoomsWith,
   );
 
   factory UserModel.fromSnapshot (DocumentSnapshot snapshot) {
     final snap = snapshot.data() as Map<String,dynamic>;
+   // customPrint(message: snap.toString());
     return UserModel(
       name: snap["name"],
       uid: snap["uid"],
@@ -38,6 +42,7 @@ class UserModel extends UserEntity {
       profilePic: snap["profilePic"],
       presence: snap["presence"],
       createAt: snap["createAt"].toDate(),
+      chatRoomsWith: List.from(snap["chatRoomsWith"]),
     );
   }
 
@@ -50,6 +55,7 @@ class UserModel extends UserEntity {
       "profilePic" : profilePic,
       "presence" : presence,
       "createAt" : createAt,
+      "chatRoomsWith" :chatRoomsWith,
     };
   }
 

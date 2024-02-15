@@ -9,8 +9,10 @@ class UserEntity extends Equatable {
   final String? profilePic;
   final bool? presence;
   final DateTime? createAt;
+  final List<String?>? chatRoomsWith;
 
   const UserEntity({
+    this.chatRoomsWith,
     this.name,
     this.uid,
     this.about,
@@ -41,5 +43,6 @@ class UserEntity extends Equatable {
     profilePic,
     presence,
     createAt,
+    chatRoomsWith,
   ];
 }
