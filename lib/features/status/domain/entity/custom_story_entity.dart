@@ -1,19 +1,20 @@
 
 
 import 'package:equatable/equatable.dart';
-import 'package:whatsapp_clone_repository/features/status/domain/entity/status_entity.dart';
 
 class CustomStoryEntity extends Equatable{
   final String? url;
-  final StatusType? type;
+  final String? caption;
+  final String? type;
 
-  const CustomStoryEntity({ this.url,  this.type});
+  const CustomStoryEntity({ this.url,  this.type,this.caption});
 
 
   factory CustomStoryEntity.fromJson (Map<String,dynamic> json) {
     return CustomStoryEntity(
       url: json["url"],
       type: json["type"],
+      caption: json["caption"],
     );
   }
 
@@ -21,10 +22,11 @@ class CustomStoryEntity extends Equatable{
     return {
       "url" :url,
       "type" :type,
+      "caption" :caption,
     };
   }
 
 
   @override
-  List<Object?> get props => [url,type];
+  List<Object?> get props => [url,type,caption];
 }

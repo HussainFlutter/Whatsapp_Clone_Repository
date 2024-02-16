@@ -8,6 +8,8 @@ import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/c
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/chat_room_bloc.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/show_emoji_picker_cubit.dart';
 import 'package:whatsapp_clone_repository/features/search/presentation/bloc/search_bloc.dart';
+import 'package:whatsapp_clone_repository/features/status/presentation/bloc/get_my_status_cubit.dart';
+import 'package:whatsapp_clone_repository/features/status/presentation/bloc/status_bloc.dart';
 import 'config/theme.dart';
 import 'core/dependency_injection.dart';
 import 'core/on_generate_routes.dart';
@@ -50,6 +52,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) =>sl<DeleteAppBarCubit>(),
+        ),
+        BlocProvider(
+          create: (context) =>sl<StatusBloc>(),
+        ),
+        BlocProvider(
+          create: (context) =>sl<GetMyStatusCubit>(),
         ),
       ],
       child: MaterialApp(

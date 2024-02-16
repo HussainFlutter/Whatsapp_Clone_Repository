@@ -27,9 +27,10 @@ class _LoginPageState extends State<LoginPage> {
       body: Form(
         key: _key,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SingleChildScrollView(
                 child: Column(
@@ -38,24 +39,26 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Enter your phone number",style: Theme.of(context).textTheme.displayMedium,),
+                        Flexible(child: Text("Enter your phone number",style: Theme.of(context).textTheme.displayMedium,overflow: TextOverflow.ellipsis,)),
                         0.04.sizeW(context),
                         Icon(Icons.more_vert,size: 0.05.mediaH(context),),
                       ],
                     ),
                     0.05.sizeH(context),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "WhatsApp Clone will need to verify your phone number. ",
-                            style: Theme.of(context).textTheme.displaySmall!.copyWith(fontSize: 14)
-                          ),
-                          TextSpan(
-                            text: "What's \n                                       my number?",
-                            style: Theme.of(context).textTheme.displaySmall!.copyWith(fontSize: 14,color: Colors.blue),
-                          ),
-                        ]
+                    Center(
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "WhatsApp Clone will need to verify your phone number. ",
+                              style: Theme.of(context).textTheme.displaySmall!.copyWith(fontSize: 14)
+                            ),
+                            TextSpan(
+                              text: "What's my number?",
+                              style: Theme.of(context).textTheme.displaySmall!.copyWith(fontSize: 14,color: Colors.blue),
+                            ),
+                          ]
+                        ),
                       ),
                     ),
                     0.05.sizeH(context),

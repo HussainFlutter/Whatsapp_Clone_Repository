@@ -31,14 +31,16 @@ class StatusModel extends StatusEntity {
 
   factory StatusModel.fromSnapshot (DocumentSnapshot snapshot) {
     final snap = snapshot.data() as Map<String,dynamic>;
-
+    final stories = snap['stories'] as List;
+    List<CustomStoryEntity> storiesData =
+    stories.map((element) => CustomStoryEntity.fromJson(element)).toList();
     return StatusModel(
       statusId: snap["statusId"],
       profilePic: snap["profilePic"],
       creatorUid: snap["creatorUid"],
       name: snap["name"],
-      createAt: snap["createAt"],
-      stories: List.from(snap["stories"]),
+      createAt: snap["createAt"].toDate(),
+      stories:storiesData,
     );
   }
 
@@ -49,7 +51,7 @@ class StatusModel extends StatusEntity {
       "creatorUid" : creatorUid,
       "name" : name,
       "createAt" : createAt,
-      "stories" : stories,
+      "stories" : stories?.map((story) => story.toMap()).toList(),
     };
   }
 

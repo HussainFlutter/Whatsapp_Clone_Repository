@@ -7,6 +7,7 @@ import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entit
 import 'package:whatsapp_clone_repository/features/chat_room/domain/usecase/get_last_message_use_case.dart';
 import 'package:whatsapp_clone_repository/features/search/domain/entity/chat_room_entity.dart';
 import 'package:whatsapp_clone_repository/features/search/domain/usecase/unread_messages_use_case.dart';
+import 'package:whatsapp_clone_repository/features/z_global_widgets/default_circle_avatar_or_profile_pic.dart';
 
 import '../../../../core/constants.dart';
 import '../../../../core/dependency_injection.dart';
@@ -31,16 +32,17 @@ class ChatRoomListTile extends StatelessWidget {
               });
         }
       },
-      leading: targetUser.profilePic == null ||
-          targetUser.profilePic == ""
-          ? const CircleAvatar(
-        backgroundImage: AssetImage(
-            "assets/image_assets/default_profile_picture.jpg"),
-      )
-          : CircleAvatar(
-        backgroundImage: NetworkImage(
-            targetUser.profilePic!),
-      ),
+      leading: DefaultCircleAvatar(url: targetUser.profilePic,),
+      // leading: targetUser.profilePic == null ||
+      //     targetUser.profilePic == ""
+      //     ? const CircleAvatar(
+      //   backgroundImage: AssetImage(
+      //       "assets/image_assets/default_profile_picture.jpg"),
+      // )
+      //     : CircleAvatar(
+      //   backgroundImage: NetworkImage(
+      //       targetUser.profilePic!),
+      // ),
       title: Text(
         currentUser.uid == targetUser.uid ? "(You)" : targetUser.name!,
         style: Theme.of(context)

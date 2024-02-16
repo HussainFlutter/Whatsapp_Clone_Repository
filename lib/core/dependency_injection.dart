@@ -6,6 +6,7 @@ import 'package:uuid/uuid.dart';
 import '../features/auth/auth_injection.dart';
 import '../features/chat_room/chat_room_injection.dart';
 import '../features/search/search_injection.dart';
+import '../features/status/status_injection.dart';
 
 //Global variables
 
@@ -17,6 +18,7 @@ Future<void> init() async {
   await searchInIt();
   await authInjection();
   await chatRoomInit();
+  await statusInjection();
   //External Sources
   sl.registerLazySingleton(() => FirebaseAuth.instance);
   sl.registerLazySingleton(() => FirebaseStorage.instance);

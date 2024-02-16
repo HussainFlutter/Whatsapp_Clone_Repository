@@ -8,5 +8,5 @@ class GetMyStatusUseCase {
 
   GetMyStatusUseCase({required this.repo});
 
-  Stream<StatusEntity> call (StatusEntity statusEntity) => repo.getMyStatus(statusEntity);
+  Stream<StatusEntity?> call (StatusEntity statusEntity) => repo.getMyStatus(statusEntity);
 }

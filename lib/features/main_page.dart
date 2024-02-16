@@ -47,7 +47,7 @@ class _MainPageState extends State<MainPage> {
   }
   @override
   Widget build(BuildContext context) {
-    //debugPrint("Main Page currentUser:${widget.currentUser}");
+    debugPrint("Main Page currentUser:${widget.currentUser}");
     final List<Widget> tabs = [
       ChatsPage(
         currentUser: widget.currentUser,

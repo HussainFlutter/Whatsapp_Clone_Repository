@@ -10,5 +10,5 @@ class GetStatusUseCase {
 
   GetStatusUseCase({required this.repo});
 
-  Stream<List<StatusEntity>> call (StatusEntity statusEntity,UserEntity currentUser) => repo.getStatus(statusEntity, currentUser);
+  Stream<List<StatusEntity>?> call (StatusEntity statusEntity,UserEntity currentUser) => repo.getStatus(statusEntity, currentUser);
 }

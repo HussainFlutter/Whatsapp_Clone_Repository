@@ -22,15 +22,19 @@ class StatusRepoImpl extends StatusRepo {
   Future<Either<void, Failure>> deleteStatus(StatusEntity statusEntity)
   => dataSource.deleteStatus(statusEntity);
   @override
-  Stream<StatusEntity> getMyStatus(StatusEntity statusEntity)
+  Stream<StatusEntity?> getMyStatus(StatusEntity statusEntity)
   => dataSource.getMyStatus(statusEntity);
 
   @override
-  Stream<List<StatusEntity>> getStatus(StatusEntity statusEntity,UserEntity currentUser)
+  Stream<List<StatusEntity>?> getStatus(StatusEntity statusEntity,UserEntity currentUser)
   => dataSource.getStatus(statusEntity, currentUser);
 
   @override
   Future<Either<void, Failure>> updateStatus(StatusEntity statusEntity)
   => dataSource.updateStatus(statusEntity);
+
+  @override
+  Future<Either<String, Failure>> uploadImage(String path)
+  => dataSource.uploadImage(path);
 
 }

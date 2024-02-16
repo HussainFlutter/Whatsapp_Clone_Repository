@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/failures.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
@@ -11,6 +14,7 @@ import '../../../../../core/dependency_injection.dart';
 
 class StatusRepoRemoteDataSourceImpl extends StatusRepoRemoteDataSource{
   final FirebaseFirestore firestore = sl<FirebaseFirestore>();
+  final FirebaseStorage storage = sl<FirebaseStorage>();
 
   @override
   Future<Either<void, Failure>> createStatus(StatusEntity statusEntity) async {
@@ -49,14 +53,14 @@ class StatusRepoRemoteDataSourceImpl extends StatusRepoRemoteDataSource{
   }
 
   @override
-  Stream<StatusEntity> getMyStatus(StatusEntity statusEntity) {
+  Stream<StatusEntity?> getMyStatus(StatusEntity statusEntity) {
     try{
       final ref = firestore.collection(FirebaseConsts.status);
       //Creator Uid will be the currentUsers uid
       return ref.where("creatorUid",isEqualTo: statusEntity.creatorUid)
           .limit(1)
           .where("createAt",isGreaterThan: DateTime.now().subtract(const Duration(hours: 24)))
-          .snapshots().map((event) => StatusModel.fromSnapshot(event.docs.first));
+          .snapshots().map((event) => event.docs.isEmpty ? null : StatusModel.fromSnapshot(event.docs.first));
     }catch(e) {
       customPrint(message: e.toString());
       throw const Failure(message: "Failed creating status");
@@ -64,14 +68,14 @@ class StatusRepoRemoteDataSourceImpl extends StatusRepoRemoteDataSource{
   }
 
   @override
-  Stream<List<StatusEntity>> getStatus(StatusEntity statusEntity,UserEntity currentUser) {
+  Stream<List<StatusEntity>?> getStatus(StatusEntity statusEntity,UserEntity currentUser) {
     try{
       final ref = firestore.collection(FirebaseConsts.status);
       //Creator Uid will be the currentUsers uid
       return ref.where("creatorUid",whereIn: currentUser.chatRoomsWith)
       .where("createAt",isGreaterThan: DateTime.now().subtract(const Duration(hours: 24)))
       .snapshots()
-      .map((event) => event.docs.map((e) => StatusModel.fromSnapshot(e)).toList());
+      .map((event) => event.docs.isEmpty ? null : event.docs.map((e) => StatusModel.fromSnapshot(e)).toList());
     }catch(e) {
       customPrint(message: e.toString());
       throw const Failure(message: "Failed creating status");
@@ -92,6 +96,18 @@ class StatusRepoRemoteDataSourceImpl extends StatusRepoRemoteDataSource{
     {
       customPrint(message: e.toString());
       throw const Right(Failure(message: "Failed creating status"));
+    }
+  }
+
+  @override
+  Future<Either<String, Failure>> uploadImage (String path) async {
+    try{
+      final result = await storage.ref(FirebaseConsts.status).child(randomId.v1()).putFile(File(path));
+      final String url = await result.ref.getDownloadURL();
+      return Left(url);
+    }catch(e) {
+      customPrint(message: e.toString());
+      throw const Right(Failure(message: "Failed Uploading files"));
     }
   }
 

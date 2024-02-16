@@ -10,6 +10,8 @@ import 'package:whatsapp_clone_repository/features/chat_room/presentation/pages/
 import 'package:whatsapp_clone_repository/features/main_page.dart';
 import 'package:whatsapp_clone_repository/features/search/domain/entity/chat_room_entity.dart';
 import 'package:whatsapp_clone_repository/features/search/presentation/pages/search_page.dart';
+import 'package:whatsapp_clone_repository/features/status/domain/entity/custom_story_entity.dart';
+import 'package:whatsapp_clone_repository/features/status/presentation/pages/view_story.dart';
 import '../features/auth/presentation/pages/splash_screens/splash_page_2.dart';
 import '../features/auth/presentation/pages/splash_screens/splash_page_3.dart';
 
@@ -41,6 +43,8 @@ Route onGenerateRoute (RouteSettings settings) {
       return CustomPageTransition(child: EnterPinPage(phoneNumber: phoneNumber, verificationId: verificationId));
     case RouteNames.mainPage:
       return CustomPageTransition(child: MainPage(currentUser: settings.arguments as UserEntity,));
+      case RouteNames.viewStoryPage:
+      return MaterialPageRoute(builder: (context) => ViewStoryPage(stories: settings.arguments as List<CustomStoryEntity>));
     default:
       return MaterialPageRoute(builder: (context) => const NoPageFound());
   }

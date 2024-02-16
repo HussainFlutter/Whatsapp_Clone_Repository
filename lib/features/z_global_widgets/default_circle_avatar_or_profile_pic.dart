@@ -1,7 +1,7 @@
 
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:whatsapp_clone_repository/core/utils.dart';
 
 class DefaultCircleAvatar extends StatelessWidget {
   final String? url;
@@ -12,6 +12,6 @@ class DefaultCircleAvatar extends StatelessWidget {
     return url == null || url!.isEmpty
         ? const CircleAvatar(backgroundImage: AssetImage(
       "assets/image_assets/default_profile_picture.jpg",),)
-        : CircleAvatar(backgroundImage: NetworkImage(url!),) ;
+        : CircleAvatar(backgroundImage: CachedNetworkImageProvider(url!),) ;
   }
 }
