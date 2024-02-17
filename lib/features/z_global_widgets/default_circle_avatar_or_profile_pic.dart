@@ -18,37 +18,45 @@ class DefaultCircleAvatar extends StatefulWidget {
 }
 
 class _DefaultCircleAvatarState extends State<DefaultCircleAvatar> {
-  String? fetchedUrl;
+  String fetchedUrl = "assets/image_assets/default_profile_picture.jpg";
   bool loaded = false;
   void urlFunction () async {
-    fetchedUrl = "assets/image_assets/default_profile_picture.jpg";
-    print("hello");
-    print(widget.url!);
-    final fileName = await VideoThumbnail.thumbnailFile(
-        video: widget.url!,
-        imageFormat: ImageFormat.WEBP,
-    );
-    print("File Name :"+fileName.toString());
-    setState(() {
-      fetchedUrl =  fileName!.isNotEmpty ? fileName : widget.url!;
-      loaded = true;
-    });
+   // print("hello");
+   // print(widget.url);
+    if(widget.url != null)
+      {
+        final fileName = await VideoThumbnail.thumbnailFile(
+          video: widget.url!,
+          imageFormat: ImageFormat.WEBP,
+        );
+        //print("File Name :"+fileName.toString());
+        setState(() {
+          if(fileName!.isNotEmpty)
+            {
+              fetchedUrl = fileName;
+              loaded = true;
+            }
+        });
+      }
   }
 
   @override
   void initState() {
     super.initState();
     widget.type == "video" ? urlFunction() : null;
-    print(widget.type);
+    //print(widget.type);
   }
 
   @override
   Widget build(BuildContext context) {
-    print("fetchedUrl  " + fetchedUrl.toString());
+    //print("fetchedUrl  " + fetchedUrl.toString());
+    // print(widget.url);
+    // print(widget.type);
+    // print(loaded);
     return widget.url == null || widget.url!.isEmpty
         ? const CircleAvatar(backgroundImage: AssetImage(
       "assets/image_assets/default_profile_picture.jpg",),)
-        : widget.type == "video" ? CircleAvatar(backgroundColor: ColorsConsts.iconGrey,radius:0.07.mediaW(context),backgroundImage: loaded == true ? FileImage(File(fetchedUrl!)) : AssetImage(fetchedUrl!) as ImageProvider)
+        : widget.type == "video" ? CircleAvatar(backgroundColor: ColorsConsts.iconGrey,backgroundImage: loaded == true ? FileImage(File(fetchedUrl)) : AssetImage(fetchedUrl) as ImageProvider)
         : CircleAvatar(backgroundImage: CachedNetworkImageProvider(widget.url!),) ;
   }
 }
