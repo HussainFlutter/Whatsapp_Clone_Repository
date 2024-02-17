@@ -8,11 +8,24 @@ abstract class StatusEvent extends Equatable {
 
 class CreateStatusEvent extends StatusEvent{
   final UserEntity? currentUser;
-
-  const CreateStatusEvent({required this.currentUser});
+  final BuildContext context;
+  const CreateStatusEvent({required this.currentUser,required this.context});
   @override
-  List<Object?> get props => [currentUser];
+  List<Object?> get props => [currentUser,context];
 }
 class DeleteStatusEvent extends StatusEvent{}
 class UpdateStatusEvent extends StatusEvent{}
-class GetStatusEvent extends StatusEvent{}
+class GetStatusEvent extends StatusEvent{
+  final UserEntity currentUser;
+
+  const GetStatusEvent({required this.currentUser});
+  @override
+  List<Object?> get props => [currentUser];
+}
+class DemoEvent extends StatusEvent{
+  final List<StatusEntity>? statusList;
+
+  const DemoEvent({required this.statusList});
+  @override
+  List<Object?> get props => [statusList];
+}

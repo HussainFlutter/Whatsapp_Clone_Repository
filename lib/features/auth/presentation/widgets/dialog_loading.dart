@@ -14,13 +14,13 @@ class DialogLoading extends StatelessWidget {
       backgroundColor: ColorsConsts.backgroundColor,
       content: Center(
         child: SizedBox(
+              height: 0.12.mediaH(context),
+              width: 0.25.mediaW(context),
               child: CircularProgressIndicator(
                 backgroundColor: ColorsConsts.loadingColor.withOpacity(0.3),
                 color: ColorsConsts.loadingColor,
                 strokeWidth: 6,
               ),
-              height: 0.12.mediaH(context),
-              width: 0.25.mediaW(context),
             ),
 
       ),

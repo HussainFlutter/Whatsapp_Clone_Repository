@@ -63,6 +63,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Whatsapp Clone',
+        themeMode: ThemeMode.dark,
         theme: ThemeData(
             textTheme: textTheme(context),
             iconTheme: const IconThemeData(

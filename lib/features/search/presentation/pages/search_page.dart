@@ -88,10 +88,11 @@ class _SearchPageState extends State<SearchPage> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Contacts on WhatsApp",style: Theme.of(context).textTheme.displaySmall!.copyWith(color: ColorsConsts.textGrey),),
+                            Text("Contacts on WhatsApp",style: Theme.of(context).textTheme.displaySmall!.copyWith(color: ColorsConsts.iconGrey),),
                             foundUsers.isEmpty
-                            ? Text("No users found",style: Theme.of(context).textTheme.displaySmall!.copyWith(color: ColorsConsts.textGrey),)
+                            ? Text("No users found",style: Theme.of(context).textTheme.displaySmall!.copyWith(color: ColorsConsts.iconGrey),)
                             :ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                                 itemCount: foundUsers.length,
                                 itemBuilder: (context,index){
@@ -108,10 +109,11 @@ class _SearchPageState extends State<SearchPage> {
                                   );
                                 }
                             ),
-                            Text("Invite to WhatsApp",style: Theme.of(context).textTheme.displaySmall!.copyWith(color: ColorsConsts.textGrey),),
+                            Text("Invite to WhatsApp",style: Theme.of(context).textTheme.displaySmall!.copyWith(color: ColorsConsts.iconGrey),),
                              notFoundUsers.isEmpty
-                             ? Center(child:Text("No users found",style: Theme.of(context).textTheme.displaySmall!.copyWith(color: ColorsConsts.textGrey),),)
+                             ? Center(child:Text("No users found",style: Theme.of(context).textTheme.displaySmall!.copyWith(color: ColorsConsts.iconGrey),),)
                             :ListView.builder(
+                                 physics: const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: notFoundUsers.length,
                                     itemBuilder: (context,index){

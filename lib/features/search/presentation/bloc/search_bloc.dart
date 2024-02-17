@@ -35,7 +35,24 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         //  debugPrint("granted");
         late Either<List<UserEntity>, Failure> user;
         // Getting contacts
-        List<Contact> contacts = await ContactsService.getContacts();
+        List<Contact> contactsFromDevice = await ContactsService.getContacts(withThumbnails: false);
+        List<Contact> contacts = [];
+        // print(contacts[0].phones![0].value.toString());
+        // print(contacts[1].phones![0].value.toString());
+        // print(contacts[2].phones![0].value.toString());
+        // print(contacts[3].phones![0].value.toString());
+        // print(contacts[4].phones![0].value.toString());
+        print("contacts length "+contactsFromDevice.length.toString());
+        for(int i = 0 ; i < contactsFromDevice.length;i++)
+          {
+            if(contactsFromDevice[i].phones!.isNotEmpty)
+              {
+                print("hi");
+                contacts.add(contactsFromDevice[i]);
+              }
+            print(contacts);
+          }
+        print(contacts);
         Completer<void> completer = Completer<void>();
         if (contacts.isNotEmpty) {
           // Getting all users from firebase
@@ -99,6 +116,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
                 )
                 ) {
                   cloneList.removeAt(i);
+                  notFoundUsers = cloneList;
                 }
               }
             }

@@ -76,7 +76,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                   getSingleUser(UserEntity(uid: uid)).listen((user) {
                     user.fold((l) {
                       // fetched user
-
+                      Navigator.popUntil(event.context, (route) => route.isFirst);
                       Navigator.pushReplacementNamed(
                         event.context,
                         RouteNames.mainPage,
