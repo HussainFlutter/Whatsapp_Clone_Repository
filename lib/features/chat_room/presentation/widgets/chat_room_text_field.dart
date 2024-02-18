@@ -7,17 +7,20 @@ class ChatRoomTextField extends StatelessWidget {
   final void Function(String?) onChanged;
   final VoidCallback onTapOfEmoji;
   final VoidCallback onTap;
+  final FocusNode focusNode;
   const ChatRoomTextField({
     super.key,
     required this.controller,
     required this.onChanged,
     required this.onTapOfEmoji,
     required this.onTap,
+    required this.focusNode,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      focusNode: focusNode,
       onTap: onTap,
       controller: controller,
       maxLines: null,

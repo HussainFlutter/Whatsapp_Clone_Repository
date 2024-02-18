@@ -31,6 +31,7 @@ class ChatRoomRepoDataSourceImpl extends ChatRoomRepoDataSource{
         createdAt: DateTime.fromMicrosecondsSinceEpoch(DateTime.now().microsecondsSinceEpoch),
         isSent: false,
         isSeen: false,
+        name: messageEntity.name,
       );
        ref.doc(messageModel.messageId).set(messageModel.toMap()).then((value) async {
         await ref.doc(messageModel.messageId).update(

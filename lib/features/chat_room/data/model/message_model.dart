@@ -10,9 +10,12 @@ class MessageModel extends MessageEntity {
   final String? chatRoomId;
   final bool? isSeen;
   final bool? isSent;
-
+  final String? name;
+  final MessageModel? replyMessage;
   const MessageModel({
     this.message,
+    this.replyMessage,
+    this.name,
     this.messageId,
     this.createdAt,
     this.creatorUid,
@@ -22,6 +25,8 @@ class MessageModel extends MessageEntity {
     this.isSent,
   }) : super (
     message: message,
+    name: name,
+    replyMessage: replyMessage,
     messageId: messageId,
     createdAt: createdAt,
     creatorUid: creatorUid,
@@ -42,12 +47,15 @@ class MessageModel extends MessageEntity {
       isSeen: data["isSeen"],
       isSent: data["isSent"],
       chatRoomId: data["chatRoomId"],
+      name: data["name"],
+      replyMessage: data["replyMessage"] == null ? null : MessageModel.fromSnapshot(data["replyMessage"]),
     );
   }
 
   Map<String,dynamic> toMap() {
     return {
       "message":message,
+      "name":name,
       "messageId":messageId,
       "createdAt":createdAt,
       "creatorUid":creatorUid,
@@ -55,6 +63,7 @@ class MessageModel extends MessageEntity {
       "isSeen":isSeen,
       "isSent":isSent,
       "chatRoomId":chatRoomId,
+      "replyMessage": replyMessage == null ? null : replyMessage!.toMap(),
     };
   }
 

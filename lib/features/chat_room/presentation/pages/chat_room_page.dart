@@ -15,6 +15,7 @@ import 'package:whatsapp_clone_repository/features/z_global_widgets/show_text_me
 import '../../../../core/dependency_injection.dart';
 import '../../data/model/message_model.dart';
 import '../bloc/chat_room_bloc.dart';
+import '../bloc/reply_cubit.dart';
 import '../widgets/chat_room_app_bar.dart';
 import '../widgets/chat_room_hello_animation.dart';
 import '../widgets/chat_room_message_field.dart';
@@ -41,6 +42,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   bool isWriting = false;
   bool toggleEmoji = false;
   String? groupLabel;
+  final FocusNode focusNode = FocusNode();
+  MessageEntity? replyMessage;
 
   @override
   void dispose() {
@@ -48,7 +51,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     messageController.dispose();
   }
 
-//TODO: FIX cannot delete targetUser message
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,6 +106,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                   onTap: () => context
                                       .read<ChatRoomBloc>()
                                       .add(SendMessageEvent(
+                                        name: widget.targetUser.name!,
                                         targetUserUid: widget.targetUser.uid!,
                                         chatRoomId:
                                             widget.chatRoomEntity.chatRoomId!,
@@ -114,9 +117,11 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                             ),
                           ),
                           MessageField(
+                            focusNode: focusNode,
                             targetUserUid: widget.targetUser.uid!,
                             onTap: () => FocusScope.of(context).unfocus(),
                             chatRoomId: widget.chatRoomEntity.chatRoomId!,
+                            name: widget.currentUser.name!,
                             currentUserUid: widget.currentUser.uid!,
                             messageController: messageController,
                             onTapOfEmoji: () => context
@@ -151,6 +156,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                         ],
                       )
                     :
+//___________________________________________________________________________________________________________
+//___________________________________________________________________________________________________________
+//___________________________________________________________________________________________________________
                     //Chat Room
                     GestureDetector(
                         onTap: () => FocusScope.of(context).unfocus(),
@@ -164,6 +172,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                 //shrinkWrap: true,
                                 children: [
                                   ChatRoomMessages(
+                                    onSwipedMessage: (message) =>
+                                        replyToMessage(message),
                                     currentUserUid: widget.currentUser.uid!,
                                     targetUserUid: widget.targetUser.uid!,
                                     messages: messages,
@@ -172,37 +182,47 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                               ),
                             ),
                             // Message field
-                            MessageField(
-                              targetUserUid: widget.targetUser.uid!,
-                              onTap: () {
-                                if(context.read<DeleteAppBarCubit>().state.selected == true)
-                                  {
-                                    context
-                                        .read<DeleteAppBarCubit>()
-                                        .changeSelected(
-                                        selected: false, clear: true);
-                                  }
-                                context
-                                    .read<ShowEmojiPickerCubit>()
-                                    .toggleEmojiPicker(changeEmoji: false);
+                            BlocBuilder<ReplyCubit, ReplyState>(
+                              builder: (context, state) {
+                                    return MessageField(
+                                      cancelReply: cancelReply,
+                                      replyMessage: state.replyMessage,
+                                      name: widget.currentUser.name!,
+                                      focusNode: focusNode,
+                                      targetUserUid: widget.targetUser.uid!,
+                                      onTap: () {
+                                        if (context
+                                            .read<DeleteAppBarCubit>()
+                                            .state
+                                            .selected ==
+                                            true) {
+                                          context
+                                              .read<DeleteAppBarCubit>()
+                                              .changeSelected(
+                                              selected: false, clear: true);
+                                        }
+                                        context
+                                            .read<ShowEmojiPickerCubit>()
+                                            .toggleEmojiPicker(changeEmoji: false);
+                                      },
+                                      onTapOfEmoji: () {
+                                        if (FocusScope.of(context).hasFocus) {
+                                          FocusScope.of(context).unfocus();
+                                          context
+                                              .read<ShowEmojiPickerCubit>()
+                                              .toggleEmojiPicker();
+                                        } else {
+                                          context
+                                              .read<ShowEmojiPickerCubit>()
+                                              .toggleEmojiPicker();
+                                        }
+                                      },
+                                      chatRoomId: widget.chatRoomEntity.chatRoomId!,
+                                      currentUserUid: widget.currentUser.uid!,
+                                      messageController: messageController,
+                                    );
                               },
-                              onTapOfEmoji: () {
-                                if (FocusScope.of(context).hasFocus) {
-                                  FocusScope.of(context).unfocus();
-                                  context
-                                      .read<ShowEmojiPickerCubit>()
-                                      .toggleEmojiPicker();
-                                } else {
-                                  context
-                                      .read<ShowEmojiPickerCubit>()
-                                      .toggleEmojiPicker();
-                                }
-                              },
-                              chatRoomId: widget.chatRoomEntity.chatRoomId!,
-                              currentUserUid: widget.currentUser.uid!,
-                              messageController: messageController,
                             ),
-                            // 0.007.sizeH(context),
                             // Emoji picker
                             BlocBuilder<ShowEmojiPickerCubit,
                                 ShowEmojiPickerState>(
@@ -260,5 +280,14 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         ),
       ),
     );
+  }
+
+  replyToMessage(message) {
+      context.read<ReplyCubit>().replyMessage(message);
+      focusNode.requestFocus();
+  }
+
+  cancelReply() {
+    context.read<ReplyCubit>().replyMessage(null);
   }
 }

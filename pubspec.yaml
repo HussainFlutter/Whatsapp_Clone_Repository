@@ -78,6 +78,8 @@ dependencies:
   video_thumbnail: ^0.5.0
   # For Caching images
   cached_network_image: ^3.3.1
+  # For Replying to messages
+  swipe_to: ^1.0.6
   # For State Management
   bloc:
   equatable:

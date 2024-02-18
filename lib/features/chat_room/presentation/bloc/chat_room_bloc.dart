@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -36,6 +35,7 @@ class ChatRoomBloc extends Bloc<ChatRoomEvent, ChatRoomState> {
   ) {
     try {
       sendMessage(MessageEntity(
+          name: event.name,
           message: event.message,
           chatRoomId: event.chatRoomId,
           creatorUid: event.creatorUid,

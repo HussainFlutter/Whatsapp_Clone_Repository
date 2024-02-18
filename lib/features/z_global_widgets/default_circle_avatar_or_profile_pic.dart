@@ -6,7 +6,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
-import 'package:whatsapp_clone_repository/core/utils.dart';
 
 class DefaultCircleAvatar extends StatefulWidget {
   final String? url;
@@ -55,7 +54,7 @@ class _DefaultCircleAvatarState extends State<DefaultCircleAvatar> {
     // print(loaded);
     return widget.url == null || widget.url!.isEmpty
         ? const CircleAvatar(backgroundImage: AssetImage(
-      "assets/image_assets/default_profile_picture.jpg",),)
+        AssetsConsts.defaultProfilePic,),)
         : widget.type == "video" ? CircleAvatar(backgroundColor: ColorsConsts.iconGrey,backgroundImage: loaded == true ? FileImage(File(fetchedUrl)) : AssetImage(fetchedUrl) as ImageProvider)
         : CircleAvatar(backgroundImage: CachedNetworkImageProvider(widget.url!),) ;
   }

@@ -10,6 +10,10 @@ class FirebaseConsts {
   static const status = "status";
 }
 
+class AssetsConsts {
+  static const defaultProfilePic = "assets/image_assets/default_profile_picture.jpg";
+}
+
 class ColorsConsts {
   static const greenColor = Color(0xff0CCC83);
   static const whiteColor = Colors.white;
