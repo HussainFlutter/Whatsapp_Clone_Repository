@@ -6,7 +6,8 @@ class CustomStoryEntity extends Equatable{
   final String? url;
   final String? caption;
   final String? type;
-  const CustomStoryEntity({ this.url,  this.type,this.caption});
+  final List<String>? viewers;
+  const CustomStoryEntity({ this.url,  this.type,this.caption,this.viewers});
 
 
   factory CustomStoryEntity.fromJson (Map<String,dynamic> json) {
@@ -14,6 +15,7 @@ class CustomStoryEntity extends Equatable{
       url: json["url"],
       type: json["type"],
       caption: json["caption"],
+      viewers: json["viewers"],
     );
   }
 
@@ -21,11 +23,12 @@ class CustomStoryEntity extends Equatable{
     return {
       "url" :url,
       "type" :type,
-      "caption" :caption,
+      "caption" : caption,
+      "viewers" : viewers,
     };
   }
 
 
   @override
-  List<Object?> get props => [url,type,caption];
+  List<Object?> get props => [url,type,caption,viewers];
 }
