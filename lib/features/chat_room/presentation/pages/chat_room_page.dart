@@ -53,6 +53,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
   @override
   Widget build(BuildContext context) {
+ //print(Timestamp.);
     return Scaffold(
       backgroundColor: ColorsConsts.backgroundColor,
       appBar: PreferredSize(
@@ -106,6 +107,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                   onTap: () => context
                                       .read<ChatRoomBloc>()
                                       .add(SendMessageEvent(
+                                        replyMessage:null,
                                         name: widget.targetUser.name!,
                                         targetUserUid: widget.targetUser.uid!,
                                         chatRoomId:
@@ -168,12 +170,12 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                             // Chat Room
                             Flexible(
                               child: ListView(
-                                reverse: true,
+                               reverse: true,
                                 //shrinkWrap: true,
                                 children: [
                                   ChatRoomMessages(
                                     onSwipedMessage: (message) =>
-                                        replyToMessage(message),
+                                    replyToMessage(message),
                                     currentUserUid: widget.currentUser.uid!,
                                     targetUserUid: widget.targetUser.uid!,
                                     messages: messages,

@@ -12,10 +12,18 @@ class SendMessageEvent extends ChatRoomEvent {
   final String creatorUid;
   final String targetUserUid;
   final String name;
+  final MessageEntity? replyMessage;
 
-  const SendMessageEvent({required this.name,required this.targetUserUid,required this.chatRoomId,required this.message,required this.creatorUid});
+  const SendMessageEvent({
+    required this.replyMessage,
+    required this.name,
+    required this.targetUserUid,
+    required this.chatRoomId,
+    required this.message,
+    required this.creatorUid,
+  });
   @override
-  List<Object?> get props => [chatRoomId,message,creatorUid,targetUserUid,name];
+  List<Object?> get props => [chatRoomId,message,creatorUid,targetUserUid,name,replyMessage];
 }
 class ChangeIsSeenEvent extends ChatRoomEvent {
   final MessageEntity messageEntity;

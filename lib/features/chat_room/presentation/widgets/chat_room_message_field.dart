@@ -88,9 +88,10 @@ class MessageField extends StatelessWidget {
                           context.read<ChatRoomBloc>().add(SendMessageEvent(
                             name: name,
                             targetUserUid: targetUserUid,
-                                chatRoomId: chatRoomId,
-                                message: messageController.text.trim(),
-                                creatorUid: currentUserUid,
+                            chatRoomId: chatRoomId,
+                            message: messageController.text.trim(),
+                            creatorUid: currentUserUid,
+                            replyMessage: replyMessage,
                               ));
                           messageController.clear();
                           context.read<ChangeIconCubit>().changeIcon(false);

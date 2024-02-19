@@ -28,12 +28,14 @@ class ChatRoomRepoDataSourceImpl extends ChatRoomRepoDataSource{
         messageId: randomId.v1(),
         chatRoomId: messageEntity.chatRoomId,
         creatorUid: messageEntity.creatorUid,
-        createdAt: DateTime.fromMicrosecondsSinceEpoch(DateTime.now().microsecondsSinceEpoch),
+        createdAt:DateTime.timestamp(),
         isSent: false,
         isSeen: false,
         name: messageEntity.name,
+        replyMessage: messageEntity.replyMessage,
       );
-       ref.doc(messageModel.messageId).set(messageModel.toMap()).then((value) async {
+       ref.doc(messageModel.messageId).set(messageModel.toMap()
+       ).then((value) async {
         await ref.doc(messageModel.messageId).update(
          {
            "isSent" : true,

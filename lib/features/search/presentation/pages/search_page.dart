@@ -140,7 +140,7 @@ class _SearchPageState extends State<SearchPage> {
                       {
                         return  Center(child: Text(state.noContacts,style: Theme.of(context).textTheme.displaySmall!.copyWith(color: ColorsConsts.redColor),));
                       }
-                    return  Text("here",style: Theme.of(context).textTheme.displayMedium,);
+                    return  const SizedBox();
               }),
             ],
           ),

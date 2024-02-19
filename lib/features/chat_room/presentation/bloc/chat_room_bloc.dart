@@ -39,7 +39,9 @@ class ChatRoomBloc extends Bloc<ChatRoomEvent, ChatRoomState> {
           message: event.message,
           chatRoomId: event.chatRoomId,
           creatorUid: event.creatorUid,
-          targetUserUid: event.targetUserUid));
+          targetUserUid: event.targetUserUid,
+          replyMessage: event.replyMessage,
+      ));
     } catch (e) {
       customPrint(message: e.toString());
       rethrow;
