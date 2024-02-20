@@ -35,4 +35,8 @@ class ChatRoomRepoImpl extends ChatRoomRepo {
   @override
   Stream<MessageEntity> getLastMessage(ChatRoomEntity chatRoomEntity)
     => dataSource.getLastMessage(chatRoomEntity);
+
+  @override
+  Future<Either<String, Failure>> uploadImageOrVideoOrAudio(String path)
+  => dataSource.uploadImageOrVideoOrAudio(path);
 }

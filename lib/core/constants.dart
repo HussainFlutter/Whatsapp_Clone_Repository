@@ -8,6 +8,7 @@ class FirebaseConsts {
   static const chatRooms = "chatRooms";
   static const messages = "messages";
   static const status = "status";
+  static const audioVideoImage = "Audio_Video_Image";
 }
 
 class AssetsConsts {

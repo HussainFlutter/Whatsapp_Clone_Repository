@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/domain/entity/message_entity.dart';
 import '../../../../core/constants.dart';
+import '../bloc/chat_room_bloc.dart';
 
 class ChatRoomTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -8,6 +11,11 @@ class ChatRoomTextField extends StatelessWidget {
   final VoidCallback onTapOfEmoji;
   final VoidCallback onTap;
   final FocusNode focusNode;
+  final String name;
+  final String targetUserUid;
+  final String creatorUid;
+  final String chatRoomId;
+  final MessageEntity? replyMessage;
   const ChatRoomTextField({
     super.key,
     required this.controller,
@@ -15,6 +23,11 @@ class ChatRoomTextField extends StatelessWidget {
     required this.onTapOfEmoji,
     required this.onTap,
     required this.focusNode,
+    required this.name,
+    required this.targetUserUid,
+    required this.creatorUid,
+    required this.replyMessage,
+    required this.chatRoomId,
   });
 
   @override
@@ -34,7 +47,18 @@ class ChatRoomTextField extends StatelessWidget {
                 Transform.rotate(
                     angle: 4, child: const Icon(Icons.attachment)),
                 0.02.sizeW(context),
-                const Icon(Icons.camera_alt),
+                 IconButton(
+                onPressed: (){
+                  context.read<ChatRoomBloc>().add(
+                      SendVideoOrImage(
+                          replyMessage: replyMessage,
+                          name: name,
+                          targetUserUid: targetUserUid,
+                          chatRoomId: chatRoomId,
+                          creatorUid: creatorUid,
+                      ));
+                },
+                icon:const Icon(Icons.camera_alt)),
               ],
             ),
           ),

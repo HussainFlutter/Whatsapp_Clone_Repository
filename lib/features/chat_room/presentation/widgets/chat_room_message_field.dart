@@ -52,6 +52,11 @@ class MessageField extends StatelessWidget {
                           color: ColorsConsts.textGrey,
                           borderRadius: BorderRadius.circular(30)),
                       child: ChatRoomTextField(
+                        chatRoomId: chatRoomId,
+                        replyMessage: replyMessage,
+                        creatorUid: currentUserUid,
+                        targetUserUid:targetUserUid ,
+                        name: name,
                         focusNode: focusNode,
                         onTap: onTap,
                         onTapOfEmoji: onTapOfEmoji,

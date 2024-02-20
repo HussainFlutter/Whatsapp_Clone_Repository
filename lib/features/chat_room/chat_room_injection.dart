@@ -1,3 +1,4 @@
+import 'package:whatsapp_clone_repository/features/chat_room/domain/usecase/upload_image_video_audio_use_case.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/change_icon_cubit.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/chat_room_bloc.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/delete_appbar/delete_app_bar_cubit.dart';
@@ -35,6 +36,7 @@ Future<void> chatRoomInit () async {
   sl.registerLazySingleton(() => GetMessagesUseCase(repo: sl<ChatRoomRepo>()));
   sl.registerLazySingleton(() => ChangeMessageSeenStatusUseCase(repo: sl<ChatRoomRepo>()));
   sl.registerLazySingleton(() => GetLastMessageUseCase(repo: sl<ChatRoomRepo>()));
+  sl.registerLazySingleton(() => UploadImageOrVideoOrAudioUseCase(repo: sl<ChatRoomRepo>()));
   // Use cases for chat room
 
   //Repositories for chat room

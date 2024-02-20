@@ -76,6 +76,8 @@ dependencies:
   get_it: ^7.6.7
   #For generating video thumbnails
   video_thumbnail: ^0.5.0
+  # For playing videos
+  video_player: ^2.8.2
   # For Caching images
   cached_network_image: ^3.3.1
   # For Replying to messages

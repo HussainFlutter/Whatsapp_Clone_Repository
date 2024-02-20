@@ -1,7 +1,10 @@
 
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/core/failures.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
@@ -15,6 +18,7 @@ import '../../../../../core/dependency_injection.dart';
 class ChatRoomRepoDataSourceImpl extends ChatRoomRepoDataSource{
 
   final FirebaseFirestore firestore = sl<FirebaseFirestore>();
+  final FirebaseStorage storage = sl<FirebaseStorage>();
 
   @override
   Future<Either<void, Failure>> sendMessage(MessageEntity messageEntity) async {
@@ -22,32 +26,101 @@ class ChatRoomRepoDataSourceImpl extends ChatRoomRepoDataSource{
         .doc(messageEntity.chatRoomId)
         .collection("messages");
     try{
-      final messageModel = MessageModel(
-        message: messageEntity.message,
-        targetUserUid: messageEntity.targetUserUid,
-        messageId: randomId.v1(),
-        chatRoomId: messageEntity.chatRoomId,
-        creatorUid: messageEntity.creatorUid,
-        createdAt:DateTime.timestamp(),
-        isSent: false,
-        isSeen: false,
-        name: messageEntity.name,
-        replyMessage: messageEntity.replyMessage,
-      );
+      late MessageModel messageModel;
+      if(messageEntity.messageType! == MessageType.text)
+        {
+          messageModel = MessageModel(
+            messageType: messageEntity.messageType,
+            message: messageEntity.message,
+            targetUserUid: messageEntity.targetUserUid,
+            messageId: randomId.v1(),
+            chatRoomId: messageEntity.chatRoomId,
+            creatorUid: messageEntity.creatorUid,
+            createdAt:DateTime.timestamp(),
+            isSent: false,
+            isSeen: false,
+            name: messageEntity.name,
+            replyMessage: messageEntity.replyMessage,
+          );
+        }
+      else if (messageEntity.messageType! == MessageType.image){
+        // Upload image
+        final imageUrl =
+        await uploadImageOrVideoOrAudio(messageEntity.imageOrVideoOrAudioUrl!);
+        imageUrl.fold((imageUrl) {
+          messageModel = MessageModel(
+            imageOrVideoOrAudioUrl: imageUrl,
+            messageType: messageEntity.messageType,
+            targetUserUid: messageEntity.targetUserUid,
+            messageId: randomId.v1(),
+            chatRoomId: messageEntity.chatRoomId,
+            creatorUid: messageEntity.creatorUid,
+            createdAt:DateTime.timestamp(),
+            isSent: false,
+            isSeen: false,
+            name: messageEntity.name,
+            replyMessage: messageEntity.replyMessage,
+          );
+        }, (r)  {
+          toast(message: "Failed to upload image");
+          throw r;
+        });
+      }
+      else if (messageEntity.messageType! == MessageType.video){
+        // Upload video
+        final videoUrl =
+        await uploadImageOrVideoOrAudio(messageEntity.imageOrVideoOrAudioUrl!);
+        videoUrl.fold((videoUrl) {
+          messageModel = MessageModel(
+            imageOrVideoOrAudioUrl: videoUrl,
+            messageType: messageEntity.messageType,
+            targetUserUid: messageEntity.targetUserUid,
+            messageId: randomId.v1(),
+            chatRoomId: messageEntity.chatRoomId,
+            creatorUid: messageEntity.creatorUid,
+            createdAt:DateTime.timestamp(),
+            isSent: false,
+            isSeen: false,
+            name: messageEntity.name,
+            replyMessage: messageEntity.replyMessage,
+          );
+        }, (r)  {
+          toast(message: "Failed to upload video");
+          throw r;
+        });
+      }
+      else if (messageEntity.messageType! == MessageType.audio){
+        // Upload audio
+        final audioUrl =
+        await uploadImageOrVideoOrAudio(messageEntity.imageOrVideoOrAudioUrl!);
+        audioUrl.fold((audioUrl) {
+          messageModel = MessageModel(
+            imageOrVideoOrAudioUrl: audioUrl,
+            messageType: messageEntity.messageType,
+            targetUserUid: messageEntity.targetUserUid,
+            messageId: randomId.v1(),
+            chatRoomId: messageEntity.chatRoomId,
+            creatorUid: messageEntity.creatorUid,
+            createdAt:DateTime.timestamp(),
+            isSent: false,
+            isSeen: false,
+            name: messageEntity.name,
+            replyMessage: messageEntity.replyMessage,
+          );
+        }, (r)  {
+          toast(message: "Failed to upload audio");
+          throw r;
+        });
+      }
+
+      //Uploading to firebase
        ref.doc(messageModel.messageId).set(messageModel.toMap()
        ).then((value) async {
         await ref.doc(messageModel.messageId).update(
          {
            "isSent" : true,
          }
-        ).then((value) {
-           firestore.collection(FirebaseConsts.chatRooms)
-              .doc(messageEntity.chatRoomId)
-              .update({
-              "lastMessage":messageModel.message,
-              "lastMessageCreateAt":messageModel.createdAt,
-          });
-        });
+        );
       });
       return const Left(null);
     }catch(e){
@@ -152,6 +225,20 @@ class ChatRoomRepoDataSourceImpl extends ChatRoomRepoDataSource{
       throw const Right(Failure(message: "Something happened while updating isSeen "));
     }
 
+  }
+
+  @override
+  Future<Either<String, Failure>> uploadImageOrVideoOrAudio(String path) async {
+    try{
+     final result = await  storage
+         .ref(FirebaseConsts.audioVideoImage)
+         .child(randomId.v1())
+         .putFile(File(path));
+     return Left(await result.ref.getDownloadURL());
+    }catch(e){
+      customPrint(message: e.toString());
+      throw const Right(Failure(message: "Failed to Upload"));
+    }
   }
 
 }

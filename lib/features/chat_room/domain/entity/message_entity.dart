@@ -1,10 +1,14 @@
 import 'package:equatable/equatable.dart';
 
+enum MessageType {text,video,audio,image}
+
 class MessageEntity extends Equatable {
   final String? message;
+  final MessageType? messageType;
   final String? name;
   final String? messageId;
   final String? chatRoomId;
+  final String? imageOrVideoOrAudioUrl;
   final DateTime? createdAt;
   final String? creatorUid;
   final String? targetUserUid;
@@ -15,7 +19,9 @@ class MessageEntity extends Equatable {
   const MessageEntity({
       this.replyMessage,
       this.name,
+      this.imageOrVideoOrAudioUrl,
       this.message,
+      this.messageType,
       this.messageId,
       this.chatRoomId,
       this.createdAt,
@@ -36,5 +42,7 @@ class MessageEntity extends Equatable {
     isSeen,
     isSent,
     name,
+    imageOrVideoOrAudioUrl,
+    messageType,
   ];
 }

@@ -40,3 +40,20 @@ class DeleteMessageEvent extends ChatRoomEvent {
   @override
   List<Object?> get props => [messageId,chatroomId];
 }
+class SendVideoOrImage extends ChatRoomEvent {
+  final String chatRoomId;
+  final String creatorUid;
+  final String targetUserUid;
+  final String name;
+  final MessageEntity? replyMessage;
+
+  const SendVideoOrImage({
+    required this.replyMessage,
+    required this.name,
+    required this.targetUserUid,
+    required this.chatRoomId,
+    required this.creatorUid,
+  });
+  @override
+  List<Object?> get props => [chatRoomId,creatorUid,targetUserUid,name,replyMessage];
+}

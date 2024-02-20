@@ -3,6 +3,7 @@ import 'package:whatsapp_clone_repository/features/chat_room/domain/entity/messa
 
 class MessageModel extends MessageEntity {
   final String? message;
+  final MessageType? messageType;
   final String? messageId;
   final DateTime? createdAt;
   final String? creatorUid;
@@ -11,9 +12,12 @@ class MessageModel extends MessageEntity {
   final bool? isSeen;
   final bool? isSent;
   final String? name;
+  final String? imageOrVideoOrAudioUrl;
   final MessageEntity? replyMessage;
   const MessageModel({
     this.message,
+    this.imageOrVideoOrAudioUrl,
+    this.messageType,
     this.replyMessage,
     this.name,
     this.messageId,
@@ -26,6 +30,8 @@ class MessageModel extends MessageEntity {
   }) : super (
     message: message,
     name: name,
+    imageOrVideoOrAudioUrl: imageOrVideoOrAudioUrl,
+    messageType: messageType,
     replyMessage: replyMessage,
     messageId: messageId,
     createdAt: createdAt,
@@ -35,13 +41,14 @@ class MessageModel extends MessageEntity {
     isSeen: isSeen,
     isSent: isSent,
   );
-
   factory MessageModel.fromSnapshot (DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String,dynamic> ;
     return MessageModel(
+      messageType: data["messageType"],
       message: data["message"],
+      imageOrVideoOrAudioUrl: data["imageOrVideoOrAudioUrl"],
       messageId: data["messageId"],
-      createdAt: data["createdAt"].toDate(),
+      createdAt:  data["createdAt"].toDate(),
       creatorUid: data["creatorUid"],
       targetUserUid: data["targetUserUid"],
       isSeen: data["isSeen"],
@@ -55,6 +62,8 @@ class MessageModel extends MessageEntity {
   factory MessageModel.fromMap (Map<String,dynamic> data) {
     return MessageModel(
       message: data["message"],
+      messageType: data["messageType"],
+      imageOrVideoOrAudioUrl: data["imageOrVideoOrAudioUrl"],
       messageId: data["messageId"],
       createdAt: data["createdAt"].toDate(),
       creatorUid: data["creatorUid"],
@@ -70,6 +79,8 @@ class MessageModel extends MessageEntity {
   Map<String,dynamic> toMap() {
     return {
       "message":message,
+      "imageOrVideoOrAudioUrl":imageOrVideoOrAudioUrl,
+      "messageType":messageType,
       "name":name,
       "messageId":messageId,
       "createdAt":createdAt,
@@ -84,7 +95,9 @@ class MessageModel extends MessageEntity {
   Map<String,dynamic> replyMessageToMap (MessageEntity replyMessage) {
     return {
       "message":replyMessage.message,
+      "messageType":replyMessage.messageType,
       "name":replyMessage.name,
+      "imageOrVideoOrAudioUrl":replyMessage.imageOrVideoOrAudioUrl,
       "messageId":replyMessage.messageId,
       "createdAt":replyMessage.createdAt,
       "creatorUid":replyMessage.creatorUid,

@@ -1,4 +1,4 @@
-import 'package:custom_clippers/custom_clippers.dart';
+import 'package:custom_clippers/custom_clippers.dart' as clippers;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -133,11 +133,11 @@ class _ChatRoomMessagesState extends State<ChatRoomMessages> {
                   vertical: 0.003.mediaH(context),
                 ),
                 child: ClipPath(
-                  clipper: UpperNipMessageClipperTwo(
+                  clipper: clippers.UpperNipMessageClipperTwo(
                     widget.messages[index].creatorUid ==
                         widget.currentUserUid
-                        ? MessageType.send
-                        : MessageType.receive,
+                        ? clippers.MessageType.send
+                        : clippers.MessageType.receive,
                   ),
                   child: Container(
                     padding: EdgeInsets.symmetric(
@@ -171,38 +171,13 @@ class _ChatRoomMessagesState extends State<ChatRoomMessages> {
                         widget.messages[index].replyMessage != null
                         ? ifReplyMessage (index)
                         : const SizedBox(),
-                        Wrap(
-                          alignment: WrapAlignment.end,
-                          children: [
-                            Text(
-                              textAlign: TextAlign.end,
-                              widget.messages[index].message!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displaySmall,
-                              maxLines: null,
-                            ),
-                            0.04.sizeW(context),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 0.01.mediaW(context)),
-                              child: Text(
-                                DateFormat("hh:mm a").format(widget
-                                    .messages[index].createdAt!),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displaySmall!
-                                    .copyWith(
-                                    fontSize:
-                                    0.034.mediaW(context),
-                                    color: ColorsConsts.timeGrey),
-                                maxLines: null,
-                              ),
-                            ),
-                            0.02.sizeW(context),
-                            _seenIcon(index),
-                          ],
-                        ),
+                        widget.messages[index].messageType == MessageType.text
+                            ? _textMessage(index)
+                            :  widget.messages[index].messageType == MessageType.image
+                            ? _imageMessage(index)
+                            : widget.messages[index].messageType == MessageType.video
+                            ? _videoMessage(index)
+                            : const SizedBox(),
                       ],
                     ),
                   ),
@@ -276,11 +251,11 @@ class _ChatRoomMessagesState extends State<ChatRoomMessages> {
                     vertical: 0.003.mediaH(context),
                   ),
                   child: ClipPath(
-                    clipper: UpperNipMessageClipperTwo(
+                    clipper: clippers.UpperNipMessageClipperTwo(
                       widget.messages[index].creatorUid ==
                           widget.currentUserUid
-                          ? MessageType.send
-                          : MessageType.receive,
+                          ? clippers.MessageType.send
+                          : clippers.MessageType.receive,
                     ),
                     child: Container(
                       padding: EdgeInsets.symmetric(
@@ -441,6 +416,46 @@ class _ChatRoomMessagesState extends State<ChatRoomMessages> {
         ),
       ),
     );
+  }
+  Widget _textMessage (int index) {
+    return Wrap(
+      alignment: WrapAlignment.end,
+      children: [
+        Text(
+          textAlign: TextAlign.end,
+          widget.messages[index].message!,
+          style: Theme.of(context)
+              .textTheme
+              .displaySmall,
+          maxLines: null,
+        ),
+        0.04.sizeW(context),
+        Padding(
+          padding: EdgeInsets.symmetric(
+              vertical: 0.01.mediaW(context)),
+          child: Text(
+            DateFormat("hh:mm a").format(widget
+                .messages[index].createdAt!),
+            style: Theme.of(context)
+                .textTheme
+                .displaySmall!
+                .copyWith(
+                fontSize:
+                0.034.mediaW(context),
+                color: ColorsConsts.timeGrey),
+            maxLines: null,
+          ),
+        ),
+        0.02.sizeW(context),
+        _seenIcon(index),
+      ],
+    );
+  }
+  Widget _imageMessage (int index) {
+   //TODO: implement
+  }
+  Widget _videoMessage (int index) {
+    //TODO: implement
   }
 }
 // {
