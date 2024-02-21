@@ -1,12 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_clippers/custom_clippers.dart' as clippers;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:swipe_to/swipe_to.dart';
+import 'package:video_player/video_player.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/domain/entity/message_entity.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/delete_appbar/delete_app_bar_cubit.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/presentation/widgets/video_player.dart';
 import '../../../../core/constants.dart';
 import '../bloc/chat_room_bloc.dart';
 
@@ -375,6 +378,7 @@ class _ChatRoomMessagesState extends State<ChatRoomMessages> {
         : const SizedBox();
   }
   Widget _groupSeparatorBuilder (String value) {
+    print("value: "+value);
     DateTime now = DateTime.now();
     Duration duration = const Duration(hours: 24);
     DateTime yesterday = now.subtract(duration);
@@ -451,11 +455,68 @@ class _ChatRoomMessagesState extends State<ChatRoomMessages> {
       ],
     );
   }
-  Widget _imageMessage (int index) {
-   //TODO: implement
-  }
   Widget _videoMessage (int index) {
-    //TODO: implement
+
+    return Wrap(
+      alignment: WrapAlignment.end,
+      children: [
+        PlayVideo(url: widget.messages[index].imageOrVideoOrAudioUrl!),
+        0.04.sizeW(context),
+        Padding(
+          padding: EdgeInsets.symmetric(
+              vertical: 0.01.mediaW(context)),
+          child: Text(
+            DateFormat("hh:mm a").format(widget
+                .messages[index].createdAt!),
+            style: Theme.of(context)
+                .textTheme
+                .displaySmall!
+                .copyWith(
+                fontSize:
+                0.034.mediaW(context),
+                color: ColorsConsts.timeGrey),
+            maxLines: null,
+          ),
+        ),
+        0.02.sizeW(context),
+        _seenIcon(index),
+      ],
+    );
+  }
+  Widget _imageMessage (int index) {
+    return Wrap(
+      alignment: WrapAlignment.end,
+      children: [
+        CachedNetworkImage(
+          height: 0.4.mediaH(context),
+            fit: BoxFit.fitHeight,
+            placeholder: (context,s){
+              return const CircularProgressIndicator();
+            },
+            imageUrl: widget
+                .messages[index].imageOrVideoOrAudioUrl!
+        ),
+        0.04.sizeW(context),
+        Padding(
+          padding: EdgeInsets.symmetric(
+              vertical: 0.01.mediaW(context)),
+          child: Text(
+            DateFormat("hh:mm a").format(widget
+                .messages[index].createdAt!),
+            style: Theme.of(context)
+                .textTheme
+                .displaySmall!
+                .copyWith(
+                fontSize:
+                0.034.mediaW(context),
+                color: ColorsConsts.timeGrey),
+            maxLines: null,
+          ),
+        ),
+        0.02.sizeW(context),
+        _seenIcon(index),
+      ],
+    );
   }
 }
 // {

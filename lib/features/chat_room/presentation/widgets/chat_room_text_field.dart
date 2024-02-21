@@ -46,19 +46,20 @@ class ChatRoomTextField extends StatelessWidget {
               children: [
                 Transform.rotate(
                     angle: 4, child: const Icon(Icons.attachment)),
-                0.02.sizeW(context),
-                 IconButton(
-                onPressed: (){
-                  context.read<ChatRoomBloc>().add(
-                      SendVideoOrImage(
-                          replyMessage: replyMessage,
-                          name: name,
-                          targetUserUid: targetUserUid,
-                          chatRoomId: chatRoomId,
-                          creatorUid: creatorUid,
-                      ));
-                },
-                icon:const Icon(Icons.camera_alt)),
+                 Flexible(
+                   child: IconButton(
+                                   onPressed: (){
+                    context.read<ChatRoomBloc>().add(
+                        SendVideoOrImage(
+                            replyMessage: replyMessage,
+                            name: name,
+                            targetUserUid: targetUserUid,
+                            chatRoomId: chatRoomId,
+                            creatorUid: creatorUid,
+                        ));
+                                   },
+                                   icon:const Icon(Icons.camera_alt)),
+                 ),
               ],
             ),
           ),

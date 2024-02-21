@@ -43,8 +43,25 @@ class MessageModel extends MessageEntity {
   );
   factory MessageModel.fromSnapshot (DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String,dynamic> ;
+    late MessageType messageType;
+    if(data["messageType"] == "MessageType.image")
+      {
+        messageType = MessageType.image;
+      }
+    else if(data["messageType"] == "MessageType.video")
+    {
+      messageType = MessageType.video;
+    }
+    else if (data["messageType"] == "MessageType.audio")
+    {
+      messageType = MessageType.audio;
+    }
+    else if (data["messageType"] == "MessageType.text")
+    {
+      messageType = MessageType.text;
+    }
     return MessageModel(
-      messageType: data["messageType"],
+      messageType: messageType,
       message: data["message"],
       imageOrVideoOrAudioUrl: data["imageOrVideoOrAudioUrl"],
       messageId: data["messageId"],
@@ -80,7 +97,7 @@ class MessageModel extends MessageEntity {
     return {
       "message":message,
       "imageOrVideoOrAudioUrl":imageOrVideoOrAudioUrl,
-      "messageType":messageType,
+      "messageType":messageType.toString(),
       "name":name,
       "messageId":messageId,
       "createdAt":createdAt,
@@ -95,7 +112,7 @@ class MessageModel extends MessageEntity {
   Map<String,dynamic> replyMessageToMap (MessageEntity replyMessage) {
     return {
       "message":replyMessage.message,
-      "messageType":replyMessage.messageType,
+      "messageType":replyMessage.messageType.toString(),
       "name":replyMessage.name,
       "imageOrVideoOrAudioUrl":replyMessage.imageOrVideoOrAudioUrl,
       "messageId":replyMessage.messageId,

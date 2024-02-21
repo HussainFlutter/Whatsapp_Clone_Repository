@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 import 'package:whatsapp_clone_repository/features/auth/domain/entity/user_entity.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/domain/entity/message_entity.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/domain/usecase/get_last_message_use_case.dart';
 import 'package:whatsapp_clone_repository/features/search/domain/entity/chat_room_entity.dart';
 import 'package:whatsapp_clone_repository/features/search/domain/usecase/unread_messages_use_case.dart';
@@ -33,16 +34,6 @@ class ChatRoomListTile extends StatelessWidget {
         }
       },
       leading: DefaultCircleAvatar(url: targetUser.profilePic,),
-      // leading: targetUser.profilePic == null ||
-      //     targetUser.profilePic == ""
-      //     ? const CircleAvatar(
-      //   backgroundImage: AssetImage(
-      //       "assets/image_assets/default_profile_picture.jpg"),
-      // )
-      //     : CircleAvatar(
-      //   backgroundImage: NetworkImage(
-      //       targetUser.profilePic!),
-      // ),
       title: Text(
         currentUser.uid == targetUser.uid ? "(You)" : targetUser.name!,
         style: Theme.of(context)
@@ -52,17 +43,27 @@ class ChatRoomListTile extends StatelessWidget {
       subtitle: StreamBuilder(
         stream: sl<GetLastMessageUseCase>().call(ChatRoomEntity(chatRoomId: chatRoomFetchedList.chatRoomId)),
         builder: (context, snapshot) {
-          String lastMessage;
-          if(snapshot.hasData)
+           MessageEntity? message;
+          if(snapshot.hasData && snapshot.data != null)
             {
-              lastMessage = snapshot.data!.message!;
+               message = snapshot.data;
             }
           else
             {
-              lastMessage = "Say hi to your friend";
+              message = null;
             }
           return Text(
-            lastMessage,
+            message!.messageType == MessageType.text?
+            message.message == null ?
+                "Say hi to your new friend!"
+              : message.message ?? ""
+            : message.messageType == MessageType.image?
+                "Image"
+            : message.messageType == MessageType.video?
+                "Video"
+            :message.messageType == MessageType.audio?
+                "Audio"
+                : "",
             style: Theme.of(context)
                 .textTheme
                 .displaySmall!
