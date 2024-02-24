@@ -4,16 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp_clone_repository/core/constants.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:whatsapp_clone_repository/features/auth/presentation/bloc/splash_screen_bloc.dart';
-import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/change_icon_cubit.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/chat_room_bloc.dart';
-import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/reply_cubit.dart';
-import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/show_emoji_picker_cubit.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/cubits%20for%20small%20changes/change_textfield_cubit.dart';
 import 'package:whatsapp_clone_repository/features/search/presentation/bloc/search_bloc.dart';
 import 'package:whatsapp_clone_repository/features/status/presentation/bloc/get_my_status_cubit.dart';
 import 'package:whatsapp_clone_repository/features/status/presentation/bloc/status_bloc.dart';
 import 'config/theme.dart';
 import 'core/dependency_injection.dart';
 import 'core/on_generate_routes.dart';
+import 'features/chat_room/presentation/bloc/cubits for small changes/change_icon_cubit.dart';
+import 'features/chat_room/presentation/bloc/cubits for small changes/reply_cubit.dart';
+import 'features/chat_room/presentation/bloc/cubits for small changes/show_emoji_picker_cubit.dart';
 import 'features/chat_room/presentation/bloc/delete_appbar/delete_app_bar_cubit.dart';
 import 'firebase_options.dart';
 
@@ -62,6 +63,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) =>sl<ReplyCubit>(),
+        ),
+        BlocProvider(
+          create: (context) =>sl<ChangeTextFieldCubit>(),
         ),
       ],
       child: MaterialApp(

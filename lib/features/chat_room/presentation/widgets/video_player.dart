@@ -1,9 +1,8 @@
 
-
+import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:whatsapp_clone_repository/core/utils.dart';
 
 class PlayVideo extends StatefulWidget {
   final String url;
@@ -15,6 +14,7 @@ class PlayVideo extends StatefulWidget {
 
 class _PlayVideoState extends State<PlayVideo> {
   late VideoPlayerController _controller;
+  late ChewieController chewieController;
   late Future<void> _initializeVideo;
   @override
   void initState() {
@@ -28,6 +28,9 @@ class _PlayVideoState extends State<PlayVideo> {
 
       });
     });
+    chewieController = ChewieController(
+        videoPlayerController: _controller
+    );
   }
   @override
   void dispose() {
@@ -46,32 +49,7 @@ class _PlayVideoState extends State<PlayVideo> {
                 children: [
                   AspectRatio(
                     aspectRatio: _controller.value.aspectRatio,
-                    child: VideoPlayer(_controller),
-                  ),
-                  Positioned(
-                    top: _controller.value.aspectRatio / 2,
-                    bottom: _controller.value.aspectRatio / 2,
-                    left: _controller.value.aspectRatio /2,
-                    right: _controller.value.aspectRatio/ 2,
-                    child: IconButton(
-                        onPressed: (){
-                          print(isPlaying);
-                          if(isPlaying == true)
-                            {
-                              _controller.pause();
-                              setState(() {
-                                isPlaying = false;
-                              });
-                            }
-                          else {
-                            _controller.play();
-                            setState(() {
-                              isPlaying = true;
-                            });
-                          }
-                        },
-                        icon:Icon(isPlaying == true ? Icons.play_arrow : Icons.pause,color: Colors.white,size: 0.1.mediaW(context),)
-                    ),
+                    child: Chewie(controller: chewieController),
                   ),
                 ],
               );

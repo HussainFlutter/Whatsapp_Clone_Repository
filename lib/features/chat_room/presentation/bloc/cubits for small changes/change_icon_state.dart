@@ -1,5 +1,6 @@
 part of 'change_icon_cubit.dart';
 
+
 abstract class ChangeIconState extends Equatable {
   const ChangeIconState();
 }

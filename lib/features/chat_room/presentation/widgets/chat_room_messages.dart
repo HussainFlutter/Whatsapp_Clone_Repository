@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_clippers/custom_clippers.dart' as clippers;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:swipe_to/swipe_to.dart';
 import 'package:video_player/video_player.dart';
+import 'package:voice_message_package/voice_message_package.dart';
 import 'package:whatsapp_clone_repository/core/utils.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/domain/entity/message_entity.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/delete_appbar/delete_app_bar_cubit.dart';
@@ -46,9 +49,6 @@ class _ChatRoomMessagesState extends State<ChatRoomMessages> {
       },
       child: GroupedListView(
         elements: widget.messages,
-        //sort: false,
-        // itemComparator: (item1, item2) =>
-        //     item1.createdAt!.compareTo(item2.createdAt!),
         groupBy: (element) {
           DateTime dateTime = element.createdAt!;
           return  DateTime(
@@ -80,27 +80,6 @@ class _ChatRoomMessagesState extends State<ChatRoomMessages> {
                   }
               },
               onTap: () => onTap(index),
-              // {
-              //   if(widget.messages[index].creatorUid == widget.currentUserUid)
-              //     {
-              //     debugPrint("on tap start ${context.read<DeleteAppBarCubit>().state.selected}");
-              //  if (context.read<DeleteAppBarCubit>().state.selected == true) {
-              //     if (context.read<DeleteAppBarCubit>().state.selectedIndex.contains(index)) {
-              //       context.read<DeleteAppBarCubit>().changeSelected(selected: true,index: index,remove: true,messageId: widget.messages[index].messageId);
-              //       if (context.read<DeleteAppBarCubit>().state.selectedIndex.isEmpty) {
-              //         debugPrint("empty");
-              //         context.read<DeleteAppBarCubit>().changeSelected(selected: false);
-              //       }
-              //       debugPrint("removed from list ${context.read<DeleteAppBarCubit>().state.selected}");
-              //     } else {
-              //       debugPrint("added to list ${context.read<DeleteAppBarCubit>().state.selected}");
-              //       context.read<DeleteAppBarCubit>().changeSelected(selected: true,index: index,messageId: widget.messages[index].messageId);
-              //     }
-              //   }
-              //   debugPrint(context.read<DeleteAppBarCubit>().state.selectedIndex.toString());
-              //   debugPrint("on tap end ${context.read<DeleteAppBarCubit>().state.selected}");
-              //     }
-              // },
               child: BlocBuilder<DeleteAppBarCubit, DeleteAppBarState>(
                 builder: (context, state) {
                   //When selected for delete
@@ -147,18 +126,18 @@ class _ChatRoomMessagesState extends State<ChatRoomMessages> {
                       horizontal:
                       widget.messages[index].creatorUid ==
                           widget.currentUserUid
-                          ? 0.06.mediaW(context)
-                          : 0.06.mediaW(context),
+                          ? 0.04.mediaW(context)
+                          : 0.04.mediaW(context),
                       vertical: 0.01.mediaH(context),
                     ),
                     margin: EdgeInsets.only(
                       right: widget.messages[index].creatorUid ==
                           widget.currentUserUid
                           ? 0
-                          : 0.25.mediaW(context),
+                          : 0.20.mediaW(context),
                       left: widget.messages[index].creatorUid ==
                           widget.currentUserUid
-                          ? 0.25.mediaW(context)
+                          ? 0.10.mediaW(context)
                           : 0,
                     ),
                     decoration: BoxDecoration(
@@ -180,6 +159,8 @@ class _ChatRoomMessagesState extends State<ChatRoomMessages> {
                             ? _imageMessage(index)
                             : widget.messages[index].messageType == MessageType.video
                             ? _videoMessage(index)
+                            : widget.messages[index].messageType == MessageType.audio
+                            ? _audioMessage(index)
                             : const SizedBox(),
                       ],
                     ),
@@ -518,47 +499,56 @@ class _ChatRoomMessagesState extends State<ChatRoomMessages> {
       ],
     );
   }
+  Widget _audioMessage (int index) {
+    return Wrap(
+      alignment: WrapAlignment.end,
+      children: [
+        FittedBox(
+          child: VoiceMessageView(
+            innerPadding: 0,
+            cornerRadius: 10,
+            activeSliderColor: ColorsConsts.messageContainerGreen,
+            backgroundColor: ColorsConsts.iconGrey,
+            circlesColor: Colors.transparent,
+            circlesTextStyle: const TextStyle(
+              fontSize: 10,
+            ),
+            counterTextStyle: TextStyle(
+              color: ColorsConsts.whiteColor,
+              fontSize: 0.03.mediaW(context),
+            ),
+            controller: VoiceController(
+              audioSrc: widget.messages[index].imageOrVideoOrAudioUrl!,
+              maxDuration: const Duration(hours: 1),
+              isFile: false,
+              onComplete: () {},
+              onPause: () {},
+              onPlaying: () {},
+              onError: (err) {},
+            ),
+          ),
+        ),
+        0.04.sizeW(context),
+        Padding(
+          padding: EdgeInsets.symmetric(
+              vertical: 0.01.mediaW(context)),
+          child: Text(
+            DateFormat("hh:mm a").format(widget
+                .messages[index].createdAt!),
+            style: Theme.of(context)
+                .textTheme
+                .displaySmall!
+                .copyWith(
+                fontSize:
+                0.034.mediaW(context),
+                color: ColorsConsts.timeGrey),
+            maxLines: null,
+          ),
+        ),
+        0.02.sizeW(context),
+        _seenIcon(index),
+      ],
+    );
+  }
 }
-// {
-//   DateTime now = DateTime.now();
-//   Duration duration = const Duration(hours: 24);
-//   DateTime yesterday = now.subtract(duration);
-//   DateTime messageDateTime = DateTime.parse(value);
-//   if (messageDateTime.year == now.year &&
-//       messageDateTime.month == now.month &&
-//       messageDateTime.day == now.day) {
-//     groupLabel = "Today";
-//   } else if (messageDateTime.year == yesterday.year &&
-//       messageDateTime.month == yesterday.month &&
-//       messageDateTime.day == yesterday.day) {
-//     groupLabel = "Yesterday";
-//   } else {
-//     groupLabel = value;
-//   }
-//   return Padding(
-//     padding: const EdgeInsets.all(8.0),
-//     child: Container(
-//       padding: EdgeInsets.symmetric(
-//         vertical: 0.01.mediaW(context),
-//       ),
-//       margin: EdgeInsets.symmetric(
-//         horizontal: 0.3.mediaW(context),
-//       ),
-//       decoration: BoxDecoration(
-//         color: ColorsConsts.textGrey,
-//         borderRadius: BorderRadius.circular(10),
-//       ),
-//       child: Text(
-//         groupLabel == "Today" || groupLabel == "Yesterday"
-//             ? groupLabel!
-//             : DateFormat("MMMM dd,yyyy")
-//                 .format(DateTime.parse(groupLabel!)),
-//         textAlign: TextAlign.center,
-//         style: Theme.of(context)
-//             .textTheme
-//             .displaySmall!
-//             .copyWith(color: ColorsConsts.timeGrey),
-//       ),
-//     ),
-//   );
-// },
+

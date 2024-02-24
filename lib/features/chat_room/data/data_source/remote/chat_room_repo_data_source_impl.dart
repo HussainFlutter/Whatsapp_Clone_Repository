@@ -120,7 +120,12 @@ class ChatRoomRepoDataSourceImpl extends ChatRoomRepoDataSource{
          {
            "isSent" : true,
          }
-        );
+        ).then((value) {
+          firestore.collection(FirebaseConsts.chatRooms)
+              .doc(messageEntity.chatRoomId).update({
+            "lastMessageCreateAt": messageModel.createdAt,
+          });
+        });
       });
       return const Left(null);
     }catch(e){
@@ -202,7 +207,7 @@ class ChatRoomRepoDataSourceImpl extends ChatRoomRepoDataSource{
           .collection("messages")
           .orderBy("createdAt",descending: true)
           .limit(1)
-          .snapshots().map((event) => MessageModel.fromSnapshot(event.docs.first));
+          .snapshots().map((event) =>  MessageModel.fromSnapshot(event.docs.first));
     }catch(e) {
       throw Right(Failure(error: e.toString(),message: "Error occurred while fetching messages"));
     }

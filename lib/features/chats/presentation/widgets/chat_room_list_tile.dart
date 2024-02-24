@@ -53,10 +53,10 @@ class ChatRoomListTile extends StatelessWidget {
               message = null;
             }
           return Text(
-            message!.messageType == MessageType.text?
-            message.message == null ?
-                "Say hi to your new friend!"
-              : message.message ?? ""
+            message == null ?
+            "Say hi to your new friend!":
+            message.messageType == MessageType.text?
+               message.message ?? ""
             : message.messageType == MessageType.image?
                 "Image"
             : message.messageType == MessageType.video?

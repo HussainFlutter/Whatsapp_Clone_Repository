@@ -59,9 +59,9 @@ dependencies:
   # For Either etc
   dartz: ^0.10.1
   # For generating random ids
-  uuid: ^4.3.3
+  uuid: ^3.0.0
   # For formatting dates  / timestamps
-  intl: ^0.19.0
+  intl: ^0.18.0
   # For Story view i.e Status
   story_view: ^0.16.0
   # Some extra math stuff
@@ -78,6 +78,10 @@ dependencies:
   video_thumbnail: ^0.5.0
   # For playing videos
   video_player: ^2.8.2
+  chewie: ^1.7.5
+  #For recording and playing audios
+  flutter_sound: ^9.2.13
+  voice_message_package: ^2.1.4
   # For Caching images
   cached_network_image: ^3.3.1
   # For Replying to messages

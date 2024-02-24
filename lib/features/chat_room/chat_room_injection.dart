@@ -1,9 +1,10 @@
 import 'package:whatsapp_clone_repository/features/chat_room/domain/usecase/upload_image_video_audio_use_case.dart';
-import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/change_icon_cubit.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/chat_room_bloc.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/cubits%20for%20small%20changes/change_icon_cubit.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/cubits%20for%20small%20changes/change_textfield_cubit.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/cubits%20for%20small%20changes/reply_cubit.dart';
+import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/cubits%20for%20small%20changes/show_emoji_picker_cubit.dart';
 import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/delete_appbar/delete_app_bar_cubit.dart';
-import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/reply_cubit.dart';
-import 'package:whatsapp_clone_repository/features/chat_room/presentation/bloc/show_emoji_picker_cubit.dart';
 import '../../core/dependency_injection.dart';
 import 'data/data_source/remote/chat_room_repo_data_source.dart';
 import 'data/data_source/remote/chat_room_repo_data_source_impl.dart';
@@ -29,6 +30,9 @@ Future<void> chatRoomInit () async {
   sl.registerFactory(() => ShowEmojiPickerCubit());
   sl.registerLazySingleton(() => DeleteAppBarCubit());
   sl.registerLazySingleton(() => ReplyCubit());
+  sl.registerLazySingleton(() => ChangeTextFieldCubit(
+      sendMessage: sl<SendMessageUseCase>()
+  ));
   // Use cases for chat room
   sl.registerLazySingleton(() => SendMessageUseCase(repo: sl<ChatRoomRepo>()));
   sl.registerLazySingleton(() => DeleteMessageUseCase(repo: sl<ChatRoomRepo>()));

@@ -49,7 +49,31 @@ class ReplyingToMessage extends StatelessWidget {
                          icon: const Icon(Icons.close))
                       ],
                     ),
-                    Text(
+                    message.messageType == MessageType.audio
+                    ?Text(
+                      "🎵 Audio",
+                      style: Theme.of(context)
+                          .textTheme
+                          .displaySmall,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                    : message.messageType == MessageType.video
+                    ? Text(
+                      "🎥 Video",
+                      style: Theme.of(context)
+                          .textTheme
+                          .displaySmall,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                    : message.messageType == MessageType.image
+                    ? Text(
+                      "📷 Image",
+                      style: Theme.of(context)
+                          .textTheme
+                          .displaySmall,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                    : Text(
                       message.message!,
                       style: Theme.of(context)
                           .textTheme
