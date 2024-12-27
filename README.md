@@ -5,10 +5,10 @@ A feature-rich WhatsApp clone built with Flutter, Bloc and Firebase, replicating
 ---
 
 ## Demo Links
+- **Demo (LinkedIn)**: [Demo](https://www.linkedin.com/posts/hussain-ali-0805b8282_making-a-whatsapp-clone-1-in-the-search-activity-7161777336751714304-a1fD?utm_source=share&utm_medium=member_desktop)
 - **Voice message Feature (LinkedIn)**: [Voice message](https://www.linkedin.com/posts/hussain-ali-0805b8282_flutterapp-whatsappclone-github-activity-7166801741760466944-F-Ak?utm_source=share&utm_medium=member_desktop)
 - **Reply message Feature (LinkedIn)**: [Reply message](https://www.linkedin.com/posts/hussain-ali-0805b8282_reply-feature-done-activity-7165411097510854656-WUrx?utm_source=share&utm_medium=member_desktop)
 - **Status Feature (LinkedIn)**: [Status](https://www.linkedin.com/posts/hussain-ali-0805b8282_created-status-like-whatsapp-statuses-will-activity-7164701185654964224-cUfg?utm_source=share&utm_medium=member_desktop)
-- **Demo (LinkedIn)**: [Demo](https://www.linkedin.com/posts/hussain-ali-0805b8282_making-a-whatsapp-clone-1-in-the-search-activity-7161777336751714304-a1fD?utm_source=share&utm_medium=member_desktop)
 ---
 
 ## Features  
