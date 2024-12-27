@@ -1,6 +1,6 @@
 # WhatsApp Clone  
 
-A feature-rich WhatsApp clone built with Flutter and Firebase, replicating core functionalities of the popular messaging app. This app demonstrates advanced mobile development practices, including real-time messaging, media sharing, status updates, and robust UI/UX features.  
+A feature-rich WhatsApp clone built with Flutter, Bloc and Firebase, replicating core functionalities of the popular messaging app. This app demonstrates advanced mobile development practices, including real-time messaging, media sharing, status updates, and robust UI/UX features.  
 
 ---
 
