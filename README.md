@@ -40,3 +40,16 @@ A feature-rich WhatsApp clone built with Flutter and Firebase, replicating core 
 - Use a variety of emojis to express yourself in messages.  
 
 ---
+
+
+## Known Limitations  
+
+While this project replicates many of WhatsApp's core features, there are some **small imperfections**:  
+
+- Certain edge cases may not be fully handled in real-time messaging or media sharing.  
+- UI transitions and animations could use further optimization for a smoother experience.  
+- Some status or message updates may experience slight delays under specific network conditions.  
+- Advanced features like end-to-end encryption and calling are not yet implemented.  
+
+These imperfections do not significantly impact the app's functionality but highlight areas for future improvements.  
+
